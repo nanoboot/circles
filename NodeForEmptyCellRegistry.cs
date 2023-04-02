@@ -12,11 +12,11 @@ namespace Balls
         private Cell PoleUzlu = null;
         public NodeForEmptyCellRegistry(Cell PoleUzlu)
         { this.PoleUzlu = PoleUzlu; }
-        public void NastavitDalsiUzel(NodeForEmptyCellRegistry DalsiUzel)
+        public void addNewNode(NodeForEmptyCellRegistry DalsiUzel)
         { this.DalsiUzel = DalsiUzel; }
-        public NodeForEmptyCellRegistry VratDalsiUzel()
+        public NodeForEmptyCellRegistry getNextNode()
         {return this.DalsiUzel; }
-        public Cell VratPole()
+        public Cell getCell()
         { return this.PoleUzlu; }
     }
 }
