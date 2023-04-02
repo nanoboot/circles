@@ -13,124 +13,124 @@ namespace Balls
 {
     public class DatabaseManager
     {
-        private SQLiteConnection SqlPripojeni;
-        private SQLiteCommand SqlPrikaz;
+        private SQLiteConnection sqlConnection;
+        private SQLiteCommand sqlCommand;
 
         public DatabaseManager()
         {
-            PocatecniKontrola();
+            initCheck();
          }
-        private void PocatecniKontrola()//Zkontroluje, zda existuje soubor mice.mice, pokud neexistuje, tak vytvoří nový a naplní ho patřičnou strukturou.
+        private void initCheck()//
         {
-            if (File.Exists("./mice.mice"))
+            if (File.Exists("./balls.balls"))
             {
 
             }
             else
             {
-                SQLiteConnection.CreateFile("mice.mice");
-                SestavDatabazi();
-                MessageBox.Show("Nápovědu k této hře zobrazíte stisknutím klávesy F1. Přeji hodně úspěchů.","Vítejte, nový hráči");
+                SQLiteConnection.CreateFile("balls.balls");
+                createDatabase();
+                MessageBox.Show("You can show Help by pressing key F1. We wish you many successes.","Welcome, new player.");
             }
         }
-        private void SestavDatabazi()
+        private void createDatabase()
         { 
-            SpustPrikaz("CREATE TABLE Vysledky ( ID INT, Hrac TEXT, Vysledek INT, SestavaHry INT, DatumACas TEXT)");
-            SpustPrikaz("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, SvetleZelena INT, Cervena INT, TmaveModra INT, Zluta INT, SvetleModra INT, Fialova INT, Hneda INT, Ruzova INT, Zelena INT, Zlata INT, Oranzova INT, Bila INT, Sediva INT, Cerna INT, Modra INT, VojenskaZelena INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, DuhoveBalls INT, ZdvojnasobujiciBalls INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
-            SpustPrikaz("INSERT INTO SestavyHry VALUES (1, 9, 9, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 'linka',5)");
+            executeSqlStatement("CREATE TABLE Vysledky ( ID INT, Hrac TEXT, Vysledek INT, SestavaHry INT, DatumACas TEXT)");
+            executeSqlStatement("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, SvetleZelena INT, Cervena INT, TmaveModra INT, Zluta INT, SvetleModra INT, Fialova INT, Hneda INT, Ruzova INT, Zelena INT, Zlata INT, Oranzova INT, Bila INT, Sediva INT, Cerna INT, Modra INT, VojenskaZelena INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, DuhoveBalls INT, ZdvojnasobujiciBalls INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
+            executeSqlStatement("INSERT INTO SestavyHry VALUES (1, 9, 9, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 'linka',5)");
         }
-        private void NastavPripojeni()
+        private void initConnection()
         {
-            SqlPripojeni = new SQLiteConnection
-                  ("Data Source=mice.mice;Version=3;New=False;Compress=True; default timeout=10; Pooling=True; Max Pool Size=100;");
+            sqlConnection = new SQLiteConnection
+                  ("Data Source=balls.miballsce;Version=3;New=False;Compress=True; default timeout=10; Pooling=True; Max Pool Size=100;");
         }
-        public void SpustPrikaz(string Prikaz)
+        public void executeSqlStatement(string statement)
         {
-            NastavPripojeni();
-            using (SqlPripojeni)
+            initConnection();
+            using (sqlConnection)
             {
-                SqlPripojeni.Open();
-                using (SQLiteCommand SqlPrikaz = new SQLiteCommand(Prikaz, SqlPripojeni))
+                sqlConnection.Open();
+                using (SQLiteCommand sqlStatement = new SQLiteCommand(statement, sqlConnection))
                 {
-                    SqlPrikaz.ExecuteNonQuery();
+                    sqlStatement.ExecuteNonQuery();
                 }
                   
             } 
         }
-        public bool SpustPrikazAZjistiZdaExistujeAlesponJedenZaznam(string Prikaz)
+        public bool returnsAtLeastOneRow(string statement)
         {
-            NastavPripojeni();
+            initConnection();
 
-            bool existujeZaznam=false;
+            bool atLeastOneRowExists=false;
 
-            using (SqlPripojeni)
+            using (sqlConnection)
             {
-                SqlPripojeni.Open();
-                using (SQLiteCommand SqlPrikaz = new SQLiteCommand(Prikaz, SqlPripojeni))
+                sqlConnection.Open();
+                using (SQLiteCommand sqlStatement = new SQLiteCommand(statement, sqlConnection))
                 {
-                    SQLiteDataReader reader = SqlPrikaz.ExecuteReader();
-                    existujeZaznam=reader.Read();
+                    SQLiteDataReader reader = sqlStatement.ExecuteReader();
+                    atLeastOneRowExists=reader.Read();
                     while (reader.Read())
-                    { existujeZaznam = true; break; };
+                    { atLeastOneRowExists = true; break; };
 
                 }
 
             }
-            return existujeZaznam;
+            return atLeastOneRowExists;
         }
-        public int VratMaximalniHodnotuKliceIDZTabulky(string Tabulka)
+        public int getMaxIdForTable(string tableName)
         {
-            NastavPripojeni();
-            int maximalniID = 0;
+            initConnection();
+            int maxId = 0;
 
 
-            using (SqlPripojeni)
+            using (sqlConnection)
             {
-                SqlPripojeni.Open();
-                using (SQLiteCommand SqlPrikaz = new SQLiteCommand(String.Concat("SELECT MAX(ID) AS maxid FROM ", Tabulka, ";"), SqlPripojeni))
+                sqlConnection.Open();
+                using (SQLiteCommand SqlPrikaz = new SQLiteCommand(String.Concat("SELECT MAX(ID) AS maxid FROM ", tableName, ";"), sqlConnection))
                 {
-                    maximalniID = Convert.ToInt32(SqlPrikaz.ExecuteScalar());
+                    maxId = Convert.ToInt32(SqlPrikaz.ExecuteScalar());
                 }
 
             }
-            return maximalniID;
+            return maxId;
         }
-        public int VratHodnotuKliceIDPrvnihoZaznamuDanehoPrikazu(string Prikaz)
+        public int getIdOfFirstFoundRow(string statement)
         {
-            NastavPripojeni();
-            int klicID = 0;
+            initConnection();
+            int idKey = 0;
 
 
-            using (SqlPripojeni)
+            using (sqlConnection)
             {
-                SqlPripojeni.Open();
-                using (SQLiteCommand SqlPrikaz = new SQLiteCommand(Prikaz, SqlPripojeni))
+                sqlConnection.Open();
+                using (SQLiteCommand sqlStatement = new SQLiteCommand(statement, sqlConnection))
                 {
-                    SQLiteDataReader reader = SqlPrikaz.ExecuteReader();
+                    SQLiteDataReader reader = sqlStatement.ExecuteReader();
                     while (reader.Read())
-                    { klicID = Convert.ToInt32(reader["ID"]); }
+                    { idKey = Convert.ToInt32(reader["ID"]); }
                 }
 
             }
-            return klicID;
+            return idKey;
         }
-        public DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID(int ID)
+        public DataSet getScoreListForGivenGameComposition(int gameCompositionId)
         {
-            NastavPripojeni();
-            int klicID = ID;
-            String [,] nejakaHodnotaZprehleduVysledkuPole = new String[1024,4 ];
+            initConnection();
+            int idKey = gameCompositionId;
+
             DataSet dset = new DataSet();
 
-            using (SqlPripojeni)
+            using (sqlConnection)
             {
-                SqlPripojeni.Open();
-                String prikazKVyberuVysledku = String.Concat(
+                sqlConnection.Open();
+                String statement = String.Concat(
                     "SELECT Hrac AS \"Hráč\", Vysledek  AS \"Výsledek\", DatumACas AS \"Datum a čas\" FROM Vysledky WHERE SestavaHry= ",
-                    klicID.ToString()," ",
+                    idKey.ToString()," ",
                     "ORDER BY Vysledek DESC;"
                     
                     );
-                using (SQLiteDataAdapter myAdapter = new SQLiteDataAdapter(prikazKVyberuVysledku, SqlPripojeni))
+                using (SQLiteDataAdapter myAdapter = new SQLiteDataAdapter(statement, sqlConnection))
                 {myAdapter.Fill(dset);}
 
             }

@@ -84,23 +84,23 @@ namespace Balls
             SestavPrikazNaSestavuHryProUlozeniDoDatabaze();
             if (ExistujeDanaSestavaHryJizVDatabazi())
             {
-                klicIDSestavyHry=spravceDatabaze.VratHodnotuKliceIDPrvnihoZaznamuDanehoPrikazu(sqlPrikazSelectSestavyHry);
+                klicIDSestavyHry=spravceDatabaze.getIdOfFirstFoundRow(sqlPrikazSelectSestavyHry);
             }
             else
             {
-                klicIDSestavyHry = spravceDatabaze.VratMaximalniHodnotuKliceIDZTabulky("SestavyHry");
+                klicIDSestavyHry = spravceDatabaze.getMaxIdForTable("SestavyHry");
                 ++klicIDSestavyHry;
                 SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(klicIDSestavyHry);
-                spravceDatabaze.SpustPrikaz(sqlPrikazInsertSestavyHry);
+                spravceDatabaze.executeSqlStatement(sqlPrikazInsertSestavyHry);
 
             };
             SestavPrikazNaVlozeniVysledkuDoDatabaze(HracovoJmeno, Vysledek, klicIDSestavyHry);
-            spravceDatabaze.SpustPrikaz(sqlPrikazInsertVysledky);
+            spravceDatabaze.executeSqlStatement(sqlPrikazInsertVysledky);
             
         }
         private bool ExistujeDanaSestavaHryJizVDatabazi()
         {
-            return spravceDatabaze.SpustPrikazAZjistiZdaExistujeAlesponJedenZaznam(sqlPrikazSelectSestavyHry);
+            return spravceDatabaze.returnsAtLeastOneRow(sqlPrikazSelectSestavyHry);
                 }
         private String SestavPrikazNaSestavuHryProUlozeniDoDatabaze()
         {
@@ -140,8 +140,8 @@ namespace Balls
             DateTime datumACas = DateTime.Now;
             String otiskVCase = datumACas.ToString("yyyy MM dd HH:mm:ss");
             int klicIDVysledky = 0;
-            if (spravceDatabaze.SpustPrikazAZjistiZdaExistujeAlesponJedenZaznam("SELECT * FROM Vysledky;"))
-            { klicIDVysledky = (spravceDatabaze.VratMaximalniHodnotuKliceIDZTabulky("Vysledky"));++klicIDVysledky; }
+            if (spravceDatabaze.returnsAtLeastOneRow("SELECT * FROM Vysledky;"))
+            { klicIDVysledky = (spravceDatabaze.getMaxIdForTable("Vysledky"));++klicIDVysledky; }
             else { klicIDVysledky = 1; };
             String sqlPrikazPrvniCast = "INSERT INTO Vysledky VALUES ";
             String sqlPrikazDruhaCast = String.Concat(
@@ -195,8 +195,8 @@ namespace Balls
             
         }
         public System.Data.DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID()
-        { int ID=spravceDatabaze.VratHodnotuKliceIDPrvnihoZaznamuDanehoPrikazu(SestavPrikazNaSestavuHryProUlozeniDoDatabaze());
-            return spravceDatabaze.VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID(ID);
+        { int ID=spravceDatabaze.getIdOfFirstFoundRow(SestavPrikazNaSestavuHryProUlozeniDoDatabaze());
+            return spravceDatabaze.getScoreListForGivenGameComposition(ID);
         }
     }
 }
