@@ -18,18 +18,18 @@ namespace Balls
         public Cell PoleDole;
         public Cell PoleVlevo;
         public void VlozMic(Ball NovyMic)
-        { if (this.JePrazdne()==true)this.mic = NovyMic; }
-        public Ball VratMicANeodstranujHo()
-        { if (this.JePrazdne() != true) return this.mic;
+        { if (this.isEmpty()==true)this.mic = NovyMic; }
+        public Ball getBallAndDoNotRemoteIt()
+        { if (this.isEmpty() != true) return this.mic;
             else return new Ball("aa");// Zde udělat výjimku.
         }
         
         public Ball OdstranMicZPoleAVratHo()
-        { if (this.JePrazdne() == false) { Ball docasnyMic = this.mic;
+        { if (this.isEmpty() == false) { Ball docasnyMic = this.mic;
                 this.mic= null;return docasnyMic; }
             else {return new Ball("aa"); };// Pokud pole je prázdné, hoď novou výjimku.
         }
-        public bool JePrazdne()
+        public bool isEmpty()
         { if(this.mic==null) { return true; } else { return false; } }
         public void NastavPoleNahore(Cell PridavanePole)
         {
@@ -47,44 +47,44 @@ namespace Balls
         {
             this.PoleVlevo = PridavanePole;
         }
-        public Cell VratPoleNahore()
+        public Cell getTopCell()
         {
             return this.PoleNahore;
         }
-        public Cell VratPoleVpravo()
+        public Cell getRightCell()
         {
             return this.PoleVpravo;
         }
-        public Cell VratPoleDole()
+        public Cell getBottomCell()
         {
             return this.PoleDole;
         }
-        public Cell VratPoleVlevo()
+        public Cell getLeftCell()
         {
             return this.PoleVlevo;
         }
-        public Cell VratPoleSikmoVlevoNahore()
+        public Cell getTopLeftCell()
         {
             if ((this.VratRadek() == 1) || (this.VratSloupec() == 1)) { return null; } else //Pole vlevo nahoře šikmo od tohoto pole neexistuje.
-            { return this.VratPoleVlevo().VratPoleNahore(); };
+            { return this.getLeftCell().getTopCell(); };
         }
-        public Cell VratPoleSikmoVpravoNahore()
+        public Cell getTopRightCell()
         {
-            if ((this.VratRadek() == 1) || (this.VratPoleVpravo() == null)) { return null; }
+            if ((this.VratRadek() == 1) || (this.getRightCell() == null)) { return null; }
             else 
-            { return this.VratPoleVpravo().VratPoleNahore(); };
+            { return this.getRightCell().getTopCell(); };
         }
-        public Cell VratPoleSikmoVlevoDole()
+        public Cell getBottomLeftCell()
         {
-            if ((this.VratPoleDole() == null) || (this.VratSloupec() == 1)) { return null; }
+            if ((this.getBottomCell() == null) || (this.VratSloupec() == 1)) { return null; }
             else
-            { return this.VratPoleVlevo().VratPoleDole(); };
+            { return this.getLeftCell().getBottomCell(); };
         }
-        public Cell VratPoleSikmoVpravoDole()
+        public Cell getBottomRightCell()
         {
-            if ((this.VratPoleVpravo() == null) || (this.VratPoleDole() == null)) { return null; }
+            if ((this.getRightCell() == null) || (this.getBottomCell() == null)) { return null; }
             else
-            { return this.VratPoleVpravo().VratPoleDole(); };
+            { return this.getRightCell().getBottomCell(); };
         }
         public int VratSloupec()
         { return this.Sloupec; }

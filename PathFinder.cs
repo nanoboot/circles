@@ -80,13 +80,13 @@ namespace Balls
             switch (Smer)
             {
                 case "nahore":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleNahore(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getTopCell(); break;
                 case "vpravo":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleVpravo(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getRightCell(); break;
                 case "dole":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleDole(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getBottomCell(); break;
                 case "vlevo":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleVlevo(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getLeftCell(); break;
 
             }
             if (ZkoumanePole == AktivniPoleKam)
@@ -107,7 +107,7 @@ namespace Balls
         }
         private bool PokudPoleVDanemSmeruOdAktualnihoPoleSplnujePodminkyPresunHoDoDolniFrontyADoGenerickehoSeznamuNavstivenychPoli(String Smer)
         {
-            if ((ZkoumanePole != null) && (ZkoumanePole.JePrazdne()) && (!(NavstivenaPole.Contains(ZkoumanePole))))// Pokud pole nahoře je prázdné, nebylo již navštívené a existuje, tak potom se vytvoří nový uzel s tímto polem v dolní frontě a toto pole se přidá do seznamu již navštívených polí.
+            if ((ZkoumanePole != null) && (ZkoumanePole.isEmpty()) && (!(NavstivenaPole.Contains(ZkoumanePole))))// Pokud pole nahoře je prázdné, nebylo již navštívené a existuje, tak potom se vytvoří nový uzel s tímto polem v dolní frontě a toto pole se přidá do seznamu již navštívených polí.
             {
                 FrontaPoTransformaci.Enqueue(AktualniUzelHledaceCesty.VytvorDite(ZkoumanePole));
                 NavstivenaPole.Add(ZkoumanePole);

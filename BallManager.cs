@@ -66,7 +66,7 @@ namespace Balls
             
             String I = "";
 
-            switch (DalsiMic1.VratBarvu())
+            switch (DalsiMic1.getColour())
             {
                 case "SvetleZelena": { I = "1"; hra.VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); } break;
                 case "Cervena": { I = "2"; hra.VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
@@ -78,7 +78,7 @@ namespace Balls
 
             }
 
-            switch (DalsiMic2.VratBarvu())
+            switch (DalsiMic2.getColour())
             {
                 case "SvetleZelena": { I = "1"; hra.VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); } break;
                 case "Cervena": { I = "2"; hra.VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
@@ -90,7 +90,7 @@ namespace Balls
 
             }
 
-            switch (DalsiMic3.VratBarvu())
+            switch (DalsiMic3.getColour())
             {
                 case "SvetleZelena": { I = "1"; hra.VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); } break;
                 case "Cervena": { I = "2"; hra.VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
@@ -208,7 +208,7 @@ namespace Balls
                 }
             }
             
-            novyMic.NastavTyp(PouzityTypBalls);
+            novyMic.setType(PouzityTypBalls);
             return novyMic;
         }
 

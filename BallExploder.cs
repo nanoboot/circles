@@ -1,223 +1,218 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Windows;
 
 namespace Balls
 {
     class BallExploder
     {
-        private string TvarSkupinyMicuKteraExploduje;
-        private int MinimalniDelkaLinky;
-        private Stack<Cell> ZasobnikOdpalenychMicu = new Stack<Cell>();
-        private Cell PoleKeKontrole = null;
-        String jakouHledamBarvu;
-        bool nalezenTvar = false;
-        Cell aktualniPole;
-        public BallExploder(String TvarSkupinyMicuKteraExploduje,int MinimalniDelkaLinky)
-        { this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje;
-            this.MinimalniDelkaLinky = MinimalniDelkaLinky;
+        private string shape;
+        private int minLineLength;
+        private Stack<Cell> explodedBalls = new Stack<Cell>();
+        private Cell cellToBeChecked = null;
+        String colour;
+        bool shapeIsFound = false;
+        Cell currentCell;
+        public BallExploder(String shape,int minLineLength)
+        { this.shape = shape;
+            this.minLineLength = minLineLength;
         }
-        public Stack<Cell> ZkontrolujAPripadneOdpal(Cell PoleKeKontrole)
+        public Stack<Cell> checkAndExplodedIfNeeded(Cell cellToBeChecked)
         {
-            this.PoleKeKontrole = PoleKeKontrole;
-            aktualniPole=PoleKeKontrole;
-            jakouHledamBarvu = PoleKeKontrole.VratMicANeodstranujHo().VratBarvu();
-            nalezenTvar = false;
-            switch (this.TvarSkupinyMicuKteraExploduje)
+            this.cellToBeChecked = cellToBeChecked;
+            currentCell=cellToBeChecked;
+            colour = cellToBeChecked.getBallAndDoNotRemoteIt().getColour();
+            shapeIsFound = false;
+            switch (this.shape)
             {
-                case "linka": OdpalTvarLinka(); break;
-                case "ctverec": OdpalTvarCtverec(); break;
-                case "krouzek": OdpalTvarKrouzek(); break;
+                case "linka": explodeLine(); break;
+                case "ctverec": explodeSquare(); break;
+                case "krouzek": explodeCircle(); break;
                 default: { }; break;
             }
-            return this.ZasobnikOdpalenychMicu;//
+            return this.explodedBalls;//
         }
-        private void OdpalTvarLinka()
+        private void explodeLine()
         {
-            String[] pozicePole = { "svisla", "vodorovna", "sikmazleva", "sikmazprava" };
-            foreach (String pozice in pozicePole)
-            { if (nalezenTvar) { break; } else { ZkontrolujPoziciLinky(pozice); } }
+            String[] cellPosition = { "svisla", "vodorovna", "sikmazleva", "sikmazprava" };
+            foreach (String position in cellPosition)
+            { if (shapeIsFound) { break; } else { checkLine(position); } }
 
         }
-        private void ZkontrolujPoziciLinky(String Pozice)
+        private void checkLine(String Pozice)
         {
             {
-                aktualniPole = PoleKeKontrole;
-                while ((aktualniPole != null) && (!aktualniPole.JePrazdne()) && (aktualniPole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu)))
+                currentCell = cellToBeChecked;
+                while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoteIt().hasColour(colour)))
                 {
-                    ZasobnikOdpalenychMicu.Push(aktualniPole);
+                    explodedBalls.Push(currentCell);
                     switch (Pozice)
                     {
                         case "svisla":
-                            aktualniPole = aktualniPole.VratPoleNahore(); break;
+                            currentCell = currentCell.getTopCell(); break;
                         case "vodorovna":
-                            aktualniPole = aktualniPole.VratPoleVlevo(); break;
+                            currentCell = currentCell.getLeftCell(); break;
                         case "sikmazleva":
-                            aktualniPole = aktualniPole.VratPoleSikmoVlevoNahore(); break;
+                            currentCell = currentCell.getTopLeftCell(); break;
                         case "sikmazprava":
-                            aktualniPole = aktualniPole.VratPoleSikmoVpravoNahore(); break;
+                            currentCell = currentCell.getTopRightCell(); break;
                             
                             } 
                 };
-                aktualniPole = PoleKeKontrole;
+                currentCell = cellToBeChecked;
                 switch (Pozice)
                 {
                     case "svisla":
-                        aktualniPole = aktualniPole.VratPoleDole(); break;
+                        currentCell = currentCell.getBottomCell(); break;
                     case "vodorovna":
-                        aktualniPole = aktualniPole.VratPoleVpravo(); break;
+                        currentCell = currentCell.getRightCell(); break;
                     case "sikmazleva":
-                        aktualniPole = aktualniPole.VratPoleSikmoVpravoDole(); break;
+                        currentCell = currentCell.getBottomRightCell(); break;
                     case "sikmazprava":
-                        aktualniPole = aktualniPole.VratPoleSikmoVlevoDole(); break;
+                        currentCell = currentCell.getBottomLeftCell(); break;
 
                 }
                 
-                while ((aktualniPole != null) && (!aktualniPole.JePrazdne()) && (aktualniPole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu)))
+                while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoteIt().hasColour(colour)))
                 {
-                    ZasobnikOdpalenychMicu.Push(aktualniPole);
+                    explodedBalls.Push(currentCell);
                     switch (Pozice)
                     {
                         case "svisla":
-                            aktualniPole = aktualniPole.VratPoleDole(); break;
+                            currentCell = currentCell.getBottomCell(); break;
                         case "vodorovna":
-                            aktualniPole = aktualniPole.VratPoleVpravo(); break;
+                            currentCell = currentCell.getRightCell(); break;
                         case "sikmazleva":
-                            aktualniPole = aktualniPole.VratPoleSikmoVpravoDole(); break;
+                            currentCell = currentCell.getBottomRightCell(); break;
                         case "sikmazprava":
-                            aktualniPole = aktualniPole.VratPoleSikmoVlevoDole(); break;
+                            currentCell = currentCell.getBottomLeftCell(); break;
                 }
                 };
 
             }
-            if (ZasobnikOdpalenychMicu.Count >= MinimalniDelkaLinky) { nalezenTvar = true; } else { ZasobnikOdpalenychMicu.Clear(); };
+            if (explodedBalls.Count >= minLineLength) { shapeIsFound = true; } else { explodedBalls.Clear(); };
         }
         
-        private void OdpalTvarCtverec()
+        private void explodeSquare()
         {
             String[] pozicePole = { "radek1sloupec1", "radek1sloupec2", "radek2sloupec1", "radek2sloupec2" };
             foreach (String pozice in pozicePole)
-            { if (nalezenTvar) { break; } else { ZkontrolujPoziciCtverce(pozice); } }
+            { if (shapeIsFound) { break; } else { checkSquare(pozice); } }
         }
-        private void ZkontrolujPoziciCtverce(String Pozice)
+        private void checkSquare(String position)
         {
-            aktualniPole = PoleKeKontrole;
-            Cell prvniZkoumanePole = null;
-            Cell druheZkoumanePole = null;
-            Cell tretiZkoumanePole = null;
-            switch (Pozice)
+            currentCell = cellToBeChecked;
+            Cell cell1 = null;
+            Cell cell2 = null;
+            Cell cell3 = null;
+            switch (position)
             {
                 case "radek1sloupec1":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleVpravo();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVpravoDole();
-                        tretiZkoumanePole = aktualniPole.VratPoleDole();
+                        cell1 = currentCell.getRightCell();
+                        cell2 = currentCell.getBottomRightCell();
+                        cell3 = currentCell.getBottomCell();
                     }; break;
                 case "radek1sloupec2":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleVlevo();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVlevoDole();
-                        tretiZkoumanePole = aktualniPole.VratPoleDole();
+                        cell1 = currentCell.getLeftCell();
+                        cell2 = currentCell.getBottomLeftCell();
+                        cell3 = currentCell.getBottomCell();
                     }; break;
                 case "radek2sloupec1":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleNahore();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVpravoNahore();
-                        tretiZkoumanePole = aktualniPole.VratPoleVpravo();
+                        cell1 = currentCell.getTopCell();
+                        cell2 = currentCell.getTopRightCell();
+                        cell3 = currentCell.getRightCell();
                     }; break;
                 case "radek2sloupec2":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleSikmoVlevoNahore();
-                        druheZkoumanePole = aktualniPole.VratPoleNahore();
-                        tretiZkoumanePole = aktualniPole.VratPoleVlevo();
+                        cell1 = currentCell.getTopLeftCell();
+                        cell2 = currentCell.getTopCell();
+                        cell3 = currentCell.getLeftCell();
                     }; break;
 
             }
-            if ((prvniZkoumanePole != null) && (druheZkoumanePole != null) && (tretiZkoumanePole != null))
+            if ((cell1 != null) && (cell2 != null) && (cell3 != null))
             {
 
                 if (
-                    ((!prvniZkoumanePole.JePrazdne()) && (prvniZkoumanePole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu))) &&
-                    ((!druheZkoumanePole.JePrazdne()) && (druheZkoumanePole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu))) &&
-                    ((!tretiZkoumanePole.JePrazdne()) && (tretiZkoumanePole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu)))
+                    ((!cell1.isEmpty()) && (cell1.getBallAndDoNotRemoteIt().hasColour(colour))) &&
+                    ((!cell2.isEmpty()) && (cell2.getBallAndDoNotRemoteIt().hasColour(colour))) &&
+                    ((!cell3.isEmpty()) && (cell3.getBallAndDoNotRemoteIt().hasColour(colour)))
                     )
                 {
-                    nalezenTvar = true;
-                    ZasobnikOdpalenychMicu.Push(aktualniPole);
-                    ZasobnikOdpalenychMicu.Push(prvniZkoumanePole);
-                    ZasobnikOdpalenychMicu.Push(druheZkoumanePole);
-                    ZasobnikOdpalenychMicu.Push(tretiZkoumanePole);
+                    shapeIsFound = true;
+                    explodedBalls.Push(currentCell);
+                    explodedBalls.Push(cell1);
+                    explodedBalls.Push(cell2);
+                    explodedBalls.Push(cell3);
                 }
-                else { ZasobnikOdpalenychMicu.Clear(); };
+                else { explodedBalls.Clear(); };
 
                 ;
             }
         }
-        private void OdpalTvarKrouzek()
+        private void explodeCircle()
         {
-            String[] pozicePole = { "radek1sloupec2", "radek2sloupec1", "radek2sloupec3", "radek3sloupec2" };
-            foreach (String pozice in pozicePole)
-            { if (nalezenTvar) { break; } else { ZkontrolujPoziciKrouzku(pozice); } }
+            String[] cellPosition = { "radek1sloupec2", "radek2sloupec1", "radek2sloupec3", "radek3sloupec2" };
+            foreach (String position in cellPosition)
+            { if (shapeIsFound) { break; } else { checkCircle(position); } }
         }
-        private void ZkontrolujPoziciKrouzku(String Pozice)
+        private void checkCircle(String position)
         {
-            aktualniPole = PoleKeKontrole;
-            Cell prvniZkoumanePole = null;
-            Cell druheZkoumanePole = null;
-            Cell tretiZkoumanePole = null;
-            Cell poleVedleTretihoZkoumanehoPole = null;
+            currentCell = cellToBeChecked;
+            Cell cell1 = null;
+            Cell cell2 = null;
+            Cell cell3 = null;
+            Cell cellNextToCell3 = null;
 
-            switch (Pozice)
+            switch (position)
             {
                 case "radek1sloupec2":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleSikmoVlevoDole();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVpravoDole();
-                        poleVedleTretihoZkoumanehoPole = aktualniPole.VratPoleDole();
-                        if (poleVedleTretihoZkoumanehoPole!=null) tretiZkoumanePole = poleVedleTretihoZkoumanehoPole.VratPoleDole();
+                        cell1 = currentCell.getBottomLeftCell();
+                        cell2 = currentCell.getBottomRightCell();
+                        cellNextToCell3 = currentCell.getBottomCell();
+                        if (cellNextToCell3!=null) cell3 = cellNextToCell3.getBottomCell();
                     }; break;
                 case "radek2sloupec1":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleSikmoVpravoNahore();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVpravoDole();
-                        poleVedleTretihoZkoumanehoPole = aktualniPole.VratPoleVpravo();
-                        if (poleVedleTretihoZkoumanehoPole != null) tretiZkoumanePole = poleVedleTretihoZkoumanehoPole.VratPoleVpravo();
+                        cell1 = currentCell.getTopRightCell();
+                        cell2 = currentCell.getBottomRightCell();
+                        cellNextToCell3 = currentCell.getRightCell();
+                        if (cellNextToCell3 != null) cell3 = cellNextToCell3.getRightCell();
                     }; break;
                 case "radek2sloupec3":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleSikmoVlevoNahore();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVlevoDole();
-                        poleVedleTretihoZkoumanehoPole = aktualniPole.VratPoleVlevo();
-                        if (poleVedleTretihoZkoumanehoPole != null) tretiZkoumanePole = poleVedleTretihoZkoumanehoPole.VratPoleVlevo();
+                        cell1 = currentCell.getTopLeftCell();
+                        cell2 = currentCell.getBottomLeftCell();
+                        cellNextToCell3 = currentCell.getLeftCell();
+                        if (cellNextToCell3 != null) cell3 = cellNextToCell3.getLeftCell();
                     }; break;
                 case "radek3sloupec2":
                     {
-                        prvniZkoumanePole = aktualniPole.VratPoleSikmoVlevoNahore();
-                        druheZkoumanePole = aktualniPole.VratPoleSikmoVpravoNahore();
-                        poleVedleTretihoZkoumanehoPole = aktualniPole.VratPoleNahore();
-                        if (poleVedleTretihoZkoumanehoPole != null) tretiZkoumanePole = poleVedleTretihoZkoumanehoPole.VratPoleNahore();
+                        cell1 = currentCell.getTopLeftCell();
+                        cell2 = currentCell.getTopRightCell();
+                        cellNextToCell3 = currentCell.getTopCell();
+                        if (cellNextToCell3 != null) cell3 = cellNextToCell3.getTopCell();
                     }; break;
             }
-            if ((prvniZkoumanePole != null) && (druheZkoumanePole != null) && (poleVedleTretihoZkoumanehoPole != null) && (tretiZkoumanePole != null))
+            if ((cell1 != null) && (cell2 != null) && (cellNextToCell3 != null) && (cell3 != null))
             {
 
                 if (
-                    ((!prvniZkoumanePole.JePrazdne()) && (prvniZkoumanePole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu))) &&
-                    ((!druheZkoumanePole.JePrazdne()) && (druheZkoumanePole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu))) &&
-                    ((!tretiZkoumanePole.JePrazdne()) && (tretiZkoumanePole.VratMicANeodstranujHo().jeJehoBrava(jakouHledamBarvu)))
+                    ((!cell1.isEmpty()) && (cell1.getBallAndDoNotRemoteIt().hasColour(colour))) &&
+                    ((!cell2.isEmpty()) && (cell2.getBallAndDoNotRemoteIt().hasColour(colour))) &&
+                    ((!cell3.isEmpty()) && (cell3.getBallAndDoNotRemoteIt().hasColour(colour)))
                     )
                 {
-                    nalezenTvar = true;
-                    ZasobnikOdpalenychMicu.Push(aktualniPole);
-                    ZasobnikOdpalenychMicu.Push(prvniZkoumanePole);
-                    ZasobnikOdpalenychMicu.Push(druheZkoumanePole);
-                    ZasobnikOdpalenychMicu.Push(tretiZkoumanePole);
+                    shapeIsFound = true;
+                    explodedBalls.Push(currentCell);
+                    explodedBalls.Push(cell1);
+                    explodedBalls.Push(cell2);
+                    explodedBalls.Push(cell3);
                 }
-                else { ZasobnikOdpalenychMicu.Clear(); };
+                else { explodedBalls.Clear(); };
 
                 ;
             }

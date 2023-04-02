@@ -31,7 +31,7 @@ namespace Balls
             {
                 aktualniPole = ZasobnikOdpalenychMicuPredany.Pop();
                 Ball zkoumanyMic = aktualniPole.OdstranMicZPoleAVratHo();
-                if (zkoumanyMic.VratTyp().Contains("Zdvojnasobujici")) { jeZdvojnasobujici = true; } else { jeZdvojnasobujici = false; }
+                if (zkoumanyMic.getType().Contains("Zdvojnasobujici")) { jeZdvojnasobujici = true; } else { jeZdvojnasobujici = false; }
 
                 spravcePoli.VlozPrazdnePoleAbychONemVedel(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
 
