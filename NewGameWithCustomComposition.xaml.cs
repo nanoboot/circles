@@ -19,9 +19,9 @@ namespace Míče
     /// </summary>
     public partial class NovaHraSVlastnimNastavenimWindow : Window
     {
-        private SestavaHry sestavaVlastniHry;
+        private GameComposition sestavaVlastniHry;
         private String TvarSkupinyMicuKteraExploduje = "linka";
-        public NovaHraSVlastnimNastavenimWindow(SestavaHry sestavaHry)
+        public NovaHraSVlastnimNastavenimWindow(GameComposition sestavaHry)
         {
             InitializeComponent();
             this.sestavaVlastniHry = sestavaHry;
@@ -50,8 +50,8 @@ namespace Míče
             vojenskaZelenaCheckBox.IsChecked = false;
             pocetHazenychMicuBehemHryComboBox.SelectedIndex = 2;
             pocetHazenychMicuNaZacatkuHryComboBox.SelectedIndex = 4;
-            duhoveMiceCheckBox.IsChecked = false;
-            zdvojnasobujiciMiceCheckBox.IsChecked = false;
+            duhoveBallsCheckBox.IsChecked = false;
+            zdvojnasobujiciBallsCheckBox.IsChecked = false;
             linkaRadioButton.IsChecked = true;
             minimalniDelkaLinkyComboBox.SelectedIndex = 3;
         }
@@ -79,8 +79,8 @@ namespace Míče
             vojenskaZelenaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
             pocetHazenychMicuBehemHryComboBox.SelectedIndex = (generatorCisel.Next(1, 9));
             pocetHazenychMicuNaZacatkuHryComboBox.SelectedIndex = (generatorCisel.Next(1, 9));
-            duhoveMiceCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            zdvojnasobujiciMiceCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
+            duhoveBallsCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
+            zdvojnasobujiciBallsCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
             
             
                 switch (generatorCisel.Next(0, 3))
@@ -191,8 +191,8 @@ namespace Míče
             sestavaVlastniHry.NastavVojenskaZelena(Convert.ToBoolean(vojenskaZelenaCheckBox.IsChecked));
             sestavaVlastniHry.NastavPocetHazenychMicuNaZacatkuHry(Convert.ToInt32(pocetHazenychMicuNaZacatkuHryComboBox.Text));
             sestavaVlastniHry.NastavPocetHazenychMicuBehemHry(Convert.ToInt32(pocetHazenychMicuBehemHryComboBox.Text));
-            sestavaVlastniHry.NastavDuhoveMice(Convert.ToBoolean(duhoveMiceCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZdvojnasobujiciMice(Convert.ToBoolean(zdvojnasobujiciMiceCheckBox.IsChecked));
+            sestavaVlastniHry.NastavDuhoveBalls(Convert.ToBoolean(duhoveBallsCheckBox.IsChecked));
+            sestavaVlastniHry.NastavZdvojnasobujiciBalls(Convert.ToBoolean(zdvojnasobujiciBallsCheckBox.IsChecked));
             sestavaVlastniHry.NastavTvarSkupinyMicuKteraExploduje(this.TvarSkupinyMicuKteraExploduje);
             sestavaVlastniHry.NastavMinimalniDelkaLinky(Convert.ToInt32(minimalniDelkaLinkyComboBox.Text));
             sestavaVlastniHry.NastavZmeneno(true);

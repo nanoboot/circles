@@ -19,7 +19,7 @@ namespace Míče
     /// </summary>
     public partial class InformaceOAktualniHreWindow : Window
     {
-        public InformaceOAktualniHreWindow(SestavaHry sestavaHry)
+        public InformaceOAktualniHreWindow(GameComposition sestavaHry)
         {
             InitializeComponent();
             vyskaLabel.Content = sestavaHry.VratVyska().ToString();
@@ -42,15 +42,15 @@ namespace Míče
             vojenskaZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratVojenskaZelena());
             pocetHazenychMicuNaZacatkuHryLabel.Content = sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString();
             pocetHazenychMicuBehemHryLabel.Content = sestavaHry.VratPocetHazenychMicuBehemHry().ToString();
-            duhoveMiceLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratDuhoveMice());
-            zdvojnasobujiciMiceLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZdvojnasobujiciMice());
+            duhoveBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratDuhoveBalls());
+            zdvojnasobujiciBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZdvojnasobujiciBalls());
 
             if (sestavaHry.VratTvarSkupinyMicuKteraExploduje() == "linka")
             {
-                String tvarSlovaMice = "";
+                String tvarSlovaBalls = "";
                 if (sestavaHry.VratMinimalniDelkaLinky() <= 4)
-                { tvarSlovaMice = "míče"; }  else { tvarSlovaMice = "míčů"; };
-                tvarSkupinyMicuKteraExplodujeLabel.Content = String.Concat(sestavaHry.VratTvarSkupinyMicuKteraExploduje(), " s minimální délkou ", sestavaHry.VratMinimalniDelkaLinky(), " ",tvarSlovaMice);
+                { tvarSlovaBalls = "míče"; }  else { tvarSlovaBalls = "míčů"; };
+                tvarSkupinyMicuKteraExplodujeLabel.Content = String.Concat(sestavaHry.VratTvarSkupinyMicuKteraExploduje(), " s minimální délkou ", sestavaHry.VratMinimalniDelkaLinky(), " ",tvarSlovaBalls);
             }
             else
             {

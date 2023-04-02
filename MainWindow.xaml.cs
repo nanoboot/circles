@@ -23,9 +23,9 @@ namespace Míče
     public partial class MainWindow : Window
     {
         Grid[,] pole = new Grid[32, 32];//Vlastnost pole uchovaná ve dvojrozměrném poli pro identifikaci objektů typu Grid zastupující jedno pole hry. Díky tomu bude možné identifikovat pole, u kterého se budou chtít změnit jeho vlastnosti.
-        private Hra hra;// Instance jedné hry.
-        private SestavaHry sestavaHry = new SestavaHry();//Instance aktuální hrané hry
-        private SberacSouradnic sberacSouradnic;//Instance sběrače souřadnic, do kterého se uloží souřadnice pole, na které hráč kliknul, a to pro pozdější použití.
+        private Game hra;// Instance jedné hry.
+        private GameComposition sestavaHry = new GameComposition();//Instance aktuální hrané hry
+        private CellCoordination sberacSouradnic;//Instance sběrače souřadnic, do kterého se uloží souřadnice pole, na které hráč kliknul, a to pro pozdější použití.
         private double SirkaIVyskaElipsy;// Vlastnost, ve které bude uchováný dynamicky vypočítaný průměr míče dle počtu řádků a sloupců desky.
         private bool RezimCeleObrazovky = false;
         // Začíná definice štetců příslušných barev.
@@ -183,7 +183,7 @@ namespace Míče
         private void NovaHra()// Tato metoda se provede vždy, když začne nová hra.
         {
             ResetujProstredi();//Musí se vyčistit okno od všeho, co v okně zůstalo po nové hře
-            hra = new Hra(
+            hra = new Game(
         this.sestavaHry,
         sestavaHry.VratVyska(),
         sestavaHry.VratSirka(),
@@ -205,15 +205,15 @@ namespace Míče
         sestavaHry.VratVojenskaZelena(),
         sestavaHry.VratPocetHazenychMicuNaZacatkuHry(),
         sestavaHry.VratPocetHazenychMicuBehemHry(),
-        sestavaHry.VratDuhoveMice(),
-        sestavaHry.VratZdvojnasobujiciMice(),
+        sestavaHry.VratDuhoveBalls(),
+        sestavaHry.VratZdvojnasobujiciBalls(),
         sestavaHry.VratTvarSkupinyMicuKteraExploduje(),
         sestavaHry.VratMinimalniDelkaLinky()
 
                 );//Vytvoří hru a to podle toho, jaké vlastnosti má vlastnost okna sestavyHry.
             int sirkaDesky = 520;
-            double jakyBudePodilPrumeruMiceOprotiDelcePole = 0.75;
-            this.SirkaIVyskaElipsy = jakyBudePodilPrumeruMiceOprotiDelcePole * sirkaDesky / Math.Max(hra.VratVysku(), hra.VratSirku());// Zde se vypočte a uloží hodnota, která bude znamenat šířku a výšku míče, která se vypočte dynamicky podle výšky a šířky desky
+            double jakyBudePodilPrumeruBallsOprotiDelcePole = 0.75;
+            this.SirkaIVyskaElipsy = jakyBudePodilPrumeruBallsOprotiDelcePole * sirkaDesky / Math.Max(hra.VratVysku(), hra.VratSirku());// Zde se vypočte a uloží hodnota, která bude znamenat šířku a výšku míče, která se vypočte dynamicky podle výšky a šířky desky
 
             ProvestPrikazy();//To, co vypočítala logická vrstva, se nyní projeví ve vrstvě aplikační
         }
@@ -577,10 +577,10 @@ namespace Míče
 
             if (Efekt == "NAFOUKNOUT")//Pokud se míč objevil, nepřesouvá se, je potřeba jej nafouknout
             {
-                double podilPrumeruMicePredNafouknutimOprotiPrumeruPoNafouknuti = 2.5;
+                double podilPrumeruBallsPredNafouknutimOprotiPrumeruPoNafouknuti = 2.5;
                 double trvani = 0.25;
                 DoubleAnimation nafouknutiAnimace = new DoubleAnimation();
-                nafouknutiAnimace.From = (int)(SirkaIVyskaElipsy / podilPrumeruMicePredNafouknutimOprotiPrumeruPoNafouknuti);
+                nafouknutiAnimace.From = (int)(SirkaIVyskaElipsy / podilPrumeruBallsPredNafouknutimOprotiPrumeruPoNafouknuti);
                 nafouknutiAnimace.To = SirkaIVyskaElipsy;
                 nafouknutiAnimace.Duration = new Duration(TimeSpan.FromSeconds(trvani));
                 nafouknutiAnimace.AutoReverse = false;// Animace se nebude opakovat
@@ -593,9 +593,9 @@ namespace Míče
         {
             Ellipse SkakajiciMic = pole[Radek - 1, Sloupec - 1].Children.OfType<Ellipse>().FirstOrDefault();
             double trvaniAnimace = 300;
-            double minimalniPrumerMice = 0.8;
+            double minimalniPrumerBalls = 0.8;
             DoubleAnimation animaceVysky = new DoubleAnimation();
-            animaceVysky.From = SirkaIVyskaElipsy * minimalniPrumerMice;
+            animaceVysky.From = SirkaIVyskaElipsy * minimalniPrumerBalls;
             animaceVysky.To = SirkaIVyskaElipsy;
             animaceVysky.RepeatBehavior = RepeatBehavior.Forever;
             animaceVysky.Duration = new Duration(TimeSpan.FromMilliseconds(trvaniAnimace));
@@ -603,7 +603,7 @@ namespace Míče
 
             DoubleAnimation animaceSirky = new DoubleAnimation();
             animaceSirky.From = SirkaIVyskaElipsy;
-            animaceSirky.To = SirkaIVyskaElipsy * minimalniPrumerMice;
+            animaceSirky.To = SirkaIVyskaElipsy * minimalniPrumerBalls;
             animaceSirky.RepeatBehavior = RepeatBehavior.Forever;
             animaceSirky.Duration = new Duration(TimeSpan.FromMilliseconds(trvaniAnimace));
             animaceSirky.AutoReverse = true;
@@ -821,7 +821,7 @@ namespace Míče
         //Začínají události kliknutí na určitý sloupec nebo řádek, tyto události posílají souřadnice sběrači souřadnic. Když jsou sběrači souřadnic poslány všechny souřadnice, tak se následovně logické vrstvě pošle informace, že bylo aktivované určité pole
         private void SouradniceSloupceDoSberaceSouradnic(int CisloSloupce)
         {
-            sberacSouradnic = new SberacSouradnic();
+            sberacSouradnic = new CellCoordination();
             sberacSouradnic.VlozSouradniciSloupce(CisloSloupce);
         }
         private void KliknutoNaSloupec1(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(1); }

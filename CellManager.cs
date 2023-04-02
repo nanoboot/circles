@@ -9,36 +9,36 @@ using System.Windows;
 
 namespace Míče
 {
-    class SpravcePoli
+    class CellManager
     {
 
-        RegistrPrazdnychPoli registrPrazdnychPoli = new RegistrPrazdnychPoli();// Zde jsou registrovány všechna prázdná pole
-        Pole AktivniPoleOdkud = null;
-        Pole AktivniPoleKam = null;
-        Pole Pole1A1 = null;//pole, ktere odkazuje na Pole na souřadnici 1 a 1 sloupce a řádku
-        public SpravcePoli(int Vyska, int Sirka)
+        EmptyCellsRegistry registrPrazdnychPoli = new EmptyCellsRegistry();// Zde jsou registrovány všechna prázdná pole
+        Cell AktivniPoleOdkud = null;
+        Cell AktivniPoleKam = null;
+        Cell Pole1A1 = null;//pole, ktere odkazuje na Pole na souřadnici 1 a 1 sloupce a řádku
+        public CellManager(int Vyska, int Sirka)
         { SestavDesku(Vyska, Sirka); }
 
-        public void NastavAktivniPoleOdkud(Pole AktivniPoleOdkud)
+        public void NastavAktivniPoleOdkud(Cell AktivniPoleOdkud)
         {this.AktivniPoleOdkud=AktivniPoleOdkud;
             AktivniPoleOdkud.VratMicANeodstranujHo().Skakej();
         }
-        public void VlozPrazdnePoleAbychONemVedel(Pole novePrazdnePole)// Vloží dané pole do registru prázdných polí.
+        public void VlozPrazdnePoleAbychONemVedel(Cell novePrazdnePole)// Vloží dané pole do registru prázdných polí.
         { registrPrazdnychPoli.VlozPole(novePrazdnePole); }
-        public void VlozPlnePoleAbychONemVedel(Pole novePlnePole)//Odstraní dané pole z registru prázdných polí.
+        public void VlozPlnePoleAbychONemVedel(Cell novePlnePole)//Odstraní dané pole z registru prázdných polí.
         { registrPrazdnychPoli.OdstranPole(novePlnePole); }
-        public Pole VratAktivniPoleOdkud()
+        public Cell VratAktivniPoleOdkud()
         { return this.AktivniPoleOdkud; }
 
-        public void NastavAktivniPoleKam(Pole AktivniPoleKam)
+        public void NastavAktivniPoleKam(Cell AktivniPoleKam)
         { this.AktivniPoleKam = AktivniPoleKam; }
 
-        public Pole VratAktivniPoleKam()
+        public Cell VratAktivniPoleKam()
         { return this.AktivniPoleKam; }
 
-        public Pole VratPole(int Radek, int Sloupec)//vrátí pole, které se nachází na dané souřadnici řádku a sloupce
+        public Cell VratPole(int Radek, int Sloupec)//vrátí pole, které se nachází na dané souřadnici řádku a sloupce
         {
-            Pole aktualniPole = new Pole();
+            Cell aktualniPole = new Cell();
             aktualniPole=Pole1A1;
 
             while(aktualniPole.VratSloupec()!=Sloupec)
@@ -47,9 +47,9 @@ namespace Míče
             { aktualniPole = aktualniPole.VratPoleDole(); }// Přesune se do pole, které je v hledaném řádku.
             return aktualniPole;
         }
-        public Pole VratNahodnePrazdnePole()//vrátí náhodně pole, které je však prázdné, aby se vybralo pole, kam bude umístěn míč.
+        public Cell VratNahodnePrazdnePole()//vrátí náhodně pole, které je však prázdné, aby se vybralo pole, kam bude umístěn míč.
         {
-            int i = GeneratorNahodnychCisel.VratNahodneCislo(1, registrPrazdnychPoli.VratPocetUzlu());
+            int i = RandomNumberGenerator.VratNahodneCislo(1, registrPrazdnychPoli.VratPocetUzlu());
             return registrPrazdnychPoli.VratPole(i);
 
         }
@@ -57,17 +57,17 @@ namespace Míče
         { if (registrPrazdnychPoli.VratPocetUzlu()!=0) {return true; } else return false; }
         private void SestavDesku(int Vyska, int Sirka)// Sestaví dynamicky desku navzájem propojených polí.
         {
-            Pole poleStare = null;// Zde je pole, které bylo nové naposledy, než se stalo novým polem jiné pole.
-            Pole poleNove = null;// Zde je nově vytvářené pole. 
-            Pole polePrvniAktualnihoRadku = null;// Zde se ukládá první pole aktuálního řádku aby, až se dokončí aktuální řádek, se mohlo pokračovat s tvorbou řádku následujícího.
-            Pole poleNahore = null;// Od nového pole.
-            Pole poleVlevo = null;// Od nového pole.
+            Cell poleStare = null;// Zde je pole, které bylo nové naposledy, než se stalo novým polem jiné pole.
+            Cell poleNove = null;// Zde je nově vytvářené pole. 
+            Cell polePrvniAktualnihoRadku = null;// Zde se ukládá první pole aktuálního řádku aby, až se dokončí aktuální řádek, se mohlo pokračovat s tvorbou řádku následujícího.
+            Cell poleNahore = null;// Od nového pole.
+            Cell poleVlevo = null;// Od nového pole.
             for (int radek = 1; radek <= Vyska; radek++)// Proměnná radek obsahuje hodnotu řádku, jehož nějaké pole bude tvořeno.
             {
                 for (int sloupec = 1; sloupec <= Sirka; sloupec++)// Proměnná sloupec obsahuje hodnotu sloupce, jehož nějaké pole bude tvořeno.
                 {
                     poleStare = poleNove;// Nové pole už nebude nové ale staré.
-                    poleNove = new Pole(radek, sloupec);//Vytvoří se nové pole s daným řádkem a sloupcem.
+                    poleNove = new Cell(radek, sloupec);//Vytvoří se nové pole s daným řádkem a sloupcem.
                     registrPrazdnychPoli.VlozPole(poleNove);// Toto pole se vloží do registru prázdných polí, jelikož v něm ještě není žádný míč.
                     if (radek == 1) // Pokud je řádek 1.
                     {

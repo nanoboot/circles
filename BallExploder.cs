@@ -8,20 +8,20 @@ using System.Windows;
 
 namespace Míče
 {
-    class OdpalovacMicu
+    class BallExploder
     {
         private string TvarSkupinyMicuKteraExploduje;
         private int MinimalniDelkaLinky;
-        private Stack<Pole> ZasobnikOdpalenychMicu = new Stack<Pole>();
-        private Pole PoleKeKontrole = null;
+        private Stack<Cell> ZasobnikOdpalenychMicu = new Stack<Cell>();
+        private Cell PoleKeKontrole = null;
         String jakouHledamBarvu;
         bool nalezenTvar = false;
-        Pole aktualniPole;
-        public OdpalovacMicu(String TvarSkupinyMicuKteraExploduje,int MinimalniDelkaLinky)
+        Cell aktualniPole;
+        public BallExploder(String TvarSkupinyMicuKteraExploduje,int MinimalniDelkaLinky)
         { this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje;
             this.MinimalniDelkaLinky = MinimalniDelkaLinky;
         }
-        public Stack<Pole> ZkontrolujAPripadneOdpal(Pole PoleKeKontrole)
+        public Stack<Cell> ZkontrolujAPripadneOdpal(Cell PoleKeKontrole)
         {
             this.PoleKeKontrole = PoleKeKontrole;
             aktualniPole=PoleKeKontrole;
@@ -106,9 +106,9 @@ namespace Míče
         private void ZkontrolujPoziciCtverce(String Pozice)
         {
             aktualniPole = PoleKeKontrole;
-            Pole prvniZkoumanePole = null;
-            Pole druheZkoumanePole = null;
-            Pole tretiZkoumanePole = null;
+            Cell prvniZkoumanePole = null;
+            Cell druheZkoumanePole = null;
+            Cell tretiZkoumanePole = null;
             switch (Pozice)
             {
                 case "radek1sloupec1":
@@ -166,10 +166,10 @@ namespace Míče
         private void ZkontrolujPoziciKrouzku(String Pozice)
         {
             aktualniPole = PoleKeKontrole;
-            Pole prvniZkoumanePole = null;
-            Pole druheZkoumanePole = null;
-            Pole tretiZkoumanePole = null;
-            Pole poleVedleTretihoZkoumanehoPole = null;
+            Cell prvniZkoumanePole = null;
+            Cell druheZkoumanePole = null;
+            Cell tretiZkoumanePole = null;
+            Cell poleVedleTretihoZkoumanehoPole = null;
 
             switch (Pozice)
             {

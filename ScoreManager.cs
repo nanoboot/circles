@@ -7,30 +7,30 @@ using System.Windows;
 
 namespace Míče
 {
-    class SpravceVysledku
+    class ScoreManager
     {
         private int Vysledek = 0;
         private String HracovoJmeno = "";
-        private SpravceDatabaze spravceDatabaze;
-        private SestavaHry sestavaHry;
+        private DatabaseManager spravceDatabaze;
+        private GameComposition sestavaHry;
         private String sqlPrikazSelectSestavyHry = "";
         private String sqlPrikazInsertSestavyHry = "";
         private String sqlPrikazInsertVysledky = "";
         private int klicIDSestavyHry=0;
-        public SpravceVysledku(SpravceDatabaze spravceDatabaze, SestavaHry sestavaHry)
+        public ScoreManager(DatabaseManager spravceDatabaze, GameComposition sestavaHry)
         { this.spravceDatabaze = spravceDatabaze;
             this.sestavaHry = sestavaHry;
         }
-        public int SpoctiBody(Stack<Pole> ZasobnikOdpalenychMicuPredany, Hra hra, SpravcePoli spravcePoli, Stack<Pole> ZasobnikPoliKtereUzNemajiBytAktivni)// Spočte body podle toho, jaké míče a kolik je v zásobníku.
+        public int SpoctiBody(Stack<Cell> ZasobnikOdpalenychMicuPredany, Game hra, CellManager spravcePoli, Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni)// Spočte body podle toho, jaké míče a kolik je v zásobníku.
         {
-            Pole aktualniPole;
+            Cell aktualniPole;
             int pocetMicu = ZasobnikOdpalenychMicuPredany.Count;
             int pocetZdvojnasobujicichMicu = 0;
             bool jeZdvojnasobujici = false;
             while (ZasobnikOdpalenychMicuPredany.Count != 0)
             {
                 aktualniPole = ZasobnikOdpalenychMicuPredany.Pop();
-                Mic zkoumanyMic = aktualniPole.OdstranMicZPoleAVratHo();
+                Ball zkoumanyMic = aktualniPole.OdstranMicZPoleAVratHo();
                 if (zkoumanyMic.VratTyp().Contains("Zdvojnasobujici")) { jeZdvojnasobujici = true; } else { jeZdvojnasobujici = false; }
 
                 spravcePoli.VlozPrazdnePoleAbychONemVedel(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
@@ -68,7 +68,7 @@ namespace Míče
             return vypocteneBody;
         }
 
-        private void PrictiBodyKVysledku(int PocetBodu,Hra hra)// Přičte body k aktuálnímu výsledku.
+        private void PrictiBodyKVysledku(int PocetBodu,Game hra)// Přičte body k aktuálnímu výsledku.
         {
             this.Vysledek = this.Vysledek + PocetBodu;
             hra.VlozPrikaz(String.Concat("VYSLEDEK ", Vysledek));
@@ -126,8 +126,8 @@ namespace Míče
                 String.Concat("VojenskaZelena = ", Convert.ToInt32(sestavaHry.VratVojenskaZelena()).ToString(), " AND "),
                 String.Concat("PocetHazenychMicuNaZacatkuHry = ", sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString(), " AND "),
                 String.Concat("PocetHazenychMicuBehemHry = ", sestavaHry.VratPocetHazenychMicuBehemHry().ToString(), " AND "),
-                String.Concat("DuhoveMice = ", Convert.ToInt32(sestavaHry.VratDuhoveMice()).ToString(), " AND "),
-                String.Concat("ZdvojnasobujiciMice = ", Convert.ToInt32(sestavaHry.VratZdvojnasobujiciMice()).ToString(), " AND "),
+                String.Concat("DuhoveBalls = ", Convert.ToInt32(sestavaHry.VratDuhoveBalls()).ToString(), " AND "),
+                String.Concat("ZdvojnasobujiciBalls = ", Convert.ToInt32(sestavaHry.VratZdvojnasobujiciBalls()).ToString(), " AND "),
                 String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", sestavaHry.VratTvarSkupinyMicuKteraExploduje(), "'", " AND "),
                 String.Concat("MinimalniDelkaLinky = ", sestavaHry.VratMinimalniDelkaLinky().ToString())
         );
@@ -185,8 +185,8 @@ namespace Míče
                 String.Concat(Convert.ToInt32(sestavaHry.VratVojenskaZelena()).ToString(), " , "),
                 String.Concat(sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString(), " , "),
                 String.Concat(sestavaHry.VratPocetHazenychMicuBehemHry().ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratDuhoveMice()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZdvojnasobujiciMice()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.VratDuhoveBalls()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.VratZdvojnasobujiciBalls()).ToString(), " , "),
                 String.Concat("'", sestavaHry.VratTvarSkupinyMicuKteraExploduje(), "'", " , "),
                 String.Concat(sestavaHry.VratMinimalniDelkaLinky().ToString()),
                 ")");

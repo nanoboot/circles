@@ -8,16 +8,16 @@ using System.Windows;
 
 namespace Míče
 {
-    class SpravceMicu
+    class BallManager
     {
         List<String> PouziteTypyMicu = new List<String>();// Zde jsou registrovány všechny použité typy míčů, budou se generovat pouze míče, jejichž typy jsou v tomto registru.
         private String[] PolePouzitychBarev = new String [16];
         private int IndexPolePouzitychBarev = 0;
-        public Queue<Mic> DalsiMice = new Queue<Mic>();
-        public Mic DalsiMic1 = null;
-        public Mic DalsiMic2 = null;
-        public Mic DalsiMic3 = null;
-        public SpravceMicu(
+        public Queue<Ball> DalsiBalls = new Queue<Ball>();
+        public Ball DalsiMic1 = null;
+        public Ball DalsiMic2 = null;
+        public Ball DalsiMic3 = null;
+        public BallManager(
        bool SvetleZelena,
        bool Cervena,
        bool TmaveModra,
@@ -34,9 +34,9 @@ namespace Míče
        bool Cerna,
        bool Modra,
        bool VojenskaZelena,
-       bool DuhoveMice,
-       bool ZdvojnasobujiciMice,
-       Hra hra)
+       bool DuhoveBalls,
+       bool ZdvojnasobujiciBalls,
+       Game hra)
         {
             NaplnPolePouzitychBarev(
        SvetleZelena,
@@ -55,13 +55,13 @@ namespace Míče
        Cerna,
        Modra,
        VojenskaZelena); 
-            NaplnSeznamPouzitychTypuMicuDanymMicemPokudJsouSplnenyPodminky(DuhoveMice,ZdvojnasobujiciMice);
+            NaplnSeznamPouzitychTypuMicuDanymBallsmPokudJsouSplnenyPodminky(DuhoveBalls,ZdvojnasobujiciBalls);
             DalsiMic1 = VygenerujNovyMic();
             DalsiMic2 = VygenerujNovyMic();
             DalsiMic3 = VygenerujNovyMic();
-            DalsiMice.Enqueue(DalsiMic1);
-            DalsiMice.Enqueue(DalsiMic2);
-            DalsiMice.Enqueue(DalsiMic3);
+            DalsiBalls.Enqueue(DalsiMic1);
+            DalsiBalls.Enqueue(DalsiMic2);
+            DalsiBalls.Enqueue(DalsiMic3);
 
             
             String I = "";
@@ -162,14 +162,14 @@ namespace Míče
         }
         private void PridejDalsiBarvuDoPolePouzitychBarevPokudJsouSplnenyPodminky(bool Barva, String TextBarvy)
         { if (Barva) { PolePouzitychBarev[IndexPolePouzitychBarev] = TextBarvy; IndexPolePouzitychBarev++; } }
-        private bool NaplnSeznamPouzitychTypuMicuDanymMicemPokudJsouSplnenyPodminky(bool DuhoveMice, bool ZdvojnasobujiciMice)
+        private bool NaplnSeznamPouzitychTypuMicuDanymBallsmPokudJsouSplnenyPodminky(bool DuhoveBalls, bool ZdvojnasobujiciBalls)
         {
-            if (DuhoveMice) { VlozNKratDoSeznamuPouzitychTypuMicuDanyText(5, "Duhove"); }
+            if (DuhoveBalls) { VlozNKratDoSeznamuPouzitychTypuMicuDanyText(5, "Duhove"); }
             for (int i = 0; i <= IndexPolePouzitychBarev - 1; i++)
 
             {
                 VlozNKratDoSeznamuPouzitychTypuMicuDanyText(10, PolePouzitychBarev[i]);
-                if (ZdvojnasobujiciMice) { VlozNKratDoSeznamuPouzitychTypuMicuDanyText(1, String.Concat("Zdvojnasobujici", PolePouzitychBarev[i])); }
+                if (ZdvojnasobujiciBalls) { VlozNKratDoSeznamuPouzitychTypuMicuDanyText(1, String.Concat("Zdvojnasobujici", PolePouzitychBarev[i])); }
             }
             return true;
 
@@ -182,33 +182,33 @@ namespace Míče
             };
         }
 
-        public Mic VygenerujNovyMic()
+        public Ball VygenerujNovyMic()
         {
-            String PouzityTypMice = PouziteTypyMicu[GeneratorNahodnychCisel.VratNahodneCislo(0, PouziteTypyMicu.Count())];
-            Mic novyMic= NastavMicDleTypu(PouzityTypMice);
+            String PouzityTypBalls = PouziteTypyMicu[RandomNumberGenerator.VratNahodneCislo(0, PouziteTypyMicu.Count())];
+            Ball novyMic= NastavMicDleTypu(PouzityTypBalls);
 
              return novyMic;
         }
-        private Mic NastavMicDleTypu(String PouzityTypMice)
+        private Ball NastavMicDleTypu(String PouzityTypBalls)
         {
-            Mic novyMic;
-            if (PouzityTypMice.Contains("Duhove"))
+            Ball novyMic;
+            if (PouzityTypBalls.Contains("Duhove"))
             {
-                novyMic = new Mic(true);
+                novyMic = new Ball(true);
             } else
             {
-                if (PouzityTypMice.Contains("Zdvojnasobujici"))
+                if (PouzityTypBalls.Contains("Zdvojnasobujici"))
                 {
-                    String PouzityTypMiceBezZdvojnasobuji = PouzityTypMice.Substring(15);
-                    novyMic = new Mic(PouzityTypMiceBezZdvojnasobuji, true);
+                    String PouzityTypBallsBezZdvojnasobuji = PouzityTypBalls.Substring(15);
+                    novyMic = new Ball(PouzityTypBallsBezZdvojnasobuji, true);
                 }
                 else
                 {
-                    novyMic = new Mic(PouzityTypMice);
+                    novyMic = new Ball(PouzityTypBalls);
                 }
             }
             
-            novyMic.NastavTyp(PouzityTypMice);
+            novyMic.NastavTyp(PouzityTypBalls);
             return novyMic;
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Míče
 {
-    public class Mic
+    public class Ball
     {
         private bool Skaka;
         public String Barva { get;  }
@@ -27,19 +27,19 @@ namespace Míče
             { if (Barva == this.Barva) { return true; } else { return false; }; }
             else return true;
             }
-    public Mic(bool Duhovy)
+    public Ball(bool Duhovy)
         {
             this.Barva = "";
             this.Zdvojnasobujici = false;
             this.Duhovy = Duhovy;
         }
-        public Mic(String Barva)
+        public Ball(String Barva)
         {
             this.Barva = Barva;
             this.Zdvojnasobujici = false;
             this.Duhovy = false;
         }
-        public Mic(String Barva, bool Zdvojnasobujici)
+        public Ball(String Barva, bool Zdvojnasobujici)
         {
             this.Barva = Barva;
             this.Zdvojnasobujici = Zdvojnasobujici;

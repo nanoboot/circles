@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Míče
 {
-    public class Hra
+    public class Game
     {
         // zde začínají vlastnosti dané hry- její sestava
         private int Sirka;
@@ -32,20 +32,20 @@ namespace Míče
         private bool VojenskaZelena;
         private int PocetHazenychMicuNaZacatkuHry;
         private int PocetHazenychMicuBehemHry;
-        private bool DuhoveMice;
-        private bool ZdvojnasobujiciMice;
+        private bool DuhoveBalls;
+        private bool ZdvojnasobujiciBalls;
         private String TvarSkupinyMicuKteraExploduje;
         private int MinimalniDelkaLinky;
 
-        SestavaHry sestavaHry;
+        GameComposition sestavaHry;
         private Queue FrontaPrikazu = new Queue();// Vytvoří se fronta příkazů, do které logická vrstva bude ukládat formou zpráv veškeré změny, aplikační vrstva si bude brát informace z této fronty, aby věděla, co má ukazovat hráči.
-        private SpravcePoli spravcePoli;
-        private SpravceMicu spravceMicu;
-        private SpravceDatabaze spravceDatabaze;
-        private SpravceVysledku spravceVysledku;
-        private OdpalovacMicu odpalovacMicu;
-        private Stack<Pole> ZasobnikOdpalenychMicu = new Stack<Pole>();//Zde se dočasně ukládají pole.
-        private Stack<Pole> ZasobnikPoliKtereUzNemajiBytAktivni=new Stack<Pole>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
+        private CellManager spravcePoli;
+        private BallManager spravceMicu;
+        private DatabaseManager spravceDatabaze;
+        private ScoreManager spravceVysledku;
+        private BallExploder odpalovacMicu;
+        private Stack<Cell> ZasobnikOdpalenychMicu = new Stack<Cell>();//Zde se dočasně ukládají pole.
+        private Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni=new Stack<Cell>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
         private enum StavHry// Zde se ukládá stav hry.
         {
             Zacatek = 0,
@@ -56,8 +56,8 @@ namespace Míče
         private StavHry stavHry = StavHry.Zacatek;
 
 
-        public Hra(
-            SestavaHry sestavaHry,
+        public Game(
+            GameComposition sestavaHry,
             int Vyska,
             int Sirka,
             bool SvetleZelena,
@@ -78,8 +78,8 @@ namespace Míče
             bool VojenskaZelena,
             int PocetHazenychMicuNaZacatkuHry,
             int PocetHazenychMicuBehemHry,
-            bool DuhoveMice,
-            bool ZdvojnasobujiciMice,
+            bool DuhoveBalls,
+            bool ZdvojnasobujiciBalls,
             string TvarSkupinyMicuKteraExploduje,
             int MinimalniDelkaLinky)
         {
@@ -104,19 +104,19 @@ namespace Míče
             this.VojenskaZelena = VojenskaZelena;
             this.PocetHazenychMicuNaZacatkuHry = PocetHazenychMicuNaZacatkuHry;
             this.PocetHazenychMicuBehemHry = PocetHazenychMicuBehemHry;
-            this.DuhoveMice = DuhoveMice;
-            this.ZdvojnasobujiciMice = ZdvojnasobujiciMice;
+            this.DuhoveBalls = DuhoveBalls;
+            this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls;
             this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje;
             this.MinimalniDelkaLinky = MinimalniDelkaLinky;
-            odpalovacMicu = new OdpalovacMicu(TvarSkupinyMicuKteraExploduje, MinimalniDelkaLinky);
+            odpalovacMicu = new BallExploder(TvarSkupinyMicuKteraExploduje, MinimalniDelkaLinky);
             stavHry = StavHry.Zacatek;// V konstruktoru se zde nastaví stav hry na Zacatek.
-            this.spravceDatabaze = new SpravceDatabaze();//Při zapnutí programu Míče se vytvoří instance třídy SpravceDatabaze, s kterým budou komunikovat objekty, které budou mít za úkol ukládat trvale data nebo je číst
-            this.spravceVysledku = new SpravceVysledku(this.spravceDatabaze, this.sestavaHry);
-            spravcePoli = new SpravcePoli(this.Vyska, this.Sirka);//Sestaví desku polí podle počtu řádků a sloupců.
+            this.spravceDatabaze = new DatabaseManager();//Při zapnutí programu Míče se vytvoří instance třídy SpravceDatabaze, s kterým budou komunikovat objekty, které budou mít za úkol ukládat trvale data nebo je číst
+            this.spravceVysledku = new ScoreManager(this.spravceDatabaze, this.sestavaHry);
+            spravcePoli = new CellManager(this.Vyska, this.Sirka);//Sestaví desku polí podle počtu řádků a sloupců.
 
 
             // Následuje vytvoření instance správce míčů, který bude generovat pouze typy míčů, které si hráč před započetím hry vybral.
-            spravceMicu = new SpravceMicu(
+            spravceMicu = new BallManager(
             this.SvetleZelena,
             this.Cervena,
             this.TmaveModra,
@@ -133,8 +133,8 @@ namespace Míče
             this.Cerna,
             this.Modra,
             this.VojenskaZelena,
-            this.DuhoveMice = DuhoveMice,
-            this.ZdvojnasobujiciMice = ZdvojnasobujiciMice,
+            this.DuhoveBalls = DuhoveBalls,
+            this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls,
             this);
            
             VlozPrikaz("HRA NOVA");
@@ -161,8 +161,8 @@ namespace Míče
                 {
                     case 1:
                         {
-                            Mic novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiMice.Enqueue(novyMic);
+                            Ball novyMic = spravceMicu.VygenerujNovyMic();
+                            spravceMicu.DalsiBalls.Enqueue(novyMic);
                             String I = "";
 
                             switch (novyMic.VratBarvu())
@@ -182,8 +182,8 @@ namespace Míče
                         break;
                     case 2:
                         {
-                            Mic novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiMice.Enqueue(novyMic);
+                            Ball novyMic = spravceMicu.VygenerujNovyMic();
+                            spravceMicu.DalsiBalls.Enqueue(novyMic);
                             String I = "";
                             switch (novyMic.VratBarvu())
                             {
@@ -202,8 +202,8 @@ namespace Míče
                         break;
                     case 3:
                         {
-                            Mic novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiMice.Enqueue(novyMic);
+                            Ball novyMic = spravceMicu.VygenerujNovyMic();
+                            spravceMicu.DalsiBalls.Enqueue(novyMic);
                             String I = "";
                             switch (novyMic.VratBarvu())
                             {
@@ -246,12 +246,12 @@ namespace Míče
         { }
 
         
-        private Pole VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(bool LogickaHodnota)
+        private Cell VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(bool LogickaHodnota)
         {
-            Pole PoleKamUmistimMic = spravcePoli.VratNahodnePrazdnePole();
-            Mic MicKteryVlozimDoPole;
+            Cell PoleKamUmistimMic = spravcePoli.VratNahodnePrazdnePole();
+            Ball MicKteryVlozimDoPole;
             if (LogickaHodnota)
-            { MicKteryVlozimDoPole = spravceMicu.DalsiMice.Dequeue(); }
+            { MicKteryVlozimDoPole = spravceMicu.DalsiBalls.Dequeue(); }
             else
             { MicKteryVlozimDoPole = spravceMicu.VygenerujNovyMic(); };
             PoleKamUmistimMic.VlozMic(MicKteryVlozimDoPole);
@@ -282,11 +282,11 @@ namespace Míče
         }
         public void AktivujPole(int Radek, int Sloupec)// Zaktivuje pole, na které hráč kliknul.
         {
-            Pole poleKtereByloAktivovano = spravcePoli.VratPole(Radek, Sloupec);
+            Cell poleKtereByloAktivovano = spravcePoli.VratPole(Radek, Sloupec);
 
            while (ZasobnikPoliKtereUzNemajiBytAktivni.Count != 0)// U polí, která mají mít pozadí již normální, se pošle příslušný příkaz do fronty příkazů.
             {
-                Pole aktualniPole;
+                Cell aktualniPole;
                 aktualniPole = ZasobnikPoliKtereUzNemajiBytAktivni.Pop();
                 VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI NEZVYRAZNENE")));
             }
@@ -321,12 +321,12 @@ namespace Míče
                         {
                             
                             spravcePoli.NastavAktivniPoleKam(poleKtereByloAktivovano);// Nastaví se aktivní pole kam na nové.
-                            HledacCesty hledacCesty = new HledacCesty(spravcePoli.VratAktivniPoleOdkud(),spravcePoli.VratAktivniPoleKam(),this,this.ZasobnikPoliKtereUzNemajiBytAktivni);// Vytvoří se nový hledač cesty.
+                            PathFinder hledacCesty = new PathFinder(spravcePoli.VratAktivniPoleOdkud(),spravcePoli.VratAktivniPoleKam(),this,this.ZasobnikPoliKtereUzNemajiBytAktivni);// Vytvoří se nový hledač cesty.
                             if (hledacCesty.Hledej())// Pokud hledač cesty našel cestu.
                             { 
                                 spravcePoli.VratAktivniPoleOdkud().VratMicANeodstranujHo().Neskakej();// Cesta se našla, míč se bude přesouvat a proto se mu pošle příkaz, aby již neskákal.
                                 VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
-                                Mic micKterySePresouva=spravcePoli.VratAktivniPoleOdkud().OdstranMicZPoleAVratHo();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
+                                Ball micKterySePresouva=spravcePoli.VratAktivniPoleOdkud().OdstranMicZPoleAVratHo();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
                                 spravcePoli.VlozPrazdnePoleAbychONemVedel(spravcePoli.VratAktivniPoleOdkud());//Potom je nutné toto pole zařadit do registru prázdných polí.
                                 VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
                                 spravcePoli.VratAktivniPoleKam().VlozMic(micKterySePresouva);//Míč se přesune do svého nového pole.
@@ -334,9 +334,9 @@ namespace Míče
 
                                 VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleKam().VratRadek(), " ", spravcePoli.VratAktivniPoleKam().VratSloupec(), " NOVY ", micKterySePresouva.VratTyp().ToUpper()," NAFOUKNUT"));
                                 //Prezentační vrstvě zašleme další příkaz o změně.
-                                Stack<Pole> zasobnikPoliKamCestovalMic =hledacCesty.VratZasobnikPoliOdkudKam();
+                                Stack<Cell> zasobnikPoliKamCestovalMic =hledacCesty.VratZasobnikPoliOdkudKam();
 
-                                Pole aktualniPole;
+                                Cell aktualniPole;
                                 while (zasobnikPoliKamCestovalMic.Count!=0)
                                 {
                                     aktualniPole=zasobnikPoliKamCestovalMic.Pop();

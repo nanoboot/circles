@@ -20,7 +20,7 @@ namespace Míče
     public partial class PrehledVysledkuWindow : Window
     {
         System.Data.DataSet dset;
-        public PrehledVysledkuWindow(Hra hra, SestavaHry sestavaHry)
+        public PrehledVysledkuWindow(Game hra, GameComposition sestavaHry)
         {
             InitializeComponent();
             dset = hra.VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Míče
 {
-    class SberacSouradnic
+    class CellCoordination
     {
         int Sloupec=0;
         int Radek;

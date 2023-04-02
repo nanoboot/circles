@@ -83,8 +83,8 @@
             <Label x:Name="vojenskaZelenaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="17" Margin="0,0,5,0" />
             <Label x:Name="pocetHazenychMicuNaZacatkuHryLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="18" Margin="0,0,5,0" />
             <Label x:Name="pocetHazenychMicuBehemHryLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="19" Margin="0,0,5,0" />
-            <Label x:Name="duhoveMiceLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="20" Margin="0,0,5,0" />
-            <Label x:Name="zdvojnasobujiciMiceLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="21" Margin="0,0,5,0" />
+            <Label x:Name="duhoveBallsLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="20" Margin="0,0,5,0" />
+            <Label x:Name="zdvojnasobujiciBallsLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="21" Margin="0,0,5,0" />
             <Label x:Name="tvarSkupinyMicuKteraExplodujeLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="22" Margin="0,0,5,0" />
         </Grid>
     </Grid>

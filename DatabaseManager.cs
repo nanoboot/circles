@@ -11,12 +11,12 @@ using System.Windows;
 
 namespace Míče
 {
-    public class SpravceDatabaze
+    public class DatabaseManager
     {
         private SQLiteConnection SqlPripojeni;
         private SQLiteCommand SqlPrikaz;
 
-        public SpravceDatabaze()
+        public DatabaseManager()
         {
             PocatecniKontrola();
          }
@@ -36,7 +36,7 @@ namespace Míče
         private void SestavDatabazi()
         { 
             SpustPrikaz("CREATE TABLE Vysledky ( ID INT, Hrac TEXT, Vysledek INT, SestavaHry INT, DatumACas TEXT)");
-            SpustPrikaz("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, SvetleZelena INT, Cervena INT, TmaveModra INT, Zluta INT, SvetleModra INT, Fialova INT, Hneda INT, Ruzova INT, Zelena INT, Zlata INT, Oranzova INT, Bila INT, Sediva INT, Cerna INT, Modra INT, VojenskaZelena INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, DuhoveMice INT, ZdvojnasobujiciMice INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
+            SpustPrikaz("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, SvetleZelena INT, Cervena INT, TmaveModra INT, Zluta INT, SvetleModra INT, Fialova INT, Hneda INT, Ruzova INT, Zelena INT, Zlata INT, Oranzova INT, Bila INT, Sediva INT, Cerna INT, Modra INT, VojenskaZelena INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, DuhoveBalls INT, ZdvojnasobujiciBalls INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
             SpustPrikaz("INSERT INTO SestavyHry VALUES (1, 9, 9, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 'linka',5)");
         }
         private void NastavPripojeni()

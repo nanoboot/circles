@@ -152,10 +152,10 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="specialniMiceTabItem" Header="Speciální míče" Margin="0,0,-4,-2">
+            <TabItem x:Name="specialniBallsTabItem" Header="Speciální míče" Margin="0,0,-4,-2">
                 <Grid Background="#FFE5E5E5" Margin="-2,0,0,-2">
-                    <CheckBox x:Name="duhoveMiceCheckBox" Content="Házet také duhové míče- speciální druh míče" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,16,0,0"/>
-                    <CheckBox x:Name="zdvojnasobujiciMiceCheckBox" Content="Házet také násobící míče- speciální druh míče" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,36,0,0"/>
+                    <CheckBox x:Name="duhoveBallsCheckBox" Content="Házet také duhové míče- speciální druh míče" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,16,0,0"/>
+                    <CheckBox x:Name="zdvojnasobujiciBallsCheckBox" Content="Házet také násobící míče- speciální druh míče" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,36,0,0"/>
                     <Label x:Name="label31_Copy25" Content="[  ]" Margin="10,30,0,0" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" Width="28"/>
                     <Label x:Name="label31_Copy26" Content="[  ]" Margin="10,10,0,0" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" Width="28"/>
 

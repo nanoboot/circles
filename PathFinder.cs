@@ -8,23 +8,23 @@ using System.Windows;
 
 namespace Míče
 {
-    public class HledacCesty
+    public class PathFinder
     {
-        Pole AktivniPoleOdkud;
-        Pole AktivniPoleKam;
-        private Queue<UzelHledaceCesty> FrontaPredTransformaci = new Queue<UzelHledaceCesty>();// Vytvoří se fronta do které se vkládají uzle před transformací. Dále pouze jako horní fronta.
-        private Queue<UzelHledaceCesty> FrontaPoTransformaci = new Queue<UzelHledaceCesty>();// Vytvoří se fronta do které se vkládají uzle po transformaci. Dále pouze jako dolní fronta.
-        List<Pole> NavstivenaPole = new List<Pole>();
-        private Stack<Pole> ZasobnikPoliOdkudKam = new Stack<Pole>();
-        private UzelHledaceCesty AktualniUzelHledaceCesty;
-        private UzelHledaceCesty PokudCestaExistujeJejiPosledniUzelJeZdeUzelHledaceCesty=null;
-        Hra hra = null;
-        private Stack<Pole> ZasobnikPoliKtereUzNemajiBytAktivni = new Stack<Pole>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
-        Pole ZkoumanePole= null;
+        Cell AktivniPoleOdkud;
+        Cell AktivniPoleKam;
+        private Queue<NodeForPathFinder> FrontaPredTransformaci = new Queue<NodeForPathFinder>();// Vytvoří se fronta do které se vkládají uzle před transformací. Dále pouze jako horní fronta.
+        private Queue<NodeForPathFinder> FrontaPoTransformaci = new Queue<NodeForPathFinder>();// Vytvoří se fronta do které se vkládají uzle po transformaci. Dále pouze jako dolní fronta.
+        List<Cell> NavstivenaPole = new List<Cell>();
+        private Stack<Cell> ZasobnikPoliOdkudKam = new Stack<Cell>();
+        private NodeForPathFinder AktualniUzelHledaceCesty;
+        private NodeForPathFinder PokudCestaExistujeJejiPosledniUzelJeZdeUzelHledaceCesty=null;
+        Game hra = null;
+        private Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni = new Stack<Cell>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
+        Cell ZkoumanePole= null;
 
         bool NaslaSeJizCesta = false;
 
-        public HledacCesty(Pole AktivniPoleOdkud, Pole AktivniPoleKam, Hra hra, Stack<Pole> ZasobnikPoliKtereUzNemajiBytAktivni)
+        public PathFinder(Cell AktivniPoleOdkud, Cell AktivniPoleKam, Game hra, Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni)
         {
             this.hra = hra;
             this.ZasobnikPoliKtereUzNemajiBytAktivni = ZasobnikPoliKtereUzNemajiBytAktivni;
@@ -34,12 +34,12 @@ namespace Míče
             ZasobnikPoliOdkudKam.Push(AktivniPoleKam);
         }
         
-        public Stack<Pole> VratZasobnikPoliOdkudKam()
+        public Stack<Cell> VratZasobnikPoliOdkudKam()
         {return this.ZasobnikPoliOdkudKam; }
         public bool Hledej()
         {
             NaslaSeJizCesta = false;
-            AktualniUzelHledaceCesty = new UzelHledaceCesty(null, AktivniPoleOdkud);// Vytvořil jsem úplně první uzel hledače cesty, který má v sobě odkaz na pole, z kterého chceme přesouvat míč.
+            AktualniUzelHledaceCesty = new NodeForPathFinder(null, AktivniPoleOdkud);// Vytvořil jsem úplně první uzel hledače cesty, který má v sobě odkaz na pole, z kterého chceme přesouvat míč.
             FrontaPredTransformaci.Enqueue(AktualniUzelHledaceCesty);//První uzel jsem vložil do fronty FrontaPredTransformaci
             while(!((FrontaPredTransformaci.Count == 0) && (FrontaPoTransformaci.Count == 0)))// Dokud fronty nejsou prázdné, je co transformovat.
             {

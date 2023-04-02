@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Míče
 {
-    public class SestavaHry
+    public class GameComposition
     {
         private int Sirka;
         private int Vyska;
@@ -28,12 +28,12 @@ namespace Míče
         private bool VojenskaZelena;
         private int PocetHazenychMicuNaZacatkuHry;
         private int PocetHazenychMicuBehemHry;
-        private bool DuhoveMice;
-        private bool ZdvojnasobujiciMice;
+        private bool DuhoveBalls;
+        private bool ZdvojnasobujiciBalls;
         private string TvarSkupinyMicuKteraExploduje;
         private int MinimalniDelkaLinky;
         private bool Zmeneno;
-        public SestavaHry()
+        public GameComposition()
         {
             NastavVychoziHodnoty();
             this.Zmeneno = false;
@@ -82,10 +82,10 @@ namespace Míče
         { this.PocetHazenychMicuBehemHry = PocetHazenychMicuBehemHry; }
         public void NastavPocetHazenychMicuNaZacatkuHry(int PocetHazenychMicuNaZacatkuHry)
         { this.PocetHazenychMicuNaZacatkuHry = PocetHazenychMicuNaZacatkuHry; }
-        public void NastavDuhoveMice(bool DuhoveMice)
-        { this.DuhoveMice = DuhoveMice; }
-        public void NastavZdvojnasobujiciMice(bool ZdvojnasobujiciMice)
-        { this.ZdvojnasobujiciMice = ZdvojnasobujiciMice; }
+        public void NastavDuhoveBalls(bool DuhoveBalls)
+        { this.DuhoveBalls = DuhoveBalls; }
+        public void NastavZdvojnasobujiciBalls(bool ZdvojnasobujiciBalls)
+        { this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls; }
         public void NastavTvarSkupinyMicuKteraExploduje(String TvarSkupinyMicuKteraExploduje)
         { this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje; }
         public void NastavMinimalniDelkaLinky(int MinimalniDelkaLinky)
@@ -112,8 +112,8 @@ namespace Míče
         public bool VratVojenskaZelena() { return this.VojenskaZelena; }
         public int VratPocetHazenychMicuNaZacatkuHry() { return this.PocetHazenychMicuNaZacatkuHry; }
         public int VratPocetHazenychMicuBehemHry() { return this.PocetHazenychMicuBehemHry; }
-        public bool VratDuhoveMice() { return this.DuhoveMice; }
-        public bool VratZdvojnasobujiciMice() { return this.ZdvojnasobujiciMice; }
+        public bool VratDuhoveBalls() { return this.DuhoveBalls; }
+        public bool VratZdvojnasobujiciBalls() { return this.ZdvojnasobujiciBalls; }
         public string VratTvarSkupinyMicuKteraExploduje() { return this.TvarSkupinyMicuKteraExploduje; }
         public int VratMinimalniDelkaLinky() { return this.MinimalniDelkaLinky; }
         public void NastavVychoziHodnoty()// Tato metoda přepíše všechny hodnoty ve formuláři na jejich výchozí hodnoty.
@@ -139,8 +139,8 @@ namespace Míče
             this.NastavVojenskaZelena(false);
             this.NastavPocetHazenychMicuNaZacatkuHry(5);
             this.NastavPocetHazenychMicuBehemHry(3);
-            this.NastavDuhoveMice(false);
-            this.NastavZdvojnasobujiciMice(false);
+            this.NastavDuhoveBalls(false);
+            this.NastavZdvojnasobujiciBalls(false);
             this.NastavTvarSkupinyMicuKteraExploduje("linka");
             this.NastavMinimalniDelkaLinky(5);
             

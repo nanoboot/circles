@@ -19,9 +19,9 @@ namespace Míče
     /// </summary>
     public partial class ZadejteVaseJmenoWindow : Window
     {
-        Hra hra;
+        Game hra;
         bool MuzuZavrit = false;
-        public ZadejteVaseJmenoWindow(Hra hra)
+        public ZadejteVaseJmenoWindow(Game hra)
         {
             InitializeComponent();
             hracovoJmenoTextBox.Focus();

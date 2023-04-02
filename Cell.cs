@@ -6,81 +6,81 @@ using System.Threading.Tasks;
 
 namespace Míče
 {
-    public class Pole
+    public class Cell
     {
         
         private int Radek;
         private int Sloupec;
-        private Mic mic =null;
+        private Ball mic =null;
 
-        public Pole PoleNahore;
-        public Pole PoleVpravo;
-        public Pole PoleDole;
-        public Pole PoleVlevo;
-        public void VlozMic(Mic NovyMic)
+        public Cell PoleNahore;
+        public Cell PoleVpravo;
+        public Cell PoleDole;
+        public Cell PoleVlevo;
+        public void VlozMic(Ball NovyMic)
         { if (this.JePrazdne()==true)this.mic = NovyMic; }
-        public Mic VratMicANeodstranujHo()
+        public Ball VratMicANeodstranujHo()
         { if (this.JePrazdne() != true) return this.mic;
-            else return new Mic("aa");// Zde udělat výjimku.
+            else return new Ball("aa");// Zde udělat výjimku.
         }
         
-        public Mic OdstranMicZPoleAVratHo()
-        { if (this.JePrazdne() == false) { Mic docasnyMic = this.mic;
+        public Ball OdstranMicZPoleAVratHo()
+        { if (this.JePrazdne() == false) { Ball docasnyMic = this.mic;
                 this.mic= null;return docasnyMic; }
-            else {return new Mic("aa"); };// Pokud pole je prázdné, hoď novou výjimku.
+            else {return new Ball("aa"); };// Pokud pole je prázdné, hoď novou výjimku.
         }
         public bool JePrazdne()
         { if(this.mic==null) { return true; } else { return false; } }
-        public void NastavPoleNahore(Pole PridavanePole)
+        public void NastavPoleNahore(Cell PridavanePole)
         {
             this.PoleNahore = PridavanePole;
         }
-        public void NastavPoleVpravo(Pole PridavanePole)
+        public void NastavPoleVpravo(Cell PridavanePole)
         {
             this.PoleVpravo = PridavanePole;
         }
-        public void NastavPoleDole(Pole PridavanePole)
+        public void NastavPoleDole(Cell PridavanePole)
         {
             this.PoleDole = PridavanePole;
         }
-        public void NastavPoleVlevo(Pole PridavanePole)
+        public void NastavPoleVlevo(Cell PridavanePole)
         {
             this.PoleVlevo = PridavanePole;
         }
-        public Pole VratPoleNahore()
+        public Cell VratPoleNahore()
         {
             return this.PoleNahore;
         }
-        public Pole VratPoleVpravo()
+        public Cell VratPoleVpravo()
         {
             return this.PoleVpravo;
         }
-        public Pole VratPoleDole()
+        public Cell VratPoleDole()
         {
             return this.PoleDole;
         }
-        public Pole VratPoleVlevo()
+        public Cell VratPoleVlevo()
         {
             return this.PoleVlevo;
         }
-        public Pole VratPoleSikmoVlevoNahore()
+        public Cell VratPoleSikmoVlevoNahore()
         {
             if ((this.VratRadek() == 1) || (this.VratSloupec() == 1)) { return null; } else //Pole vlevo nahoře šikmo od tohoto pole neexistuje.
             { return this.VratPoleVlevo().VratPoleNahore(); };
         }
-        public Pole VratPoleSikmoVpravoNahore()
+        public Cell VratPoleSikmoVpravoNahore()
         {
             if ((this.VratRadek() == 1) || (this.VratPoleVpravo() == null)) { return null; }
             else 
             { return this.VratPoleVpravo().VratPoleNahore(); };
         }
-        public Pole VratPoleSikmoVlevoDole()
+        public Cell VratPoleSikmoVlevoDole()
         {
             if ((this.VratPoleDole() == null) || (this.VratSloupec() == 1)) { return null; }
             else
             { return this.VratPoleVlevo().VratPoleDole(); };
         }
-        public Pole VratPoleSikmoVpravoDole()
+        public Cell VratPoleSikmoVpravoDole()
         {
             if ((this.VratPoleVpravo() == null) || (this.VratPoleDole() == null)) { return null; }
             else
@@ -90,7 +90,7 @@ namespace Míče
         { return this.Sloupec; }
         public int VratRadek()
         { return this.Radek; }
-        public Pole(int Radek, int Sloupec)
+        public Cell(int Radek, int Sloupec)
         {
             this.Radek= Radek;
             this.Sloupec= Sloupec;
@@ -99,7 +99,7 @@ namespace Míče
             this.PoleDole = null;
             this.PoleVlevo = null;
         }
-        public Pole()
+        public Cell()
         {
             this.PoleNahore = null;
             this.PoleVpravo = null;
