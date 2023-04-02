@@ -1,120 +1,115 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
-namespace Míče
+namespace Circles
 {
     public class PathFinder
     {
-        Cell AktivniPoleOdkud;
-        Cell AktivniPoleKam;
-        private Queue<NodeForPathFinder> FrontaPredTransformaci = new Queue<NodeForPathFinder>();// Vytvoří se fronta do které se vkládají uzle před transformací. Dále pouze jako horní fronta.
-        private Queue<NodeForPathFinder> FrontaPoTransformaci = new Queue<NodeForPathFinder>();// Vytvoří se fronta do které se vkládají uzle po transformaci. Dále pouze jako dolní fronta.
-        List<Cell> NavstivenaPole = new List<Cell>();
-        private Stack<Cell> ZasobnikPoliOdkudKam = new Stack<Cell>();
-        private NodeForPathFinder AktualniUzelHledaceCesty;
-        private NodeForPathFinder PokudCestaExistujeJejiPosledniUzelJeZdeUzelHledaceCesty=null;
-        Game hra = null;
-        private Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni = new Stack<Cell>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
-        Cell ZkoumanePole= null;
+        Cell activeCellFrom;
+        Cell activeCellTo;
+        private Queue<NodeForPathFinder> queueBeforeTransformation = new Queue<NodeForPathFinder>();// A queue is created into which nodes are inserted before transformation. Further only as an upper front.
+        private Queue<NodeForPathFinder> queueAfterTransformation = new Queue<NodeForPathFinder>();// A queue is created into which nodes are inserted after the transformation. Further only as a lower front.
+        List<Cell> visitedCells = new List<Cell>();
+        private Stack<Cell> cellsFromTo = new Stack<Cell>();
+        private NodeForPathFinder currentNodeOfPathFinder;
+        private NodeForPathFinder ifPathExistsItsLastNodeIsHereNodeOfPathFincer=null;
+        Game game = null;
+        private Stack<Cell> cellsWhichShouldNotBeActiveAnymore = new Stack<Cell>();// Fields are temporarily stored here, which will have their background set to normal in the next step.
+        Cell checkedCell= null;
 
-        bool NaslaSeJizCesta = false;
+        bool wasPathAlreadyFound = false;
 
-        public PathFinder(Cell AktivniPoleOdkud, Cell AktivniPoleKam, Game hra, Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni)
+        public PathFinder(Cell activeCellFromArg, Cell activeCellToArg, Game game, Stack<Cell> cellsWhichShouldNotBeActiveAnymoreArg)
         {
-            this.hra = hra;
-            this.ZasobnikPoliKtereUzNemajiBytAktivni = ZasobnikPoliKtereUzNemajiBytAktivni;
-            this.AktivniPoleOdkud = AktivniPoleOdkud;
-            this.AktivniPoleKam = AktivniPoleKam;
-            ZasobnikPoliOdkudKam.Push(AktivniPoleOdkud);
-            ZasobnikPoliOdkudKam.Push(AktivniPoleKam);
+            this.game = game;
+            this.cellsWhichShouldNotBeActiveAnymore = cellsWhichShouldNotBeActiveAnymoreArg;
+            this.activeCellFrom = activeCellFromArg;
+            this.activeCellTo = activeCellToArg;
+            cellsFromTo.Push(activeCellFromArg);
+            cellsFromTo.Push(activeCellToArg);
         }
         
-        public Stack<Cell> VratZasobnikPoliOdkudKam()
-        {return this.ZasobnikPoliOdkudKam; }
-        public bool Hledej()
+        public Stack<Cell> getCellsFromTo()
+        {return this.cellsFromTo; }
+        public bool search()
         {
-            NaslaSeJizCesta = false;
-            AktualniUzelHledaceCesty = new NodeForPathFinder(null, AktivniPoleOdkud);// Vytvořil jsem úplně první uzel hledače cesty, který má v sobě odkaz na pole, z kterého chceme přesouvat míč.
-            FrontaPredTransformaci.Enqueue(AktualniUzelHledaceCesty);//První uzel jsem vložil do fronty FrontaPredTransformaci
-            while(!((FrontaPredTransformaci.Count == 0) && (FrontaPoTransformaci.Count == 0)))// Dokud fronty nejsou prázdné, je co transformovat.
+            wasPathAlreadyFound = false;
+            currentNodeOfPathFinder = new NodeForPathFinder(null, activeCellFrom);// I've created the very first pathfinder node that has a reference to the field we want to move the ball from.
+            queueBeforeTransformation.Enqueue(currentNodeOfPathFinder);// I put the first node in the Queue Before Transformation queue
+            while (!((queueBeforeTransformation.Count == 0) && (queueAfterTransformation.Count == 0)))// As long as the queues are not empty, there is something to transform.
             {
-                // Vezme postupně všechny uzle z fronty FrontaPredTransformaci
-                if (FrontaPredTransformaci.Count == 0)//Pokud horní fronta je prázdná.
-                    PresunUzleZDolníFrontyDoHorniFronty();// Vše z dolní fronty se přesune do horní fronty.
-                NaslaSeJizCesta = VezmiZHorniFrontyJedenUzelAZkoumejHo();
-                if (NaslaSeJizCesta) { return true; };
+                // Takes all the nodes from the queueBeforeTransformation queue in turn
+                if (queueBeforeTransformation.Count == 0)// If the top queue is empty.
+                    moveNodesFromBottomToUpperQueue();// Everything from the lower queue is moved to the upper queue.
+                wasPathAlreadyFound = takeOneNodeFromUpperQueueAndCheckIt();
+                if (wasPathAlreadyFound) { return true; };
                 ;
             };
             
-            return false; //To, že fronta došla až sem, znamená, že jsme nenašli cestu, proto vrátí false.
+            return false; //The fact that the queue has reached this far means we didn't find the path, so it will return false.
         }
-        private void PresunUzleZDolníFrontyDoHorniFronty()
+        private void moveNodesFromBottomToUpperQueue()
         {
-            while (FrontaPoTransformaci.Count != 0)//Dokud dolní fronta není prázdná,
-                FrontaPredTransformaci.Enqueue(FrontaPoTransformaci.Dequeue());// přesunuj uzle z dolní fronty do horní fronty.
+            while (queueAfterTransformation.Count != 0)// As long as the bottom queue is not empty,
+                queueBeforeTransformation.Enqueue(queueAfterTransformation.Dequeue());// move nodes from the lower queue to the upper queue.
         }
-        private bool VezmiZHorniFrontyJedenUzelAZkoumejHo()
+        private bool takeOneNodeFromUpperQueueAndCheckIt()
         {
-            AktualniUzelHledaceCesty = FrontaPredTransformaci.Dequeue();//Vezme jeden uzel z horní fronty
-                                                                        // Z horní fronty jsem vzal jeden uzel a nyní budu zkoumat, všechny možné cesty z tohoto uzlu.
-            bool LogickaHodnota = false;
-            String[] smerPole = { "nahore", "vpravo", "dole", "vlevo" };
-            foreach (String smer in smerPole)
+            currentNodeOfPathFinder = queueBeforeTransformation.Dequeue();// Takes one node from the top queue
+                                                                          // I took one node from the top queue and now I will explore all possible paths from this node.
+            bool logicValue = false;
+            String[] cellDirection = { "nahore", "vpravo", "dole", "vlevo" };
+            foreach (String direction in cellDirection)
             {
-                LogickaHodnota = ZkoumejZdaUzelZHorniFrontyJeUzelPoleKamChcemePresunoutMic(smer); if (LogickaHodnota) { return true; }
+                logicValue = checkIfNodeFromUpperQueueIsThatOneWhereWeWantTheBallMoveTo(direction); if (logicValue) { return true; }
                 else
                 {
-                    PokudPoleVDanemSmeruOdAktualnihoPoleSplnujePodminkyPresunHoDoDolniFrontyADoGenerickehoSeznamuNavstivenychPoli(smer);
+                    ifTheFieldInTheGivenDirectionFromTheCurrentFieldMeetsTheConditionsMoveItToTheLowerQueueAndToTheGenericListOfVisitedFields(direction);
                 }
             }
 
             return false;
         }
-        private bool ZkoumejZdaUzelZHorniFrontyJeUzelPoleKamChcemePresunoutMic(String Smer)
+        private bool checkIfNodeFromUpperQueueIsThatOneWhereWeWantTheBallMoveTo(String Smer)
         {
             switch (Smer)
             {
                 case "nahore":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleNahore(); break;
+                    checkedCell = currentNodeOfPathFinder.getCell().getTopCell(); break;
                 case "vpravo":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleVpravo(); break;
+                    checkedCell = currentNodeOfPathFinder.getCell().getRightCell(); break;
                 case "dole":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleDole(); break;
+                    checkedCell = currentNodeOfPathFinder.getCell().getBottomCell(); break;
                 case "vlevo":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().VratPoleVlevo(); break;
+                    checkedCell = currentNodeOfPathFinder.getCell().getLeftCell(); break;
 
             }
-            if (ZkoumanePole == AktivniPoleKam)
+            if (checkedCell == activeCellTo)
             {
-                this.PokudCestaExistujeJejiPosledniUzelJeZdeUzelHledaceCesty = AktualniUzelHledaceCesty.VytvorDite(ZkoumanePole);
+                this.ifPathExistsItsLastNodeIsHereNodeOfPathFincer = currentNodeOfPathFinder.createChild(checkedCell);
 
                 {
-                    while (AktualniUzelHledaceCesty.VratRodice() != null)
+                    while (currentNodeOfPathFinder.getParent() != null)
                     {
-                        ZasobnikPoliOdkudKam.Push(AktualniUzelHledaceCesty.VratPoleUzlu());
-                        AktualniUzelHledaceCesty = AktualniUzelHledaceCesty.VratRodice();
+                        cellsFromTo.Push(currentNodeOfPathFinder.getCell());
+                        currentNodeOfPathFinder = currentNodeOfPathFinder.getParent();
                     }
                 }
 
                 return true;
-            };// Pokud pole nahoře od pole aktuálního uzlu je pole, kam chceme přesunout míč, nalezli jsme cestu a tato metoda vrací true a končí, jinak se pokračuje. 
+            };// If the field above the field of the current node is the field we want to move the ball to, we found the path and this method returns true and ends, otherwise it continues.
             return false;
         }
-        private bool PokudPoleVDanemSmeruOdAktualnihoPoleSplnujePodminkyPresunHoDoDolniFrontyADoGenerickehoSeznamuNavstivenychPoli(String Smer)
+        private bool ifTheFieldInTheGivenDirectionFromTheCurrentFieldMeetsTheConditionsMoveItToTheLowerQueueAndToTheGenericListOfVisitedFields(String direction)
         {
-            if ((ZkoumanePole != null) && (ZkoumanePole.JePrazdne()) && (!(NavstivenaPole.Contains(ZkoumanePole))))// Pokud pole nahoře je prázdné, nebylo již navštívené a existuje, tak potom se vytvoří nový uzel s tímto polem v dolní frontě a toto pole se přidá do seznamu již navštívených polí.
+            if ((checkedCell != null) && (checkedCell.isEmpty()) && (!(visitedCells.Contains(checkedCell))))// If the field at the top is empty, has not already been visited, and exists, then a new node is created with this field in the bottom queue and this field is added to the list of already visited fields.
             {
-                FrontaPoTransformaci.Enqueue(AktualniUzelHledaceCesty.VytvorDite(ZkoumanePole));
-                NavstivenaPole.Add(ZkoumanePole);
+                queueAfterTransformation.Enqueue(currentNodeOfPathFinder.createChild(checkedCell));
+                visitedCells.Add(checkedCell);
 
-                //ZasobnikPoliKtereUzNemajiBytAktivni.Push(ZkoumanePole);
-                //hra.VlozPrikaz((String.Concat("POLE ", ZkoumanePole.VratRadek(), " ", ZkoumanePole.VratSloupec(), " POZADI CERVENE")));
-            return true;
+                //cellsWhichShouldNotBeActiveAnymore.Push(checkedCell);
+                //game.insertCommand((String.Concat("POLE ", checkedCell.getRow(), " ", checkedCell.getColumn(), " POZADI CERVENE")));
+                return true;
             }
             else
             {

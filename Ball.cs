@@ -1,56 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Míče
+namespace Circles
 {
     public class Ball
     {
-        private bool Skaka;
-        public String Barva { get;  }
-        public String Typ;
-        bool Duhovy;
-        bool Zdvojnasobujici;
-        public void Skakej()
-        { this.Skaka = true; }
-        public void Neskakej()
-        { this.Skaka = false; }
-        public bool JeZdvojnasobujici()
-        { return this.Zdvojnasobujici; }
+        private bool isJumping;
+        public String colour { get;  }
+        public String type;
+        bool joker;
+        bool doubleScore;
+        public void jump()
+        { this.isJumping = true; }
+        public void dontJump()
+        { this.isJumping = false; }
+        public bool isDoubleScore()
+        { return this.doubleScore; }
         
        
-        public bool jeJehoBrava(String Barva)
+        public bool hasColour(String colour)
         {
-            if (!(this.VratTyp() == "Duhove"))
-            { if (Barva == this.Barva) { return true; } else { return false; }; }
+            if (!(this.getType() == "Duhove"))
+            { if (colour == this.colour) { return true; } else { return false; }; }
             else return true;
             }
-    public Ball(bool Duhovy)
+    public Ball(bool joker)
         {
-            this.Barva = "";
-            this.Zdvojnasobujici = false;
-            this.Duhovy = Duhovy;
+            this.colour = "";
+            this.doubleScore = false;
+            this.joker = joker;
         }
-        public Ball(String Barva)
+        public Ball(String colour)
         {
-            this.Barva = Barva;
-            this.Zdvojnasobujici = false;
-            this.Duhovy = false;
+            this.colour = colour;
+            this.doubleScore = false;
+            this.joker = false;
         }
-        public Ball(String Barva, bool Zdvojnasobujici)
+        public Ball(String colour, bool doubleScore)
         {
-            this.Barva = Barva;
-            this.Zdvojnasobujici = Zdvojnasobujici;
-            this.Duhovy = false;
+            this.colour = colour;
+            this.doubleScore = doubleScore;
+            this.joker = false;
         }
-        public void NastavTyp(String Typ)
-        { this.Typ = Typ; }
-        public String VratTyp()
-        { return this.Typ; }
-        public String VratBarvu()
-        { return this.Barva; }
+        public void setType(String type)
+        { this.type = type; }
+        public String getType()
+        { return this.type; }
+        public String getColour()
+        { return this.colour; }
 }
 
 }

@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Míče
+﻿
+namespace Circles
 {
     class NodeForPathFinder
     {
-        NodeForPathFinder RodicUzelHledaceCesty;
-        private Cell PoleUzlu;
-       public Cell VratPoleUzlu()
-        { return this.PoleUzlu; }
-        public NodeForPathFinder(NodeForPathFinder RodicUzelHledaceCesty, Cell PoleUzlu)
+        NodeForPathFinder parentForNodeForPathFinder;
+        private Cell cell;
+       public Cell getCell()
+        { return this.cell; }
+        public NodeForPathFinder(NodeForPathFinder parentForNodeForPathFinder, Cell cell)
         {
-            this.RodicUzelHledaceCesty = RodicUzelHledaceCesty;
-            this.PoleUzlu = PoleUzlu; }
-        public NodeForPathFinder VytvorDite(Cell PoleUzlu)
+            this.parentForNodeForPathFinder = parentForNodeForPathFinder;
+            this.cell = cell; }
+        public NodeForPathFinder createChild(Cell parentForNodeForPathFinder)
         {
-            return new NodeForPathFinder(this, PoleUzlu);
+            return new NodeForPathFinder(this, parentForNodeForPathFinder);
         }
-        public NodeForPathFinder VratRodice()
+        public NodeForPathFinder getParent()
         {
-            return this.RodicUzelHledaceCesty;
+            return this.parentForNodeForPathFinder;
         }
     }
 }

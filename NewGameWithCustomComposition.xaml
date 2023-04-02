@@ -1,25 +1,25 @@
-﻿<Window x:Name="novaHraSVlastnimNastavenimWindow" x:Class="Míče.NovaHraSVlastnimNastavenimWindow"
+﻿<Window x:Name="newGameWithCustomGameCompositionWindow" x:Class="Circles.NewGameWithCustomGameCompositionWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Míče"
+        xmlns:local="clr-namespace:Circles"
         mc:Ignorable="d"
-        Title="Nová hra s vlastním nastavením" Height="529.7" Width="400  " MinWidth="400" MinHeight="540" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" KeyDown="novaHraSVlastnimNastavenimWindow_KeyDown">
+        Title="New game with custom composition" Height="529.7" Width="400  " MinWidth="400" MinHeight="540" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize" KeyDown="newGameWithCustomGameCompositionWindow_KeyDown">
 
     <Grid Margin="0,0,2,0" Background="#FFE5E5E5">
 
 
 
 
-        <TabControl x:Name="novaHraSVlastnimNastavenimTabControl" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,0,67">
-            <TabItem x:Name="mrizTabItem" Header="Mříž" Margin="0,0,-4,-2">
+        <TabControl x:Name="newGameWithCustomGameCompositionTabControl" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,0,67">
+            <TabItem x:Name="boardTabItem" Header="Mříž" Margin="0,0,-4,-2">
                 <Grid Background="#FFE5E5E5" Margin="0,0,0,-1">
-                    <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Rozměry mříže" VerticalAlignment="Top" TextAlignment="Center" Width="386" Background="Silver"/>
+                    <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Board dimensions" VerticalAlignment="Top" TextAlignment="Center" Width="386" Background="Silver"/>
                     <StackPanel HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="368" Orientation="Horizontal" Margin="10,39,0,0">
-                        <Label x:Name="label1_Copy4" Content="Šířka:" RenderTransformOrigin="1.036,2.317" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center"/>
+                        <Label x:Name="label1_Copy4" Content="Width:" RenderTransformOrigin="1.036,2.317" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center"/>
 
-                        <ComboBox x:Name="sirkaComboBox" Width="40" Margin="0" Height="20" SelectedIndex="6" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
+                        <ComboBox x:Name="widthComboBox" Width="40" Margin="0" Height="20" SelectedIndex="6" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Help" VerticalAlignment="Center">
                             <ComboBoxItem Content="3"/>
                             <ComboBoxItem Content="4"/>
                             <ComboBoxItem Content="5"/>
@@ -53,8 +53,8 @@
                         </ComboBox>
                         <Label x:Name="label31_Copy22" Content="9" Margin="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" VerticalAlignment="Center"/>
                         <Label x:Name="label2_Copy4" Content="&lt;3; 32&gt;" Margin="0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" Width="54" Foreground="Blue" FontWeight="Bold" Background="{x:Null}" BorderBrush="Lime" RenderTransformOrigin="0.843,0.464" VerticalAlignment="Center"/>
-                        <Label x:Name="label1_Copy5" Content="Výška:" RenderTransformOrigin="1.036,2.317" Margin="0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="vyskaComboBox" Width="40" Margin="0" Height="20" SelectedIndex="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Label x:Name="label1_Copy5" Content="Height:" RenderTransformOrigin="1.036,2.317" Margin="0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="heightComboBox" Width="40" Margin="0" Height="20" SelectedIndex="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <ComboBoxItem Content="3"/>
                             <ComboBoxItem Content="4"/>
                             <ComboBoxItem Content="5"/>
@@ -92,34 +92,34 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="barvyMicuTabItem" Header="Barvy míčů" Margin="-3,0,-1,-2">
+            <TabItem x:Name="ballColoursTabItem" Header="Ball colours" Margin="-3,0,-1,-2">
                 <Grid Background="#FFE5E5E5" Margin="-2,0,0,0">
-                    <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Zvolené barvy" VerticalAlignment="Top" TextAlignment="Center" Width="388" Background="Silver"/>
+                    <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Selected colours" VerticalAlignment="Top" TextAlignment="Center" Width="388" Background="Silver"/>
                     <StackPanel Orientation="Horizontal" Margin="10,16,10,362"/>
                     <Grid HorizontalAlignment="Left" Width="368" Margin="10,31,0,4">
-                        <CheckBox x:Name="tmaveModraCheckBox" Content="tmavě modrá" VerticalAlignment="Top" Margin="59,46,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
-                        <CheckBox x:Name="zlutaCheckBox" Content="žlutá" VerticalAlignment="Top" Margin="193,46,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
+                        <CheckBox x:Name="darkBlueCheckBox" Content="dark blue" VerticalAlignment="Top" Margin="59,46,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
+                        <CheckBox x:Name="yellowCheckBox" Content="yellow" VerticalAlignment="Top" Margin="193,46,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
                         <Ellipse Fill="Yellow" HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="152,46,0,0" StrokeThickness="0" StrokeStartLineCap="Round"/>
-                        <CheckBox x:Name="svetleModraCheckBox" Content="světle modrá" VerticalAlignment="Top" Margin="59,92,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
+                        <CheckBox x:Name="lightBlueCheckBox" Content="light blue" VerticalAlignment="Top" Margin="59,92,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
                         <Ellipse Fill="#FF80FFFF" HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="18,92,0,0" StrokeThickness="0" StrokeStartLineCap="Round"/>
-                        <CheckBox x:Name="fialovaCheckBox" Content="fialová" VerticalAlignment="Top" Margin="193,92,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
+                        <CheckBox x:Name="purpleCheckBox" Content="purple" VerticalAlignment="Top" Margin="193,92,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1,0.85" Margin="152,92,0,0" StrokeThickness="0" StrokeStartLineCap="Round" Fill="#FFC95DC9"/>
-                        <CheckBox x:Name="hnedaCheckBox" Content="hnědá" VerticalAlignment="Top" Margin="59,136,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
+                        <CheckBox x:Name="brownCheckBox" Content="brown" VerticalAlignment="Top" Margin="59,136,0,0" HorizontalAlignment="Left" Width="107" IsChecked="True"/>
                         <Ellipse Fill="Brown" HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="18,136,0,0" StrokeThickness="0" StrokeStartLineCap="Round"/>
-                        <CheckBox x:Name="ruzovaCheckBox" Content="růžová" VerticalAlignment="Top" Margin="193,136,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="pinkCheckBox" Content="pink" VerticalAlignment="Top" Margin="193,136,0,0" HorizontalAlignment="Left" Width="107"/>
                         <Ellipse Fill="#FFFFC0FF" HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="152,136,0,0" StrokeThickness="0" StrokeStartLineCap="Round"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="18,46,0,0" StrokeThickness="0" StrokeStartLineCap="Round" Fill="#FF3E3EF0"/>
-                        <CheckBox x:Name="zelenaCheckBox" Content="zelená" VerticalAlignment="Top" Margin="59,180,0,0" HorizontalAlignment="Left" Width="107"/>
-                        <CheckBox x:Name="zlataCheckBox" Content="zlatá" VerticalAlignment="Top" Margin="193,180,0,0" HorizontalAlignment="Left" Width="107"/>
-                        <CheckBox x:Name="oranzovaCheckBox" Content="oranžová" VerticalAlignment="Top" Margin="59,223,0,0" HorizontalAlignment="Left" Width="107"/>
-                        <CheckBox x:Name="bilaCheckBox" Content="bílá" VerticalAlignment="Top" Margin="193,223,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="greenCheckBox" Content="green" VerticalAlignment="Top" Margin="59,180,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="goldCheckBox" Content="gold" VerticalAlignment="Top" Margin="193,180,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="orangeCheckBox" Content="orange" VerticalAlignment="Top" Margin="59,223,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="whiteCheckBox" Content="white" VerticalAlignment="Top" Margin="193,223,0,0" HorizontalAlignment="Left" Width="107"/>
                         <Ellipse Fill="White" HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="152,223,0,0" StrokeThickness="0" StrokeStartLineCap="Round"/>
-                        <CheckBox x:Name="sedivaCheckBox" Content="šedivá" VerticalAlignment="Top" Margin="59,268,0,0" HorizontalAlignment="Left" Width="107" Checked="sedivaCheckBox_Checked"/>
+                        <CheckBox x:Name="greyCheckBox" Content="grey" VerticalAlignment="Top" Margin="59,268,0,0" HorizontalAlignment="Left" Width="107" Checked="greyCheckBox_Checked"/>
                         <Ellipse Fill="Silver" HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="18,268,0,0" StrokeThickness="0" StrokeStartLineCap="Round"/>
-                        <CheckBox x:Name="cernaCheckBox" Content="černá" VerticalAlignment="Top" Margin="193,268,0,0" HorizontalAlignment="Left" Width="107" Checked="cernaCheckBox_Checked"/>
+                        <CheckBox x:Name="blackCheckBox" Content="black" VerticalAlignment="Top" Margin="193,268,0,0" HorizontalAlignment="Left" Width="107" Checked="blackCheckBox_Checked"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1,0.85" Margin="152,268,0,0" StrokeThickness="0" StrokeStartLineCap="Round" Fill="Black"/>
-                        <CheckBox x:Name="modraCheckBox" Content="modrá" VerticalAlignment="Top" Margin="59,318,0,0" HorizontalAlignment="Left" Width="107"/>
-                        <CheckBox x:Name="vojenskaZelenaCheckBox" Content="vojenská zelená" VerticalAlignment="Top" Margin="193,318,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="blueCheckBox" Content="blue" VerticalAlignment="Top" Margin="59,318,0,0" HorizontalAlignment="Left" Width="107"/>
+                        <CheckBox x:Name="armyGreenCheckBox" Content="army green" VerticalAlignment="Top" Margin="193,318,0,0" HorizontalAlignment="Left" Width="107"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="18,180,0,0" StrokeThickness="0" StrokeStartLineCap="Round" Fill="#FF229122"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="152,180,0,0" StrokeThickness="0" StrokeStartLineCap="Round" Fill="Gold"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" Margin="18,223,0,0" StrokeThickness="0" StrokeStartLineCap="Round" Fill="#FFFF8000"/>
@@ -142,8 +142,8 @@
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" StrokeThickness="0" StrokeStartLineCap="Round" Margin="18,0,0,0" Fill="#FF6EEA18"/>
                         <Label x:Name="label31_Copy11" Content="[J]" Margin="188,6,0,0" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" Width="28"/>
                         <Ellipse HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="36" RenderTransformOrigin="1.398,2.722" StrokeThickness="0" StrokeStartLineCap="Round" Margin="152,0,0,0" Fill="#FFF03737"/>
-                        <CheckBox x:Name="cervenaCheckBox" Content="červená" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66" IsChecked="True" Margin="193,0,0,0" Checked="cervenaCheckBox_Checked"/>
-                        <CheckBox x:Name="svetleZelenaCheckBox" Content="světle zelená" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107" IsChecked="True" Margin="59,0,0,0" Checked="svetleZelenaCheckBox_Checked" />
+                        <CheckBox x:Name="redCheckBox" Content="red" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66" IsChecked="True" Margin="193,0,0,0" Checked="redCheckBox_Checked"/>
+                        <CheckBox x:Name="lightGreenCheckBox" Content="light green" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107" IsChecked="True" Margin="59,0,0,0" Checked="lightGreenCheckBox_Checked" />
                         <Label x:Name="label31_Copy2" Content="[J]" Margin="54,6,0,0" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" Width="28"/>
 
                     </Grid>
@@ -152,23 +152,23 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="specialniBallsTabItem" Header="Speciální míče" Margin="0,0,-4,-2">
+            <TabItem x:Name="specialniBallsTabItem" Header="Special balls" Margin="0,0,-4,-2">
                 <Grid Background="#FFE5E5E5" Margin="-2,0,0,-2">
-                    <CheckBox x:Name="duhoveBallsCheckBox" Content="Házet také duhové míče- speciální druh míče" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,16,0,0"/>
-                    <CheckBox x:Name="zdvojnasobujiciBallsCheckBox" Content="Házet také násobící míče- speciální druh míče" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,36,0,0"/>
+                    <CheckBox x:Name="jokerBallsCheckBox" Content="Throw also joker balls - a special type of ball" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,16,0,0"/>
+                    <CheckBox x:Name="doubleScoreBallsCheckBox" Content="Throw also double balls - a special type of ball" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,36,0,0"/>
                     <Label x:Name="label31_Copy25" Content="[  ]" Margin="10,30,0,0" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" Width="28"/>
                     <Label x:Name="label31_Copy26" Content="[  ]" Margin="10,10,0,0" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" Width="28"/>
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="hodMicuTabItem" Header="Hod míčů" Margin="-3,0,-1,-2">
+            <TabItem x:Name="ballThrowingTabItem" Header="Ball throwing" Margin="-3,0,-1,-2">
                 <Grid Background="#FFE5E5E5" Margin="0,-1,-2,-1">
-                    <Label x:Name="label1_Copy2" Content="Počet házených míčů během hry :" RenderTransformOrigin="1.036,2.317" Margin="10,43,0,0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label x:Name="label1_Copy2" Content="Count of balls thrown during the game :" RenderTransformOrigin="1.036,2.317" Margin="10,43,0,0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <Label x:Name="label31_Copy20" Content="3" Margin="270,44,0,0" Height="27" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" ToolTip=""/>
-                    <Label x:Name="label1_Copy3" Content="Počet házených míčů na začátku hry:" RenderTransformOrigin="1.036,2.317" Margin="10,10,0,0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label x:Name="label1_Copy3" Content="Count of balls thrown at the game start:" RenderTransformOrigin="1.036,2.317" Margin="10,10,0,0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <Label x:Name="label31_Copy21" Content="5" Margin="270,10,0,0" Height="28" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" RenderTransformOrigin="-1.619,0.69" Background="{x:Null}" BorderBrush="Lime" ToolTip=""/>
 
-                    <ComboBox x:Name="pocetHazenychMicuBehemHryComboBox" Width="40" Margin="230,47,0,347" Height="24" SelectedIndex="2" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
+                    <ComboBox x:Name="duringGameBallCountComboBox" Width="40" Margin="230,47,0,347" Height="24" SelectedIndex="2" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
                         <ComboBoxItem Content="1"/>
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
@@ -178,7 +178,7 @@
                         <ComboBoxItem Content="7"/>
                         <ComboBoxItem Content="8"/>
                     </ComboBox>
-                    <ComboBox x:Name="pocetHazenychMicuNaZacatkuHryComboBox" Width="40" Margin="230,15,0,379" Height="24" SelectedIndex="4" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
+                    <ComboBox x:Name="startBallCountComboBox" Width="40" Margin="230,15,0,379" Height="24" SelectedIndex="4" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
                         <ComboBoxItem Content="1"/>
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
@@ -188,56 +188,17 @@
                         <ComboBoxItem Content="7"/>
                         <ComboBoxItem Content="8"/>
                     </ComboBox>
-                    <ComboBox x:Name="pocetHazenychMicuBehemHryComboBox_Copy" Width="40" Margin="230,48,0,346" Height="24" SelectedIndex="2" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
-                        <ComboBoxItem Content="1"/>
-                        <ComboBoxItem Content="2"/>
-                        <ComboBoxItem Content="3"/>
-                        <ComboBoxItem Content="4"/>
-                        <ComboBoxItem Content="5"/>
-                        <ComboBoxItem Content="6"/>
-                        <ComboBoxItem Content="7"/>
-                        <ComboBoxItem Content="8"/>
-                    </ComboBox>
-                    <ComboBox x:Name="pocetHazenychMicuNaZacatkuHryComboBox_Copy" Width="40" Margin="230,16,0,378" Height="24" SelectedIndex="4" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
-                        <ComboBoxItem Content="1"/>
-                        <ComboBoxItem Content="2"/>
-                        <ComboBoxItem Content="3"/>
-                        <ComboBoxItem Content="4"/>
-                        <ComboBoxItem Content="5"/>
-                        <ComboBoxItem Content="6"/>
-                        <ComboBoxItem Content="7"/>
-                        <ComboBoxItem Content="8"/>
-                    </ComboBox>
-                    <ComboBox x:Name="pocetHazenychMicuBehemHryComboBox_Copy1" Width="40" Margin="230,49,0,345" Height="24" SelectedIndex="2" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
-                        <ComboBoxItem Content="1"/>
-                        <ComboBoxItem Content="2"/>
-                        <ComboBoxItem Content="3"/>
-                        <ComboBoxItem Content="4"/>
-                        <ComboBoxItem Content="5"/>
-                        <ComboBoxItem Content="6"/>
-                        <ComboBoxItem Content="7"/>
-                        <ComboBoxItem Content="8"/>
-                    </ComboBox>
-                    <ComboBox x:Name="pocetHazenychMicuNaZacatkuHryComboBox_Copy1" Width="40" Margin="230,17,0,377" Height="24" SelectedIndex="4" RenderTransformOrigin="0.5,-0.675" SelectionChanged="comboBox_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" HorizontalAlignment="Left" ToolTip="Nápověda Nápověda Nápověda Nápověda Nápověda Nápověda " VerticalAlignment="Center">
-                        <ComboBoxItem Content="1"/>
-                        <ComboBoxItem Content="2"/>
-                        <ComboBoxItem Content="3"/>
-                        <ComboBoxItem Content="4"/>
-                        <ComboBoxItem Content="5"/>
-                        <ComboBoxItem Content="6"/>
-                        <ComboBoxItem Content="7"/>
-                        <ComboBoxItem Content="8"/>
-                    </ComboBox>
+                  
                 </Grid>
             </TabItem>
-            <TabItem x:Name="explozeMicuTabItem" Header="Exploze míčů" Margin="0,0,-4,-2">
+            <TabItem x:Name="explozeMicuTabItem" Header="Ball explosion" Margin="0,0,-4,-2">
                 <Grid Background="#FFE5E5E5" Margin="-2,0,0,-2">
-                    <RadioButton x:Name="linkaRadioButton" Content="linka" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,35,0,0" Checked="linkaRadioButton_Checked" IsChecked="True"/>
-                    <RadioButton x:Name="ctverecRadioButton" Content="čtverec" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,147,0,0" Checked="ctverecRadioButton_Checked"/>
-                    <RadioButton x:Name="krouzekRadioButton" Content="kroužek" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,255,0,0" Checked="krouzekRadioButton_Checked" RenderTransformOrigin="0.877,0.433"/>
+                    <RadioButton x:Name="lineRadioButton" Content="line" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,35,0,0" Checked="lineRadioButton_Checked" IsChecked="True"/>
+                    <RadioButton x:Name="squareRadioButton" Content="square" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,147,0,0" Checked="squareRadioButton_Checked"/>
+                    <RadioButton x:Name="circlesRadioButton" Content="circle" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,255,0,0" Checked="circleRadioButton_Checked" RenderTransformOrigin="0.877,0.433"/>
                     <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Tvar skupiny míčů, která exploduje" VerticalAlignment="Top" TextAlignment="Center" Width="388" Background="Silver"/>
-                    <Label x:Name="label" Content="Minimální délka linky v míčích nutná k explozi:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,55,0,0"/>
-                    <ComboBox x:Name="minimalniDelkaLinkyComboBox" SelectedIndex="3" SelectionChanged="comboBox_SelectionChanged" Margin="18,82,309,304"  >
+                    <Label x:Name="label" Content="Minimal length of balls necessary to explosion:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,55,0,0"/>
+                    <ComboBox x:Name="minLineLengthComboBox" SelectedIndex="3" SelectionChanged="comboBox_SelectionChanged" Margin="18,82,309,304"  >
                         <ComboBoxItem Content="2"/>
                         <ComboBoxItem Content="3"/>
                         <ComboBoxItem Content="4"/>
@@ -328,18 +289,18 @@
 
         </TabControl>
         <StackPanel Height="43" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <Button x:Name="zacitNovouHruSVlastnimNastavenimButton"  Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Width="120" Margin="4,0" IsDefault="True" Click="zacitNovouHruSVlastnimNastavenimButton_Click">
-                <TextBlock Foreground="Black"><Run Text="Začít novou hru"/><LineBreak/><Run Text="s tímto nastavením"/></TextBlock>
+            <Button x:Name="startNewGameWithCustomGameCompositionButton"  Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Width="120" Margin="4,0" IsDefault="True" Click="startNewGameWithCustomGameCompositionButton_Click">
+                <TextBlock Foreground="Black"><Run Text="Start new game"/><LineBreak/><Run Text=""/></TextBlock>
             </Button>
-            <Button x:Name="nastavitVychoziHodnotyButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Width="120" Margin="4,0" Click="nastavitVychoziHodnotyButton_Click" >
-                <TextBlock Foreground="Black"><Run Text="Nastavit výchozí"/><LineBreak/><Run Text="hodnoty"/></TextBlock>
+            <Button x:Name="nastavitVychoziHodnotyButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Width="120" Margin="4,0" Click="setDefaultValuesButton_Click" >
+                <TextBlock Foreground="Black"><Run Text="Set default"/><LineBreak/><Run Text="values"/></TextBlock>
             </Button>
             <Button x:Name="nastavitNahodneHodnotyButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Width="120" Margin="4,0" Click="button2_Click">
-                <TextBlock Foreground="Black"><Run Text="Nastavit náhodné"/><LineBreak/><Run Text="hodnoty"/></TextBlock>
+                <TextBlock Foreground="Black"><Run Text="Set random"/><LineBreak/><Run Text="values"/></TextBlock>
             </Button>
 
         </StackPanel>
-        <TextBlock x:Name="textBlock_Copy" Text="Červeným textem jsou hodnoty v případě výchozího nastavení." Foreground="Red" Width="365" FontSize="10.667" FontWeight="Bold" VerticalAlignment="Bottom" Margin="10,0,17,48"/>
+        <TextBlock x:Name="textBlock_Copy" Text="Red highlighted text shows default values." Foreground="Red" Width="365" FontSize="10.667" FontWeight="Bold" VerticalAlignment="Bottom" Margin="10,0,17,48"/>
 
 
 

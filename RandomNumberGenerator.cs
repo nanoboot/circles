@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Míče
+namespace Circles
 {
     public static class RandomNumberGenerator
     {
-        private static Random GeneratorCisel = new Random();//Slouží ke generování náhodných odkazů na pole
-        public static int VratNahodneCislo(int DolniMezKteraJeSoucasti,int HorniMezKteraJizNeniSoucasti)
-        { return GeneratorCisel.Next(DolniMezKteraJeSoucasti, HorniMezKteraJizNeniSoucasti); }
+        private static Random randomNumberGenerator = new Random();// Used to generate random field references
+        public static int getRandomNumber(int startIncluded,int endNotIncluded)
+        { return randomNumberGenerator.Next(startIncluded, endNotIncluded); }
     }
 }

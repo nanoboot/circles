@@ -1,179 +1,171 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using System.Windows;
-
-namespace Míče
+namespace Circles
 {
     public class Game
     {
-        // zde začínají vlastnosti dané hry- její sestava
-        private int Sirka;
-        private int Vyska;
-        private bool SvetleZelena;
-        private bool Cervena;
-        private bool TmaveModra;
-        private bool Zluta;
-        private bool SvetleModra;
-        private bool Fialova;
-        private bool Hneda;
-        private bool Ruzova;
-        private bool Zelena;
-        private bool Zlata;
-        private bool Oranzova;
-        private bool Bila;
-        private bool Sediva;
-        private bool Cerna;
-        private bool Modra;
-        private bool VojenskaZelena;
-        private int PocetHazenychMicuNaZacatkuHry;
-        private int PocetHazenychMicuBehemHry;
-        private bool DuhoveBalls;
-        private bool ZdvojnasobujiciBalls;
-        private String TvarSkupinyMicuKteraExploduje;
-        private int MinimalniDelkaLinky;
+        private int width;
+        private int height;
+        private bool lightGreen;
+        private bool red;
+        private bool darkBlue;
+        private bool yellow;
+        private bool lightBlue;
+        private bool purple;
+        private bool brown;
+        private bool pink;
+        private bool green;
+        private bool gold;
+        private bool orange;
+        private bool white;
+        private bool grey;
+        private bool black;
+        private bool blue;
+        private bool armyGreen;
+        private int startBallCount;
+        private int nextBallCount;
+        private bool jokerBalls;
+        private bool doubleScoreBalls;
+        private String shapeOfGroupOfBallsWhichExplode;
+        private int minLineLength;
 
-        GameComposition sestavaHry;
-        private Queue FrontaPrikazu = new Queue();// Vytvoří se fronta příkazů, do které logická vrstva bude ukládat formou zpráv veškeré změny, aplikační vrstva si bude brát informace z této fronty, aby věděla, co má ukazovat hráči.
-        private CellManager spravcePoli;
-        private BallManager spravceMicu;
-        private DatabaseManager spravceDatabaze;
-        private ScoreManager spravceVysledku;
-        private BallExploder odpalovacMicu;
-        private Stack<Cell> ZasobnikOdpalenychMicu = new Stack<Cell>();//Zde se dočasně ukládají pole.
-        private Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni=new Stack<Cell>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
-        private enum StavHry// Zde se ukládá stav hry.
+        GameComposition gameComposition;
+        private Queue commandQueue = new Queue();
+        private CellManager cellManager;
+        private BallManager ballManager;
+        private DatabaseManager databaseManager;
+        private ScoreManager scoreManager;
+        private BallExploder ballExploder;
+        private Stack<Cell> explodedBalls = new Stack<Cell>();
+        private Stack<Cell> cellsWhichAreNoMoreActive=new Stack<Cell>();
+        private enum GameState
         {
-            Zacatek = 0,
-            CekaNaAktivaciPlnehoPole = 1,
-            CekaNaAktivaciPrazdnehoDostupnehoPole = 2,
-            Konec = 10,
+            Start = 0,
+            WaitingForActivationOfFullCell = 1,
+            WaitingFroActivationOfEmptyAvailableCell = 2,
+            End = 10,
         }
-        private StavHry stavHry = StavHry.Zacatek;
+        private GameState gameState = GameState.Start;
 
 
         public Game(
             GameComposition sestavaHry,
-            int Vyska,
-            int Sirka,
-            bool SvetleZelena,
-            bool Cervena,
-            bool TmaveModra,
-            bool Zluta,
-            bool SvetleModra,
-            bool Fialova,
-            bool Hneda,
-            bool Ruzova,
-            bool Zelena,
-            bool Zlata,
-            bool Oranzova,
-            bool Bila,
-            bool Sediva,
-            bool Cerna,
-            bool Modra,
-            bool VojenskaZelena,
-            int PocetHazenychMicuNaZacatkuHry,
+            int height,
+            int width,
+            bool lightGreen,
+            bool red,
+            bool darkBlue,
+            bool yellow,
+            bool lightBlue,
+            bool purple,
+            bool brown,
+            bool pink,
+            bool green,
+            bool gold,
+            bool orange,
+            bool white,
+            bool grey,
+            bool black,
+            bool blue,
+            bool armyGreen,
+            int startBallCount,
             int PocetHazenychMicuBehemHry,
-            bool DuhoveBalls,
-            bool ZdvojnasobujiciBalls,
-            string TvarSkupinyMicuKteraExploduje,
-            int MinimalniDelkaLinky)
+            bool nextBallCount,
+            bool doubleScoreBalls,
+            string shapeOfGroupOfBallsWhichExplode,
+            int minLineLength)
         {
-            this.sestavaHry = sestavaHry;
-            this.Vyska = Vyska;
-            this.Sirka = Sirka;
-            this.SvetleZelena = SvetleZelena;
-            this.Cervena = Cervena;
-            this.TmaveModra = TmaveModra;
-            this.Zluta = Zluta;
-            this.SvetleModra = SvetleModra;
-            this.Fialova = Fialova;
-            this.Hneda = Hneda;
-            this.Ruzova = Ruzova;
-            this.Zelena = Zelena;
-            this.Zlata = Zlata;
-            this.Oranzova = Oranzova;
-            this.Bila = Bila;
-            this.Sediva = Sediva;
-            this.Cerna = Cerna;
-            this.Modra = Modra;
-            this.VojenskaZelena = VojenskaZelena;
-            this.PocetHazenychMicuNaZacatkuHry = PocetHazenychMicuNaZacatkuHry;
-            this.PocetHazenychMicuBehemHry = PocetHazenychMicuBehemHry;
-            this.DuhoveBalls = DuhoveBalls;
-            this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls;
-            this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje;
-            this.MinimalniDelkaLinky = MinimalniDelkaLinky;
-            odpalovacMicu = new BallExploder(TvarSkupinyMicuKteraExploduje, MinimalniDelkaLinky);
-            stavHry = StavHry.Zacatek;// V konstruktoru se zde nastaví stav hry na Zacatek.
-            this.spravceDatabaze = new DatabaseManager();//Při zapnutí programu Míče se vytvoří instance třídy SpravceDatabaze, s kterým budou komunikovat objekty, které budou mít za úkol ukládat trvale data nebo je číst
-            this.spravceVysledku = new ScoreManager(this.spravceDatabaze, this.sestavaHry);
-            spravcePoli = new CellManager(this.Vyska, this.Sirka);//Sestaví desku polí podle počtu řádků a sloupců.
+            this.gameComposition = sestavaHry;
+            this.height = height;
+            this.width = width;
+            this.lightGreen = lightGreen;
+            this.red = red;
+            this.darkBlue = darkBlue;
+            this.yellow = yellow;
+            this.lightBlue = lightBlue;
+            this.purple = purple;
+            this.brown = brown;
+            this.pink = pink;
+            this.green = green;
+            this.gold = gold;
+            this.orange = orange;
+            this.white = white;
+            this.grey = grey;
+            this.black = black;
+            this.blue = blue;
+            this.armyGreen = armyGreen;
+            this.startBallCount = startBallCount;
+            this.nextBallCount = PocetHazenychMicuBehemHry;
+            this.jokerBalls = nextBallCount;
+            this.doubleScoreBalls = doubleScoreBalls;
+            this.shapeOfGroupOfBallsWhichExplode = shapeOfGroupOfBallsWhichExplode;
+            this.minLineLength = minLineLength;
+            ballExploder = new BallExploder(shapeOfGroupOfBallsWhichExplode, minLineLength);
+            gameState = GameState.Start;
+            this.databaseManager = new DatabaseManager();
+            this.scoreManager = new ScoreManager(this.databaseManager, this.gameComposition);
+            cellManager = new CellManager(this.height, this.width);
 
-
-            // Následuje vytvoření instance správce míčů, který bude generovat pouze typy míčů, které si hráč před započetím hry vybral.
-            spravceMicu = new BallManager(
-            this.SvetleZelena,
-            this.Cervena,
-            this.TmaveModra,
-            this.Zluta,
-            this.SvetleModra,
-            this.Fialova,
-            this.Hneda,
-            this.Ruzova,
-            this.Zelena,
-            this.Zlata,
-            this.Oranzova,
-            this.Bila,
-            this.Sediva,
-            this.Cerna,
-            this.Modra,
-            this.VojenskaZelena,
-            this.DuhoveBalls = DuhoveBalls,
-            this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls,
+            ballManager = new BallManager(
+            this.lightGreen,
+            this.red,
+            this.darkBlue,
+            this.yellow,
+            this.lightBlue,
+            this.purple,
+            this.brown,
+            this.pink,
+            this.green,
+            this.gold,
+            this.orange,
+            this.white,
+            this.grey,
+            this.black,
+            this.blue,
+            this.armyGreen,
+            this.jokerBalls = nextBallCount,
+            this.doubleScoreBalls = doubleScoreBalls,
             this);
            
-            VlozPrikaz("HRA NOVA");
-            VlozPrikaz(String.Concat("DESKA ", this.Vyska, " ", this.Sirka));
-            ZacatekHry();
+            insertCommand("HRA NOVA");
+            insertCommand(String.Concat("DESKA ", this.height, " ", this.width));
+            startGame();
         }
-        public System.Data.DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID() //Vrátí proměnnou typu DataSet, která bude mít v sobě výsledky seřazené dle bodů od největšího.
+        public System.Data.DataSet getScoreListForGivenTGameCompositionWithGivenId()
         {
-            return spravceVysledku.VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID();
+            return scoreManager.getScoreListForGivenTGameCompositionWithGivenId();
         }
-        private void ZacatekHry()// Vygeneruje míče do určitého počtu prazdnych poli. Tato metoda se volá pouze na začátku hry.
+        private void startGame()
         {
-            for (int i = 1; i <= this.PocetHazenychMicuNaZacatkuHry; i++)
-            { VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(false);
-                if (!spravcePoli.ExistujePrazdnePole()) { NastavStavHry(10); break; }// Pokud již neexistuje prázdné pole, není kam míč umisťovat, potom se tento cyklus for předčasně ukončí a stav hry se nastaví na Konec.
+            for (int i = 1; i <= this.startBallCount; i++)
+            { generateOneBallAndInsertItIntoAnEmptyCell(false);
+                if (!cellManager.hasAtLeastOneEmptyCell()) { setGameState(10); break; }
             };
-            if (spravcePoli.ExistujePrazdnePole()) NastavStavHry(1);//Pokud ještě existuje prázdné pole, je kam míč umisťovat, potom se stav hry se nastaví na CekaNaAktivaciPrazdnehoDostupnehoPole.
+            if (cellManager.hasAtLeastOneEmptyCell()) setGameState(1);
         }
         
-        private void HazeniMicuBehemHry()// Vygeneruje míče do určitého počtu prazdnych poli a to během hry opakovaně.
-        {for (int i = 1; i <= this.PocetHazenychMicuBehemHry  ; i++)
-            { VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(true);
+        private void throwBallDuringGameIntoEmptyCells()
+        {for (int i = 1; i <= this.nextBallCount  ; i++)
+            { generateOneBallAndInsertItIntoAnEmptyCell(true);
                 switch (i)
                 {
                     case 1:
                         {
-                            Ball novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiBalls.Enqueue(novyMic);
+                            Ball newBall = ballManager.generateNewBall();
+                            ballManager.nextBalls.Enqueue(newBall);
                             String I = "";
 
-                            switch (novyMic.VratBarvu())
+                            switch (newBall.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); } break;
-                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); } break;
+                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
 
                             }
 
@@ -182,18 +174,18 @@ namespace Míče
                         break;
                     case 2:
                         {
-                            Ball novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiBalls.Enqueue(novyMic);
+                            Ball newBall = ballManager.generateNewBall();
+                            ballManager.nextBalls.Enqueue(newBall);
                             String I = "";
-                            switch (novyMic.VratBarvu())
+                            switch (newBall.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I," DALSI2")); } break;
-                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I," DALSI2")); } break;
+                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
 
                             }
 
@@ -202,18 +194,18 @@ namespace Míče
                         break;
                     case 3:
                         {
-                            Ball novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiBalls.Enqueue(novyMic);
+                            Ball newBall = ballManager.generateNewBall();
+                            ballManager.nextBalls.Enqueue(newBall);
                             String I = "";
-                            switch (novyMic.VratBarvu())
+                            switch (newBall.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); } break;
-                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); } break;
+                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
 
                             }
 
@@ -221,158 +213,158 @@ namespace Míče
                         }
                         break;
                 }
-                if (!spravcePoli.ExistujePrazdnePole()) {
-                    NastavStavHry(10);
+                if (!cellManager.hasAtLeastOneEmptyCell()) {
+                    setGameState(10);
                     
-                    i = this.PocetHazenychMicuBehemHry + 1;};
+                    i = this.nextBallCount + 1;};
 };}
-        private void NastavStavHry(int Stav)
+        private void setGameState(int Stav)
         {
             switch(Stav)
             {
-                case 0: { stavHry = StavHry.Zacatek; } break;
-                case 1: { stavHry = StavHry.CekaNaAktivaciPlnehoPole; } break;
-                case 2: { stavHry = StavHry.CekaNaAktivaciPrazdnehoDostupnehoPole; } break;
-                case 10: { stavHry = StavHry.Konec; } break;
+                case 0: { gameState = GameState.Start; } break;
+                case 1: { gameState = GameState.WaitingForActivationOfFullCell; } break;
+                case 2: { gameState = GameState.WaitingFroActivationOfEmptyAvailableCell; } break;
+                case 10: { gameState = GameState.End; } break;
                 default: break;
             }
             
         }
-        private int VratStavHry()
+        private int getGameState()
         {
-            return (int)this.stavHry;
+            return (int)this.gameState;
          }
-        private void KonecHry()
+        private void endGame()
         { }
 
         
-        private Cell VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(bool LogickaHodnota)
+        private Cell generateOneBallAndInsertItIntoAnEmptyCell(bool loginBooleanValue)
         {
-            Cell PoleKamUmistimMic = spravcePoli.VratNahodnePrazdnePole();
-            Ball MicKteryVlozimDoPole;
-            if (LogickaHodnota)
-            { MicKteryVlozimDoPole = spravceMicu.DalsiBalls.Dequeue(); }
+            Cell randomEmptyCell = cellManager.getRandomEmptyCell();
+            Ball ballWhichWillBeInsertedIntoRandomEmptyCell;
+            if (loginBooleanValue)
+            { ballWhichWillBeInsertedIntoRandomEmptyCell = ballManager.nextBalls.Dequeue(); }
             else
-            { MicKteryVlozimDoPole = spravceMicu.VygenerujNovyMic(); };
-            PoleKamUmistimMic.VlozMic(MicKteryVlozimDoPole);
-            VlozPrikaz(String.Concat("MIC ", PoleKamUmistimMic.VratRadek(), " ", PoleKamUmistimMic.VratSloupec(), " NOVY ", MicKteryVlozimDoPole.VratTyp().ToUpper(), " NAFOUKNOUT"));
+            { ballWhichWillBeInsertedIntoRandomEmptyCell = ballManager.generateNewBall(); };
+            randomEmptyCell.setBall(ballWhichWillBeInsertedIntoRandomEmptyCell);
+            insertCommand(String.Concat("MIC ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " NAFOUKNOUT"));
 
-            ZasobnikOdpalenychMicu.Clear();
-            ZasobnikOdpalenychMicu = odpalovacMicu.ZkontrolujAPripadneOdpal(PoleKamUmistimMic);
-            if (ZasobnikOdpalenychMicu.Count > 0)
+            explodedBalls.Clear();
+            explodedBalls = ballExploder.checkAndExplodedIfNeeded(randomEmptyCell);
+            if (explodedBalls.Count > 0)
             {
-                spravceVysledku.SpoctiBody(ZasobnikOdpalenychMicu, this, this.spravcePoli, this.ZasobnikPoliKtereUzNemajiBytAktivni);
+                scoreManager.countPoints(explodedBalls, this, this.cellManager, this.cellsWhichAreNoMoreActive);
 
             }
-                return PoleKamUmistimMic;
+                return randomEmptyCell;
             }
-        public void NastavHracovoJmeno(String HracovoJmeno)
+        public void setPlayerName(String playerName)
         {
-            this.spravceVysledku.NastavHracovoJmeno(HracovoJmeno);
+            this.scoreManager.setPlayerName(playerName);
             
         }
-        public void VlozPrikaz(String Prikaz)//Metoda, která vloží další příkaz do fronty
-        { FrontaPrikazu.Enqueue(Prikaz);
+        public void insertCommand(String command)
+        { commandQueue.Enqueue(command);
         }
-        public string VratPrikaz()//Metoda, která z fronty vrátí první přidaný příkaz
+        public string getCommand()
         {
-            if (FrontaPrikazu.Count > 0)//Pokud fronta není prázdná, vrátí daný příkaz
-            { return Convert.ToString(FrontaPrikazu.Dequeue()); }
-            else return "DNO";//Pokud fronta je prázdná, vrátí příkaz "DNO". Ve frontě v tento okamžik nejsou žádné příkazy.
+            if (commandQueue.Count > 0)
+            { return Convert.ToString(commandQueue.Dequeue()); }
+            else return "DNO";
         }
-        public void AktivujPole(int Radek, int Sloupec)// Zaktivuje pole, na které hráč kliknul.
+        public void activateCell(int row, int column)//Cell, which was clicked by player, will be activated.
         {
-            Cell poleKtereByloAktivovano = spravcePoli.VratPole(Radek, Sloupec);
+            Cell cellWhichWasActivated = cellManager.getCell(row, column);
 
-           while (ZasobnikPoliKtereUzNemajiBytAktivni.Count != 0)// U polí, která mají mít pozadí již normální, se pošle příslušný příkaz do fronty příkazů.
+           while (cellsWhichAreNoMoreActive.Count != 0)// For fields that should already have a normal background, the corresponding command is sent to the command queue.
             {
-                Cell aktualniPole;
-                aktualniPole = ZasobnikPoliKtereUzNemajiBytAktivni.Pop();
-                VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI NEZVYRAZNENE")));
+                Cell currentCell;
+                currentCell = cellsWhichAreNoMoreActive.Pop();
+                insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI NEZVYRAZNENE")));
             }
 
-            switch (VratStavHry())// Podle stavu hry vybere správný algoritmus.
+            switch (getGameState())// It will select the correct algorithm according to the state of the game.
             {
-                case 1:// Stav byl, že se čeká na aktivaci pole, ve kterém je míč.
+                case 1:// The status was waiting for the field the ball is in to be activated.
                     {
-                        if (!(poleKtereByloAktivovano.JePrazdne()))//Pokud pole není prázdné (Aby se mohl míč přesunout , musí v tomto poli nějaký být)
+                        if (!(cellWhichWasActivated.isEmpty()))// If the field is not empty (There must be one in this field for the ball to move)
                         {
-                            spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud
-                            NastavStavHry(2);// Změnil se stav hry a to se musí někde zaznamenat.
-                            VlozPrikaz(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
+                            cellManager.setActiveCellFrom(cellWhichWasActivated);// The active from field is set
+                            setGameState(2);// The state of the game has changed and that must be recorded somewhere.
+                            insertCommand(String.Concat("MIC ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
                         }
                        
                         ;
                     } break;
-                case 2:// Stav byl, že se čeká na aktivaci prázdného pole, do kterého chceme přesunout míč, který skáká.
+                case 2:// The status was waiting for the activation of an empty field to which we want to move the bouncing ball.
                     {
-                        if (!(poleKtereByloAktivovano.JePrazdne()))//Pokud pole není prázdné, tak se změní aktivované pole odkud na toto pole, skákat teď bude pouze míč v tomto poli.
+                        if (!(cellWhichWasActivated.isEmpty()))// If the field is not empty, then the activated field will change from where to this field, now only the ball in this field will jump.
                         {
-                            spravcePoli.VratAktivniPoleOdkud().VratMicANeodstranujHo().Neskakej();// Jelikož se bude měnit aktivní pole odkud, je potřeba, aby staré aktivní pole nařídilo svému míči přestat skákat.
-                            VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+                            cellManager.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// Since the active field will change from where, the old active field needs to tell its ball to stop jumping.
+                            insertCommand(String.Concat("MIC ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ "));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
 
-                            spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud na nové. Vlastně se stalo to, že jsem dříve aktivovali nějaké pole, míč v tomto poli začal skákat. Nyní jsem však aktivovali jiné pole, pole se souřadnicemi, na které jsme kliknuli naposledy.
-                                                                                        /*NastavStavHry(2);*/// Stav hry se nezměnil, stále se čeká na aktivaci neprázdného pole. Proto je kód na tomto řádku zakomentován, protože je zbytečný.
-                            VlozPrikaz(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
-
+                            cellManager.setActiveCellFrom(cellWhichWasActivated);// The active field from where to new is set. Actually what happened was that I activated some field earlier, the ball started bouncing in that field. However, I have now activated another field, the field with the coordinates we clicked on last time.
                             
+                            insertCommand(String.Concat("MIC ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
+
+
                         }
-                        if ((poleKtereByloAktivovano.JePrazdne()))//Pokud pole je prázdné.
+                        if ((cellWhichWasActivated.isEmpty()))// If the field is empty.
                         {
                             
-                            spravcePoli.NastavAktivniPoleKam(poleKtereByloAktivovano);// Nastaví se aktivní pole kam na nové.
-                            PathFinder hledacCesty = new PathFinder(spravcePoli.VratAktivniPoleOdkud(),spravcePoli.VratAktivniPoleKam(),this,this.ZasobnikPoliKtereUzNemajiBytAktivni);// Vytvoří se nový hledač cesty.
-                            if (hledacCesty.Hledej())// Pokud hledač cesty našel cestu.
+                            cellManager.setActiveCellTo(cellWhichWasActivated);// The active where field is set to the new one.
+                            PathFinder pathFinder = new PathFinder(cellManager.getActiveCellFrom(),cellManager.getActiveCellTo(),this,this.cellsWhichAreNoMoreActive);// A new path finder will be created.
+                            if (pathFinder.search())// If the path finder found a path.
                             { 
-                                spravcePoli.VratAktivniPoleOdkud().VratMicANeodstranujHo().Neskakej();// Cesta se našla, míč se bude přesouvat a proto se mu pošle příkaz, aby již neskákal.
-                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
-                                Ball micKterySePresouva=spravcePoli.VratAktivniPoleOdkud().OdstranMicZPoleAVratHo();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
-                                spravcePoli.VlozPrazdnePoleAbychONemVedel(spravcePoli.VratAktivniPoleOdkud());//Potom je nutné toto pole zařadit do registru prázdných polí.
-                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
-                                spravcePoli.VratAktivniPoleKam().VlozMic(micKterySePresouva);//Míč se přesune do svého nového pole.
-                                spravcePoli.VlozPlnePoleAbychONemVedel(spravcePoli.VratAktivniPoleKam());//Pole, kam jsme přesunuli míč, již není prázdné a musíme o tom informovat správce polí.
+                                cellManager.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// A path has been found, the ball will move and therefore a command will be sent to it not to jump anymore.
+                                insertCommand(String.Concat("MIC ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ"));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
+                                Ball ballWhichIsBeingMoved=cellManager.getActiveCellFrom().getBallAndRemoveIt();// It is necessary to remove the ball from the field from where we want to move it.
+                                cellManager.addEmptyCell(cellManager.getActiveCellFrom());// Then it is necessary to include this field in the registry of empty fields.
+                                insertCommand(String.Concat("MIC ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
+                                cellManager.getActiveCellTo().setBall(ballWhichIsBeingMoved);// The ball moves to its new field.
+                                cellManager.addFullCell(cellManager.getActiveCellTo());// The field we moved the ball to is no longer empty and we need to inform the field manager.
 
-                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleKam().VratRadek(), " ", spravcePoli.VratAktivniPoleKam().VratSloupec(), " NOVY ", micKterySePresouva.VratTyp().ToUpper()," NAFOUKNUT"));
-                                //Prezentační vrstvě zašleme další příkaz o změně.
-                                Stack<Cell> zasobnikPoliKamCestovalMic =hledacCesty.VratZasobnikPoliOdkudKam();
+                                insertCommand(String.Concat("MIC ", cellManager.getActiveCellTo().getRow(), " ", cellManager.getActiveCellTo().getColumn(), " NOVY ", ballWhichIsBeingMoved.getType().ToUpper()," NAFOUKNUT"));
+                                // We send another change command to the presentation layer.
+                                Stack<Cell> cellsVisitedByTheBall =pathFinder.getCellsFromTo();
 
-                                Cell aktualniPole;
-                                while (zasobnikPoliKamCestovalMic.Count!=0)
+                                Cell currentCell;
+                                while (cellsVisitedByTheBall.Count!=0)
                                 {
-                                    aktualniPole=zasobnikPoliKamCestovalMic.Pop();
-                                    ZasobnikPoliKtereUzNemajiBytAktivni.Push(aktualniPole);
-                                    VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI ZVYRAZNENE"))); }
-                                //Tento příkaz způsobí, že pole, přes která přešel míč, dočasně ztmavnou.
-                                ZasobnikOdpalenychMicu.Clear();
-                                ZasobnikOdpalenychMicu = odpalovacMicu.ZkontrolujAPripadneOdpal(spravcePoli.VratAktivniPoleKam());
+                                    currentCell=cellsVisitedByTheBall.Pop();
+                                    cellsWhichAreNoMoreActive.Push(currentCell);
+                                    insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI ZVYRAZNENE"))); }
+                                // This command causes the fields the ball passed through to temporarily darken.
+                                explodedBalls.Clear();
+                                explodedBalls = ballExploder.checkAndExplodedIfNeeded(cellManager.getActiveCellTo());
                                 
-                                if (ZasobnikOdpalenychMicu.Count > 1)
+                                if (explodedBalls.Count > 1)
                                 {
-                                    this.spravceVysledku.SpoctiBody(ZasobnikOdpalenychMicu,this,this.spravcePoli,this.ZasobnikPoliKtereUzNemajiBytAktivni);
+                                    this.scoreManager.countPoints(explodedBalls,this,this.cellManager,this.cellsWhichAreNoMoreActive);
 
                                 }
                                 else {
-                                    HazeniMicuBehemHry();// Hodí se příslušný počet míčů do prázdných polí.
-                                    
+                                    throwBallDuringGameIntoEmptyCells();// Throw the appropriate number of balls into the empty fields.
+
                                 }
 
-                                NastavStavHry(1);//Už se nečeká na aktivaci prázdného pole. Teď se opět čeká na aktivaci pole, ve kterém je míč.
-                                if (spravcePoli.ExistujePrazdnePole())
+                                setGameState(1);// No more waiting for an empty field to be activated. Now we are waiting again for the activation of the field in which the ball is.
+                                if (cellManager.hasAtLeastOneEmptyCell())
                                 {
 
                                 }
                                 else
                                 {
 
-                                    NastavStavHry(10);
-                                    VlozPrikaz("HRA KONEC");
+                                    setGameState(10);
+                                    insertCommand("HRA KONEC");
                                 }
 
                             }
                             else {
-                                //MessageBox.Show("Nenašel jsem cestu");
+                                //MessageBox.Show("I didn't find the way");
                             };
-                            // Pokud hledač cesty nenašel cestu.
+                            // If the path finder did not find a path.
 
                         }
 
@@ -384,13 +376,13 @@ namespace Míče
             }
             
         }
-        public int VratSirku()
+        public int getWidth()
         {
-            return this.Sirka;
+            return this.width;
         }
-        public int VratVysku()
+        public int getHeight()
         {
-            return this.Vyska;
+            return this.height;
         }
         
         

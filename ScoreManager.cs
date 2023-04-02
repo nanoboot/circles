@@ -5,198 +5,198 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Míče
+namespace Circles
 {
     class ScoreManager
     {
-        private int Vysledek = 0;
-        private String HracovoJmeno = "";
-        private DatabaseManager spravceDatabaze;
-        private GameComposition sestavaHry;
-        private String sqlPrikazSelectSestavyHry = "";
-        private String sqlPrikazInsertSestavyHry = "";
-        private String sqlPrikazInsertVysledky = "";
-        private int klicIDSestavyHry=0;
-        public ScoreManager(DatabaseManager spravceDatabaze, GameComposition sestavaHry)
-        { this.spravceDatabaze = spravceDatabaze;
-            this.sestavaHry = sestavaHry;
+        private int score = 0;
+        private String playerName = "";
+        private DatabaseManager databaseManager;
+        private GameComposition gameComposition;
+        private String sqlStatementSelectGameComposition = "";
+        private String sqlStatementInsertGameComposition = "";
+        private String sqlStatementInsertScore = "";
+        private int keyIdOfGameComposition=0;
+        public ScoreManager(DatabaseManager databaseManagerArg, GameComposition gameCompositionArg)
+        { this.databaseManager = databaseManagerArg;
+            this.gameComposition = gameCompositionArg;
         }
-        public int SpoctiBody(Stack<Cell> ZasobnikOdpalenychMicuPredany, Game hra, CellManager spravcePoli, Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni)// Spočte body podle toho, jaké míče a kolik je v zásobníku.
+        public int countPoints(Stack<Cell> explodedBalls, Game game, CellManager cellManager, Stack<Cell> cellsWhichShouldNotBeActiveAnymore)// Count the points according to which balls and how many are in the tray.
         {
-            Cell aktualniPole;
-            int pocetMicu = ZasobnikOdpalenychMicuPredany.Count;
-            int pocetZdvojnasobujicichMicu = 0;
-            bool jeZdvojnasobujici = false;
-            while (ZasobnikOdpalenychMicuPredany.Count != 0)
+            Cell currentCell;
+            int ballCount = explodedBalls.Count;
+            int coutnOfDoubleBalls = 0;
+            bool isDouble = false;
+            while (explodedBalls.Count != 0)
             {
-                aktualniPole = ZasobnikOdpalenychMicuPredany.Pop();
-                Ball zkoumanyMic = aktualniPole.OdstranMicZPoleAVratHo();
-                if (zkoumanyMic.VratTyp().Contains("Zdvojnasobujici")) { jeZdvojnasobujici = true; } else { jeZdvojnasobujici = false; }
+                currentCell = explodedBalls.Pop();
+                Ball checkedBall = currentCell.getBallAndRemoveIt();
+                if (checkedBall.getType().Contains("Zdvojnasobujici")) { isDouble = true; } else { isDouble = false; }
 
-                spravcePoli.VlozPrazdnePoleAbychONemVedel(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
+                cellManager.addEmptyCell(currentCell);// Then it is necessary to include this field in the registry of empty fields.
 
-                hra.VlozPrikaz(String.Concat("MIC ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
+                game.insertCommand(String.Concat("MIC ", currentCell.getRow(), " ", currentCell.getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
 
-                ZasobnikPoliKtereUzNemajiBytAktivni.Push(aktualniPole);
-                hra.VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI CERVENE")));
+                cellsWhichShouldNotBeActiveAnymore.Push(currentCell);
+                game.insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI CERVENE")));
 
-                if (jeZdvojnasobujici) { ++pocetZdvojnasobujicichMicu; } else { }; ;
+                if (isDouble) { ++coutnOfDoubleBalls; } else { }; ;
 
 
             }
-            int vypocteneBody = 0;
-            if (sestavaHry.VratTvarSkupinyMicuKteraExploduje()== "linka")
+            int countPoints = 0;
+            if (gameComposition.getShape()== "linka")
             {
-                switch (pocetMicu - sestavaHry.VratMinimalniDelkaLinky())
+                switch (ballCount - gameComposition.getMinLineLength())
                 {
-                    case 0: { vypocteneBody = 10; }; break;
-                    case 1: { vypocteneBody = 12; }; break;
-                    case 2: { vypocteneBody = 18; }; break;
-                    case 3: { vypocteneBody = 28; }; break;
-                    case 4: { vypocteneBody = 42; }; break;
+                    case 0: { countPoints = 10; }; break;
+                    case 1: { countPoints = 12; }; break;
+                    case 2: { countPoints = 18; }; break;
+                    case 3: { countPoints = 28; }; break;
+                    case 4: { countPoints = 42; }; break;
                     default:
                         {
-                            vypocteneBody = 42 + (((pocetMicu - sestavaHry.VratMinimalniDelkaLinky()) - 4) * 5)
+                            countPoints = 42 + (((ballCount - gameComposition.getMinLineLength()) - 4) * 5)
                              ;
                         }; break;
                 };
             }
-            else { vypocteneBody = 10; }
+            else { countPoints = 10; }
 
-            vypocteneBody = vypocteneBody * (int)Math.Pow(2, pocetZdvojnasobujicichMicu);//Podle počtu zdvojnásobujících míčů v zásobníku vynásobí vypočtěné body mocninou dvou.
-            PrictiBodyKVysledku(vypocteneBody,hra);// Přičte body k aktuálnímu výsledku.
-            return vypocteneBody;
+            countPoints = countPoints * (int)Math.Pow(2, coutnOfDoubleBalls);// Based on the number of doubling balls in the stack, it multiplies the calculated points by a power of two.
+            addPointsToTheScore(countPoints,game);// Adds points to the current score.
+            return countPoints;
         }
 
-        private void PrictiBodyKVysledku(int PocetBodu,Game hra)// Přičte body k aktuálnímu výsledku.
+        private void addPointsToTheScore(int pointCount,Game game)// Adds points to the current score.
         {
-            this.Vysledek = this.Vysledek + PocetBodu;
-            hra.VlozPrikaz(String.Concat("VYSLEDEK ", Vysledek));
+            this.score = this.score + pointCount;
+            game.insertCommand(String.Concat("VYSLEDEK ", score));
         }
-        public void NastavHracovoJmeno(String HracovoJmeno)
+        public void setPlayerName(String playerName)
         {
-            this.HracovoJmeno = HracovoJmeno;
+            this.playerName = playerName;
 
-            UlozVysledek(HracovoJmeno, this.Vysledek);
+            saveScore(playerName, this.score);
         }
-        public void UlozVysledek(String HracovoJmeno, int Vysledek)
+        public void saveScore(String playerName, int score)
         {
-            SestavPrikazNaSestavuHryProUlozeniDoDatabaze();
-            if (ExistujeDanaSestavaHryJizVDatabazi())
+            createStatementToSaveGameCompositionIntoDatabase();
+            if (doesExistThisGameCompositinAlreadyInDatabase())
             {
-                klicIDSestavyHry=spravceDatabaze.VratHodnotuKliceIDPrvnihoZaznamuDanehoPrikazu(sqlPrikazSelectSestavyHry);
+                keyIdOfGameComposition=databaseManager.getIdOfFirstFoundRow(sqlStatementSelectGameComposition);
             }
             else
             {
-                klicIDSestavyHry = spravceDatabaze.VratMaximalniHodnotuKliceIDZTabulky("SestavyHry");
-                ++klicIDSestavyHry;
-                SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(klicIDSestavyHry);
-                spravceDatabaze.SpustPrikaz(sqlPrikazInsertSestavyHry);
+                keyIdOfGameComposition = databaseManager.getMaxIdForTable("SestavyHry");
+                ++keyIdOfGameComposition;
+                SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(keyIdOfGameComposition);
+                databaseManager.executeSqlStatement(sqlStatementInsertGameComposition);
 
             };
-            SestavPrikazNaVlozeniVysledkuDoDatabaze(HracovoJmeno, Vysledek, klicIDSestavyHry);
-            spravceDatabaze.SpustPrikaz(sqlPrikazInsertVysledky);
+            createStatementToAddNewScoreToDatabase(playerName, score, keyIdOfGameComposition);
+            databaseManager.executeSqlStatement(sqlStatementInsertScore);
             
         }
-        private bool ExistujeDanaSestavaHryJizVDatabazi()
+        private bool doesExistThisGameCompositinAlreadyInDatabase()
         {
-            return spravceDatabaze.SpustPrikazAZjistiZdaExistujeAlesponJedenZaznam(sqlPrikazSelectSestavyHry);
+            return databaseManager.returnsAtLeastOneRow(sqlStatementSelectGameComposition);
                 }
-        private String SestavPrikazNaSestavuHryProUlozeniDoDatabaze()
+        private String createStatementToSaveGameCompositionIntoDatabase()
         {
-            String sqlPrikazPrvniCast = "SELECT ID FROM SestavyHry WHERE ";
-            String sqlPrikazDruhaCast = String.Concat(
-                String.Concat("Vyska = ", sestavaHry.VratVyska().ToString(), " AND "),
-                String.Concat("Sirka = ", sestavaHry.VratSirka().ToString(), " AND "),
-                String.Concat("SvetleZelena = ", Convert.ToInt32(sestavaHry.VratSvetleZelena()).ToString(), " AND "),
-                String.Concat("Cervena = ", Convert.ToInt32(sestavaHry.VratCervena()).ToString(), " AND "),
-                String.Concat("TmaveModra = ", Convert.ToInt32(sestavaHry.VratTmaveModra()).ToString(), " AND "),
-                String.Concat("Zluta = ", Convert.ToInt32(sestavaHry.VratZluta()).ToString(), " AND "),
-                String.Concat("SvetleModra = ", Convert.ToInt32(sestavaHry.VratSvetleModra()).ToString(), " AND "),
-                String.Concat("Fialova = ", Convert.ToInt32(sestavaHry.VratFialova()).ToString(), " AND "),
-                String.Concat("Hneda = ", Convert.ToInt32(sestavaHry.VratHneda()).ToString(), " AND "),
-                String.Concat("Ruzova = ", Convert.ToInt32(sestavaHry.VratRuzova()).ToString(), " AND "),
-                String.Concat("Zelena = ", Convert.ToInt32(sestavaHry.VratZelena()).ToString(), " AND "),
-                String.Concat("Zlata = ", Convert.ToInt32(sestavaHry.VratZlata()).ToString(), " AND "),
-                String.Concat("Oranzova = ", Convert.ToInt32(sestavaHry.VratOranzova()).ToString(), " AND "),
-                String.Concat("Bila = ", Convert.ToInt32(sestavaHry.VratBila()).ToString(), " AND "),
-                String.Concat("Sediva = ", Convert.ToInt32(sestavaHry.VratSediva()).ToString(), " AND "),
-                String.Concat("Cerna = ", Convert.ToInt32(sestavaHry.VratCerna()).ToString(), " AND "),
-                String.Concat("Modra = ", Convert.ToInt32(sestavaHry.VratModra()).ToString(), " AND "),
-                String.Concat("VojenskaZelena = ", Convert.ToInt32(sestavaHry.VratVojenskaZelena()).ToString(), " AND "),
-                String.Concat("PocetHazenychMicuNaZacatkuHry = ", sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString(), " AND "),
-                String.Concat("PocetHazenychMicuBehemHry = ", sestavaHry.VratPocetHazenychMicuBehemHry().ToString(), " AND "),
-                String.Concat("DuhoveBalls = ", Convert.ToInt32(sestavaHry.VratDuhoveBalls()).ToString(), " AND "),
-                String.Concat("ZdvojnasobujiciBalls = ", Convert.ToInt32(sestavaHry.VratZdvojnasobujiciBalls()).ToString(), " AND "),
-                String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", sestavaHry.VratTvarSkupinyMicuKteraExploduje(), "'", " AND "),
-                String.Concat("MinimalniDelkaLinky = ", sestavaHry.VratMinimalniDelkaLinky().ToString())
+            String sql1 = "SELECT ID FROM SestavyHry WHERE ";
+            String sql2 = String.Concat(
+                String.Concat("Vyska = ", gameComposition.getHeight().ToString(), " AND "),
+                String.Concat("Sirka = ", gameComposition.getWidth().ToString(), " AND "),
+                String.Concat("SvetleZelena = ", Convert.ToInt32(gameComposition.getLightGreen()).ToString(), " AND "),
+                String.Concat("Cervena = ", Convert.ToInt32(gameComposition.isRed()).ToString(), " AND "),
+                String.Concat("TmaveModra = ", Convert.ToInt32(gameComposition.isDarkBlue()).ToString(), " AND "),
+                String.Concat("Zluta = ", Convert.ToInt32(gameComposition.isYellow()).ToString(), " AND "),
+                String.Concat("SvetleModra = ", Convert.ToInt32(gameComposition.isLightBlue()).ToString(), " AND "),
+                String.Concat("Fialova = ", Convert.ToInt32(gameComposition.isPurple()).ToString(), " AND "),
+                String.Concat("Hneda = ", Convert.ToInt32(gameComposition.isBrown()).ToString(), " AND "),
+                String.Concat("Ruzova = ", Convert.ToInt32(gameComposition.isPink()).ToString(), " AND "),
+                String.Concat("Zelena = ", Convert.ToInt32(gameComposition.isGreen()).ToString(), " AND "),
+                String.Concat("Zlata = ", Convert.ToInt32(gameComposition.isGold()).ToString(), " AND "),
+                String.Concat("Oranzova = ", Convert.ToInt32(gameComposition.isOrange()).ToString(), " AND "),
+                String.Concat("Bila = ", Convert.ToInt32(gameComposition.isWhite()).ToString(), " AND "),
+                String.Concat("Sediva = ", Convert.ToInt32(gameComposition.isGrey()).ToString(), " AND "),
+                String.Concat("Cerna = ", Convert.ToInt32(gameComposition.isBlack()).ToString(), " AND "),
+                String.Concat("Modra = ", Convert.ToInt32(gameComposition.isBlue()).ToString(), " AND "),
+                String.Concat("VojenskaZelena = ", Convert.ToInt32(gameComposition.isArmyGreen()).ToString(), " AND "),
+                String.Concat("PocetHazenychMicuNaZacatkuHry = ", gameComposition.getStartBallCount().ToString(), " AND "),
+                String.Concat("PocetHazenychMicuBehemHry = ", gameComposition.getNextBallCount().ToString(), " AND "),
+                String.Concat("DuhoveBalls = ", Convert.ToInt32(gameComposition.isJokerBalls()).ToString(), " AND "),
+                String.Concat("ZdvojnasobujiciBalls = ", Convert.ToInt32(gameComposition.isDoubleScoreBalls()).ToString(), " AND "),
+                String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", gameComposition.getShape(), "'", " AND "),
+                String.Concat("MinimalniDelkaLinky = ", gameComposition.getMinLineLength().ToString())
         );
-            String sqlPrikazTretiCast = ";";
-            this.sqlPrikazSelectSestavyHry = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
-            return this.sqlPrikazSelectSestavyHry;
+            String sql3 = ";";
+            this.sqlStatementSelectGameComposition = String.Concat(sql1, sql2, sql3);
+            return this.sqlStatementSelectGameComposition;
         }
-        private String SestavPrikazNaVlozeniVysledkuDoDatabaze(String HracovoJmeno, int Vysledek, int klicIDSestavyHry)
+        private String createStatementToAddNewScoreToDatabase(String playerName, int score, int klicIDSestavyHry)
         {
             DateTime datumACas = DateTime.Now;
             String otiskVCase = datumACas.ToString("yyyy MM dd HH:mm:ss");
             int klicIDVysledky = 0;
-            if (spravceDatabaze.SpustPrikazAZjistiZdaExistujeAlesponJedenZaznam("SELECT * FROM Vysledky;"))
-            { klicIDVysledky = (spravceDatabaze.VratMaximalniHodnotuKliceIDZTabulky("Vysledky"));++klicIDVysledky; }
+            if (databaseManager.returnsAtLeastOneRow("SELECT * FROM Vysledky;"))
+            { klicIDVysledky = (databaseManager.getMaxIdForTable("Vysledky"));++klicIDVysledky; }
             else { klicIDVysledky = 1; };
             String sqlPrikazPrvniCast = "INSERT INTO Vysledky VALUES ";
             String sqlPrikazDruhaCast = String.Concat(
                 "(",
                 String.Concat(klicIDVysledky.ToString(),","),
-                String.Concat("'", HracovoJmeno, "',"),
-                String.Concat(Vysledek.ToString(), ","),
+                String.Concat("'", playerName, "',"),
+                String.Concat(score.ToString(), ","),
                 String.Concat(klicIDSestavyHry.ToString(), ","),
                 String.Concat("'", otiskVCase, "'"),
                 ")");
             String sqlPrikazTretiCast = ";";
-            this.sqlPrikazInsertVysledky = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
-            return this.sqlPrikazInsertVysledky;
+            this.sqlStatementInsertScore = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
+            return this.sqlStatementInsertScore;
 
         }
-        private void SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(int klicIDSestavyHry)
+        private void SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(int keyIdOfGameCompositionArg)
         {
             
             
-            String sqlPrikazPrvniCast = "INSERT INTO SestavyHry VALUES ";
-            String sqlPrikazDruhaCast = String.Concat(
+            String sql1 = "INSERT INTO SestavyHry VALUES ";
+            String sql2 = String.Concat(
                 "(",
-                String.Concat(klicIDSestavyHry.ToString(), " , "),
-                String.Concat(sestavaHry.VratVyska().ToString(), " , "),
-                String.Concat(sestavaHry.VratSirka().ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratSvetleZelena()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratCervena()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratTmaveModra()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZluta()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratSvetleModra()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratFialova()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratHneda()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratRuzova()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZelena()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZlata()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratOranzova()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratBila()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratSediva()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratCerna()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratModra()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratVojenskaZelena()).ToString(), " , "),
-                String.Concat(sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString(), " , "),
-                String.Concat(sestavaHry.VratPocetHazenychMicuBehemHry().ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratDuhoveBalls()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZdvojnasobujiciBalls()).ToString(), " , "),
-                String.Concat("'", sestavaHry.VratTvarSkupinyMicuKteraExploduje(), "'", " , "),
-                String.Concat(sestavaHry.VratMinimalniDelkaLinky().ToString()),
+                String.Concat(keyIdOfGameCompositionArg.ToString(), " , "),
+                String.Concat(gameComposition.getHeight().ToString(), " , "),
+                String.Concat(gameComposition.getWidth().ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.getLightGreen()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isRed()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isDarkBlue()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isYellow()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isLightBlue()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isPurple()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isBrown()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isPink()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isGreen()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isGold()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isOrange()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isWhite()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isGrey()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isBlack()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isBlue()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isArmyGreen()).ToString(), " , "),
+                String.Concat(gameComposition.getStartBallCount().ToString(), " , "),
+                String.Concat(gameComposition.getNextBallCount().ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isJokerBalls()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(gameComposition.isDoubleScoreBalls()).ToString(), " , "),
+                String.Concat("'", gameComposition.getShape(), "'", " , "),
+                String.Concat(gameComposition.getMinLineLength().ToString()),
                 ")");
-            String sqlPrikazTretiCast = ";";
-            this.sqlPrikazInsertSestavyHry = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
+            String sql3 = ";";
+            this.sqlStatementInsertGameComposition = String.Concat(sql1, sql2, sql3);
             
         }
-        public System.Data.DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID()
-        { int ID=spravceDatabaze.VratHodnotuKliceIDPrvnihoZaznamuDanehoPrikazu(SestavPrikazNaSestavuHryProUlozeniDoDatabaze());
-            return spravceDatabaze.VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID(ID);
+        public System.Data.DataSet getScoreListForGivenTGameCompositionWithGivenId()
+        { int ID=databaseManager.getIdOfFirstFoundRow(createStatementToSaveGameCompositionIntoDatabase());
+            return databaseManager.getScoreListForGivenGameComposition(ID);
         }
     }
 }

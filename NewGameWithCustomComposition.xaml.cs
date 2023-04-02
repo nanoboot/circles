@@ -1,106 +1,97 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace Míče
+namespace Circles
 {
     /// <summary>
     /// Interaction logic for NewGameWindow.xaml
     /// </summary>
-    public partial class NovaHraSVlastnimNastavenimWindow : Window
+    public partial class NewGameWithCustomGameCompositionWindow : Window
     {
-        private GameComposition sestavaVlastniHry;
-        private String TvarSkupinyMicuKteraExploduje = "linka";
-        public NovaHraSVlastnimNastavenimWindow(GameComposition sestavaHry)
+        private GameComposition customGameComposition;
+        private String shapeOfGroupOfBallsWhichWillExplode = "linka";
+        public NewGameWithCustomGameCompositionWindow(GameComposition sestavaHry)
         {
             InitializeComponent();
-            this.sestavaVlastniHry = sestavaHry;
+            this.customGameComposition = sestavaHry;
         }
 
-        public void NastavVychoziHodnoty()// Tato metoda přepíše všechny hodnoty ve formuláři na jejich výchozí hodnoty.
+        public void setDefaultValues()// This method overrides all values in the form to their default values.
         {
 
-            vyskaComboBox.SelectedIndex = 6;
-            sirkaComboBox.SelectedIndex = 6;
-            svetleZelenaCheckBox.IsChecked = true;
-            cervenaCheckBox.IsChecked = true;
-            tmaveModraCheckBox.IsChecked = true;
-            zlutaCheckBox.IsChecked = true;
-            svetleModraCheckBox.IsChecked = true;
-            fialovaCheckBox.IsChecked = true;
-            hnedaCheckBox.IsChecked = true;
-            ruzovaCheckBox.IsChecked = false;
-            zelenaCheckBox.IsChecked = false;
-            zlataCheckBox.IsChecked = false;
-            oranzovaCheckBox.IsChecked = false;
-            bilaCheckBox.IsChecked = false;
-            sedivaCheckBox.IsChecked = false;
-            cernaCheckBox.IsChecked = false;
-            modraCheckBox.IsChecked = false;
-            vojenskaZelenaCheckBox.IsChecked = false;
-            pocetHazenychMicuBehemHryComboBox.SelectedIndex = 2;
-            pocetHazenychMicuNaZacatkuHryComboBox.SelectedIndex = 4;
-            duhoveBallsCheckBox.IsChecked = false;
-            zdvojnasobujiciBallsCheckBox.IsChecked = false;
-            linkaRadioButton.IsChecked = true;
-            minimalniDelkaLinkyComboBox.SelectedIndex = 3;
+            heightComboBox.SelectedIndex = 6;
+            widthComboBox.SelectedIndex = 6;
+            lightGreenCheckBox.IsChecked = true;
+            redCheckBox.IsChecked = true;
+            darkBlueCheckBox.IsChecked = true;
+            yellowCheckBox.IsChecked = true;
+            lightBlueCheckBox.IsChecked = true;
+            purpleCheckBox.IsChecked = true;
+            brownCheckBox.IsChecked = true;
+            pinkCheckBox.IsChecked = false;
+            greenCheckBox.IsChecked = false;
+            goldCheckBox.IsChecked = false;
+            orangeCheckBox.IsChecked = false;
+            whiteCheckBox.IsChecked = false;
+            greyCheckBox.IsChecked = false;
+            blackCheckBox.IsChecked = false;
+            blueCheckBox.IsChecked = false;
+            armyGreenCheckBox.IsChecked = false;
+            duringGameBallCountComboBox.SelectedIndex = 2;
+            startBallCountComboBox.SelectedIndex = 4;
+            jokerBallsCheckBox.IsChecked = false;
+            doubleScoreBallsCheckBox.IsChecked = false;
+            lineRadioButton.IsChecked = true;
+            minLineLengthComboBox.SelectedIndex = 3;
         }
 
-        public void NastavNahodneHodnoty()
+        public void setRandomValues()
         {
-            Random generatorCisel = new Random();
-            vyskaComboBox.SelectedIndex = generatorCisel.Next(1, 29);
-            sirkaComboBox.SelectedIndex = generatorCisel.Next(1, 29);
-            svetleZelenaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            cervenaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            tmaveModraCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            zlutaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            svetleModraCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            fialovaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            hnedaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            ruzovaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            zelenaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            zlataCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            oranzovaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            bilaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            sedivaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            cernaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            modraCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            vojenskaZelenaCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            pocetHazenychMicuBehemHryComboBox.SelectedIndex = (generatorCisel.Next(1, 9));
-            pocetHazenychMicuNaZacatkuHryComboBox.SelectedIndex = (generatorCisel.Next(1, 9));
-            duhoveBallsCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
-            zdvojnasobujiciBallsCheckBox.IsChecked = Convert.ToBoolean(generatorCisel.Next(2));
+            Random randomNumberGenerator = new Random();
+            heightComboBox.SelectedIndex = randomNumberGenerator.Next(1, 29);
+            widthComboBox.SelectedIndex = randomNumberGenerator.Next(1, 29);
+            lightGreenCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            redCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            darkBlueCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            yellowCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            lightBlueCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            purpleCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            brownCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            pinkCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            greenCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            goldCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            orangeCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            whiteCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            greyCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            blackCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            blueCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            armyGreenCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            duringGameBallCountComboBox.SelectedIndex = (randomNumberGenerator.Next(1, 9));
+            startBallCountComboBox.SelectedIndex = (randomNumberGenerator.Next(1, 9));
+            jokerBallsCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
+            doubleScoreBallsCheckBox.IsChecked = Convert.ToBoolean(randomNumberGenerator.Next(2));
             
             
-                switch (generatorCisel.Next(0, 3))
+                switch (randomNumberGenerator.Next(0, 3))
             
             {
                 case 0:
-                    linkaRadioButton.IsChecked = true;
-                    minimalniDelkaLinkyComboBox.SelectedIndex = 
+                    lineRadioButton.IsChecked = true;
+                    minLineLengthComboBox.SelectedIndex = 
                         (
-                        generatorCisel.Next(0, 2+Math.Min(
-                                                        sirkaComboBox.SelectedIndex, vyskaComboBox.SelectedIndex
+                        randomNumberGenerator.Next(0, 2+Math.Min(
+                                                        widthComboBox.SelectedIndex, heightComboBox.SelectedIndex
                                                         )
                                             )
                         );
                 break;
                 case 1:
-                ctverecRadioButton.IsChecked = true;
+                squareRadioButton.IsChecked = true;
                 break;
                 case 2:
-                krouzekRadioButton.IsChecked = true;
+                circlesRadioButton.IsChecked = true;
                 break;
 
             }
@@ -122,84 +113,84 @@ namespace Míče
 
         }
 
-        private void ctverecRadioButton_Checked(object sender, RoutedEventArgs e)
+        private void squareRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.TvarSkupinyMicuKteraExploduje = "ctverec";
+            this.shapeOfGroupOfBallsWhichWillExplode = "ctverec";
         }
 
-        private void krouzekRadioButton_Checked(object sender, RoutedEventArgs e)
+        private void circleRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.TvarSkupinyMicuKteraExploduje = "krouzek";
+            this.shapeOfGroupOfBallsWhichWillExplode = "krouzek";
         }
 
-        private void linkaRadioButton_Checked(object sender, RoutedEventArgs e)
+        private void lineRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.TvarSkupinyMicuKteraExploduje = "linka";
+            this.shapeOfGroupOfBallsWhichWillExplode = "linka";
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            this.NastavNahodneHodnoty();
+            this.setRandomValues();
         }
 
-        private void cervenaCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void redCheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void cernaCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void blackCheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void sedivaCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void greyCheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void nastavitVychoziHodnotyButton_Click(object sender, RoutedEventArgs e)
+        private void setDefaultValuesButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NastavVychoziHodnoty();
+            this.setDefaultValues();
         }
 
-        private void svetleZelenaCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void lightGreenCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             
         }
 
-        private void zacitNovouHruSVlastnimNastavenimButton_Click(object sender, RoutedEventArgs e)
+        private void startNewGameWithCustomGameCompositionButton_Click(object sender, RoutedEventArgs e)
         {
 
-            sestavaVlastniHry.NastavVyska(Convert.ToInt32(vyskaComboBox.Text));
-            sestavaVlastniHry.NastavSirka(Convert.ToInt32(sirkaComboBox.Text));
-            sestavaVlastniHry.NastavSvetleZelena(Convert.ToBoolean(svetleZelenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavCervena(Convert.ToBoolean(cervenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavTmaveModra(Convert.ToBoolean(tmaveModraCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZluta(Convert.ToBoolean(zlutaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavSvetleModra(Convert.ToBoolean(svetleModraCheckBox.IsChecked));
-            sestavaVlastniHry.NastavFialova(Convert.ToBoolean(fialovaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavHneda(Convert.ToBoolean(hnedaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavRuzova(Convert.ToBoolean(ruzovaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZelena(Convert.ToBoolean(zelenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZlata(Convert.ToBoolean(zlataCheckBox.IsChecked));
+            customGameComposition.setHeight(Convert.ToInt32(heightComboBox.Text));
+            customGameComposition.setWidth(Convert.ToInt32(widthComboBox.Text));
+            customGameComposition.setLightGreen(Convert.ToBoolean(lightGreenCheckBox.IsChecked));
+            customGameComposition.setRed(Convert.ToBoolean(redCheckBox.IsChecked));
+            customGameComposition.setDarkBlue(Convert.ToBoolean(darkBlueCheckBox.IsChecked));
+            customGameComposition.setYellow(Convert.ToBoolean(yellowCheckBox.IsChecked));
+            customGameComposition.setLightBlue(Convert.ToBoolean(lightBlueCheckBox.IsChecked));
+            customGameComposition.setPurple(Convert.ToBoolean(purpleCheckBox.IsChecked));
+            customGameComposition.setBrown(Convert.ToBoolean(brownCheckBox.IsChecked));
+            customGameComposition.setPink(Convert.ToBoolean(pinkCheckBox.IsChecked));
+            customGameComposition.setGreen(Convert.ToBoolean(greenCheckBox.IsChecked));
+            customGameComposition.setGold(Convert.ToBoolean(goldCheckBox.IsChecked));
             
-            sestavaVlastniHry.NastavOranzova(Convert.ToBoolean(oranzovaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavBila(Convert.ToBoolean(bilaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavSediva(Convert.ToBoolean(sedivaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavCerna(Convert.ToBoolean(cernaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavModra(Convert.ToBoolean(modraCheckBox.IsChecked));
-            sestavaVlastniHry.NastavVojenskaZelena(Convert.ToBoolean(vojenskaZelenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavPocetHazenychMicuNaZacatkuHry(Convert.ToInt32(pocetHazenychMicuNaZacatkuHryComboBox.Text));
-            sestavaVlastniHry.NastavPocetHazenychMicuBehemHry(Convert.ToInt32(pocetHazenychMicuBehemHryComboBox.Text));
-            sestavaVlastniHry.NastavDuhoveBalls(Convert.ToBoolean(duhoveBallsCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZdvojnasobujiciBalls(Convert.ToBoolean(zdvojnasobujiciBallsCheckBox.IsChecked));
-            sestavaVlastniHry.NastavTvarSkupinyMicuKteraExploduje(this.TvarSkupinyMicuKteraExploduje);
-            sestavaVlastniHry.NastavMinimalniDelkaLinky(Convert.ToInt32(minimalniDelkaLinkyComboBox.Text));
-            sestavaVlastniHry.NastavZmeneno(true);
+            customGameComposition.setOrange(Convert.ToBoolean(orangeCheckBox.IsChecked));
+            customGameComposition.setWhite(Convert.ToBoolean(whiteCheckBox.IsChecked));
+            customGameComposition.setGrey(Convert.ToBoolean(greyCheckBox.IsChecked));
+            customGameComposition.setBlack(Convert.ToBoolean(blackCheckBox.IsChecked));
+            customGameComposition.setBlue(Convert.ToBoolean(blueCheckBox.IsChecked));
+            customGameComposition.setArmyGreen(Convert.ToBoolean(armyGreenCheckBox.IsChecked));
+            customGameComposition.setStartBallCount(Convert.ToInt32(startBallCountComboBox.Text));
+            customGameComposition.setNextBallCount(Convert.ToInt32(duringGameBallCountComboBox.Text));
+            customGameComposition.setJokerBalls(Convert.ToBoolean(jokerBallsCheckBox.IsChecked));
+            customGameComposition.setDoubleScoreBalls(Convert.ToBoolean(doubleScoreBallsCheckBox.IsChecked));
+            customGameComposition.setShape(this.shapeOfGroupOfBallsWhichWillExplode);
+            customGameComposition.setMinLineLength(Convert.ToInt32(minLineLengthComboBox.Text));
+            customGameComposition.setChanged(true);
             Close();
         }
 
-        private void novaHraSVlastnimNastavenimWindow_KeyDown(object sender, KeyEventArgs e)
+        private void newGameWithCustomGameCompositionWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {

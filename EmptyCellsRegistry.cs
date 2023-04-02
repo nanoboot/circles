@@ -1,80 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Windows;
 
 
-namespace Míče
+namespace Circles
 {
     class EmptyCellsRegistry
     {
-        private NodeForEmptyCellRegistry PrvniUzel = null;
-        private NodeForEmptyCellRegistry DocasnyUzel = null;
-        private NodeForEmptyCellRegistry PredchoziDocasnyUzel = null;
-        private int PocetUzlu = 0;
-        private void PocetUzluPlusJedna()// Počet polí registru se zvýší o jedna.
-        { PocetUzlu = ++PocetUzlu;
-            //Zaznam.Zaznamenej("Počet uzlů byl navýšen na ", this.VratPocetUzlu().ToString());
+        private NodeForEmptyCellRegistry firstNode = null;
+        private NodeForEmptyCellRegistry tmpNode = null;
+        private NodeForEmptyCellRegistry previousTmpNode = null;
+        private int nodeCount = 0;
+        private void nodeCountPlusOne()
+        { nodeCount = ++nodeCount;
+            
         }
-        private void PocetUzluMinusJedna()// Počet polí registru se sníží o jedna.
-        { PocetUzlu = --PocetUzlu; }
-        public int VratPocetUzlu()
+        private void nodeCountMinusOne()
+        { nodeCount = --nodeCount; }
+        public int getCountOfNodes()
         {
-           
-            return this.PocetUzlu; }
+            return this.nodeCount; }
 
-        public void VlozPole(Cell NovePole)//Vloží pole do registru.
+        public void addCell(Cell newCell)
         {
 
-            if (PrvniUzel == null) { PrvniUzel = new NodeForEmptyCellRegistry(NovePole); }
-            if (PrvniUzel != null) { DocasnyUzel = PrvniUzel;
-                this.PrvniUzel = new NodeForEmptyCellRegistry(NovePole);
-                this.PrvniUzel.NastavitDalsiUzel(DocasnyUzel);
+            if (firstNode == null) { firstNode = new NodeForEmptyCellRegistry(newCell); }
+            if (firstNode != null) { tmpNode = firstNode;
+                this.firstNode = new NodeForEmptyCellRegistry(newCell);
+                this.firstNode.addNewNode(tmpNode);
             }
-            PocetUzluPlusJedna();
+            nodeCountPlusOne();
         }
-        public Cell VratPole(int Poradi)//Vrátí dané prázdné pole z registru a zároveň toto pole vymaže z registru.
+        public Cell getCell(int order)
         {
-            if (Poradi <= VratPocetUzlu())
+            if (order <= getCountOfNodes())
             {
-                if (Poradi == 1)
+                if (order == 1)
                 {
-                    DocasnyUzel = this.PrvniUzel;
-                    PrvniUzel = PrvniUzel.VratDalsiUzel();
-                    PocetUzluMinusJedna();
-                    return DocasnyUzel.VratPole();
+                    tmpNode = this.firstNode;
+                    firstNode = firstNode.getNextNode();
+                    nodeCountMinusOne();
+                    return tmpNode.getCell();
                 }
-                if (Poradi > 1)
+                if (order > 1)
                 {
-                    DocasnyUzel = this.PrvniUzel;
-                    
-                    for (int i = 1; i < Poradi; i++)
+                    tmpNode = this.firstNode;
+
+                    for (int i = 1; i < order; i++)
                     {
-                        PredchoziDocasnyUzel = DocasnyUzel;
-                        DocasnyUzel = DocasnyUzel.VratDalsiUzel(); }
-                    PredchoziDocasnyUzel.NastavitDalsiUzel(DocasnyUzel.VratDalsiUzel());
-                    PocetUzluMinusJedna();
-                    return DocasnyUzel.VratPole();
-                }else return new Cell();// Zde nějak opravit.
+                        previousTmpNode = tmpNode;
+                        tmpNode = tmpNode.getNextNode();
+                    }
+                    previousTmpNode.addNewNode(tmpNode.getNextNode());
+                    nodeCountMinusOne();
+                    return tmpNode.getCell();
+                }
+                else return new Cell();//throw new ArgumentOutOfRangeException()
 
 
             }
             else
-            { /*return new Pole();*/ throw new ArgumentOutOfRangeException(); }// Zde nějak opravit.
+            { throw new ArgumentOutOfRangeException(); }
         }
-        public void OdstranPole(Cell novePlnePole)//Vrátí dané prázdné pole z registru a zároveň toto pole vymaže z registru.
+        public void removeCell(Cell newFullCell)
         {
-           DocasnyUzel = PrvniUzel;
-            while((DocasnyUzel.VratDalsiUzel()!=null)&&(DocasnyUzel.VratPole()!= novePlnePole))
-                { PredchoziDocasnyUzel = DocasnyUzel;
-                DocasnyUzel = DocasnyUzel.VratDalsiUzel();
+           tmpNode = firstNode;
+            while((tmpNode.getNextNode()!=null)&&(tmpNode.getCell()!= newFullCell))
+                { previousTmpNode = tmpNode;
+                tmpNode = tmpNode.getNextNode();
             }
-            if (DocasnyUzel.VratPole()==novePlnePole)
-            { PredchoziDocasnyUzel.NastavitDalsiUzel(DocasnyUzel.VratDalsiUzel());
-                PocetUzluMinusJedna();
+            if (tmpNode.getCell()==newFullCell)
+            { previousTmpNode.addNewNode(tmpNode.getNextNode());
+                nodeCountMinusOne();
             }
         }
     }

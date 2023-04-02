@@ -1,60 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace Míče
+namespace Circles
 {
     /// <summary>
-    /// Interaction logic for InformaceOAktuálníHreWindow.xaml
+    /// Interaction logic for InformationAboutCurrentGameWindow.xaml
     /// </summary>
-    public partial class InformaceOAktualniHreWindow : Window
+    public partial class InformationAboutCurrentGameWindow : Window
     {
-        public InformaceOAktualniHreWindow(GameComposition sestavaHry)
+        public InformationAboutCurrentGameWindow(GameComposition gameCompositioin)
         {
             InitializeComponent();
-            vyskaLabel.Content = sestavaHry.VratVyska().ToString();
-            sirkaLabel.Content = sestavaHry.VratSirka().ToString();
-            svetleZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratSvetleZelena());
-            cervenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratCervena());
-            tmaveModraLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratTmaveModra());
-            zlutaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZluta());
-            svetleModraLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratSvetleModra());
-            fialovaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratFialova());
-            hnedaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratHneda());
-            ruzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratRuzova());
-            zelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZelena());
-            zlataLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZlata());
-            oranzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratOranzova());
-            bilaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratBila());
-            sedivaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratSediva());
-            cernaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratCerna());
-            modraLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratModra());
-            vojenskaZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratVojenskaZelena());
-            pocetHazenychMicuNaZacatkuHryLabel.Content = sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString();
-            pocetHazenychMicuBehemHryLabel.Content = sestavaHry.VratPocetHazenychMicuBehemHry().ToString();
-            duhoveBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratDuhoveBalls());
-            zdvojnasobujiciBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZdvojnasobujiciBalls());
+            heightLabel.Content = gameCompositioin.getHeight().ToString();
+            widthLabel.Content = gameCompositioin.getWidth().ToString();
+            lightGreenLabel.Content = convertBooleanToString(gameCompositioin.getLightGreen());
+            redLabel.Content = convertBooleanToString(gameCompositioin.isRed());
+            darkBlueLabel.Content = convertBooleanToString(gameCompositioin.isDarkBlue());
+            yellowLabel.Content = convertBooleanToString(gameCompositioin.isYellow());
+            lightBlueLabel.Content = convertBooleanToString(gameCompositioin.isLightBlue());
+            purpleLabel.Content = convertBooleanToString(gameCompositioin.isPurple());
+            brownLabel.Content = convertBooleanToString(gameCompositioin.isBrown());
+            pinkLabel.Content = convertBooleanToString(gameCompositioin.isPink());
+            greenLabel.Content = convertBooleanToString(gameCompositioin.isGreen());
+            goldLabel.Content = convertBooleanToString(gameCompositioin.isGold());
+            orangeLabel.Content = convertBooleanToString(gameCompositioin.isOrange());
+            whiteLabel.Content = convertBooleanToString(gameCompositioin.isWhite());
+            greyLabel.Content = convertBooleanToString(gameCompositioin.isGrey());
+            blackLabel.Content = convertBooleanToString(gameCompositioin.isBlack());
+            blueLabel.Content = convertBooleanToString(gameCompositioin.isBlue());
+            armyGreenLabel.Content = convertBooleanToString(gameCompositioin.isArmyGreen());
+            startBallCountLabel.Content = gameCompositioin.getStartBallCount().ToString();
+            nextBallCountLabel.Content = gameCompositioin.getNextBallCount().ToString();
+            jokerBallsLabel.Content = convertBooleanToString(gameCompositioin.isJokerBalls());
+            doubleScoreBallsLabel.Content = convertBooleanToString(gameCompositioin.isDoubleScoreBalls());
 
-            if (sestavaHry.VratTvarSkupinyMicuKteraExploduje() == "linka")
+            if (gameCompositioin.getShape() == "linka")
             {
-                String tvarSlovaBalls = "";
-                if (sestavaHry.VratMinimalniDelkaLinky() <= 4)
-                { tvarSlovaBalls = "míče"; }  else { tvarSlovaBalls = "míčů"; };
-                tvarSkupinyMicuKteraExplodujeLabel.Content = String.Concat(sestavaHry.VratTvarSkupinyMicuKteraExploduje(), " s minimální délkou ", sestavaHry.VratMinimalniDelkaLinky(), " ",tvarSlovaBalls);
+                shapeLabel.Content = String.Concat(gameCompositioin.getShape(), " with minimal length ", gameCompositioin.getMinLineLength(), " ","balls");
             }
             else
             {
-                tvarSkupinyMicuKteraExplodujeLabel.Content = sestavaHry.VratTvarSkupinyMicuKteraExploduje();
+                shapeLabel.Content = gameCompositioin.getShape();
             };
 
         }
@@ -63,8 +50,8 @@ namespace Míče
         {
             this.Close();
         }
-        private String PrevedLogickouHodnotuNaRetezec(bool LogickaHodnota)
-        { if (LogickaHodnota) { return "ano"; } else { return "ne"; }; }
+        private String convertBooleanToString(bool logicValue)
+        { return logicValue ? "yes":"no"; }
 
         private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {

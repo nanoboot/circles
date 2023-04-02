@@ -1,148 +1,144 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Míče
+namespace Circles
 {
     public class GameComposition
     {
-        private int Sirka;
-        private int Vyska;
-        private bool SvetleZelena;
-        private bool Cervena;
-        private bool TmaveModra;
-        private bool Zluta;
-        private bool SvetleModra;
-        private bool Fialova;
-        private bool Hneda;
-        private bool Ruzova;
-        private bool Zelena;
-        private bool Zlata;
-        private bool Oranzova;
-        private bool Bila;
-        private bool Sediva;
-        private bool Cerna;
-        private bool Modra;
-        private bool VojenskaZelena;
-        private int PocetHazenychMicuNaZacatkuHry;
-        private int PocetHazenychMicuBehemHry;
-        private bool DuhoveBalls;
-        private bool ZdvojnasobujiciBalls;
-        private string TvarSkupinyMicuKteraExploduje;
-        private int MinimalniDelkaLinky;
-        private bool Zmeneno;
+        private int width;
+        private int height;
+        private bool lightGreen;
+        private bool red;
+        private bool darkBlue;
+        private bool yellow;
+        private bool lightBlue;
+        private bool purple;
+        private bool brown;
+        private bool pink;
+        private bool green;
+        private bool gold;
+        private bool orange;
+        private bool white;
+        private bool grey;
+        private bool black;
+        private bool blue;
+        private bool armyGreen;
+        private int startBallCount;
+        private int nextBallCount;
+        private bool jokerBalls;
+        private bool doubleScoreBalls;
+        private string shape;
+        private int minLineLength;
+        private bool changed;
         public GameComposition()
         {
-            NastavVychoziHodnoty();
-            this.Zmeneno = false;
+            setDefaultValues();
+            this.changed = false;
         }
-        public void NastavZmeneno(bool Zmeneno)
-        { this.Zmeneno = Zmeneno; }
-        public bool VratZmeneno()
-        { return this.Zmeneno; }
-        public void NastavSirka(int Sirka)
-        { this.Sirka = Sirka; }
-        public void NastavVyska(int Vyska)
-        { this.Vyska = Vyska; }
-        public void NastavSvetleZelena(bool SvetleZelena)
-        { this.SvetleZelena=SvetleZelena;}
-        public void NastavCervena(bool Cervena)
-        { this.Cervena = Cervena; }
-        public void NastavTmaveModra(bool TmaveModra)
-        { this.TmaveModra = TmaveModra; }
-        public void NastavZluta(bool Zluta)
-        { this.Zluta = Zluta; }
-        public void NastavSvetleModra(bool SvetleModra)
-        { this.SvetleModra = SvetleModra; }
-        public void NastavFialova(bool Fialova)
-        { this.Fialova = Fialova; }
-        public void NastavHneda(bool Hneda)
-        { this.Hneda = Hneda; }
-        public void NastavRuzova(bool Ruzova)
-        { this.Ruzova = Ruzova; }
-        public void NastavZelena(bool Zelena)
-        { this.Zelena = Zelena; }
-        public void NastavZlata(bool Zlata)
-        { this.Zlata = Zlata; }
-        public void NastavOranzova(bool Oranzova)
-        { this.Oranzova = Oranzova; }
-        public void NastavBila(bool Bila)
-        { this.Bila = Bila; }
-        public void NastavSediva(bool Sediva)
-        { this.Sediva = Sediva; }
-        public void NastavCerna(bool Cerna)
-        { this.Cerna = Cerna; }
-        public void NastavModra(bool Modra)
-        { this.Modra = Modra; }
-        public void NastavVojenskaZelena(bool VojenskaZelena)
-        { this.VojenskaZelena = VojenskaZelena; }
-        public void NastavPocetHazenychMicuBehemHry(int PocetHazenychMicuBehemHry)
-        { this.PocetHazenychMicuBehemHry = PocetHazenychMicuBehemHry; }
-        public void NastavPocetHazenychMicuNaZacatkuHry(int PocetHazenychMicuNaZacatkuHry)
-        { this.PocetHazenychMicuNaZacatkuHry = PocetHazenychMicuNaZacatkuHry; }
-        public void NastavDuhoveBalls(bool DuhoveBalls)
-        { this.DuhoveBalls = DuhoveBalls; }
-        public void NastavZdvojnasobujiciBalls(bool ZdvojnasobujiciBalls)
-        { this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls; }
-        public void NastavTvarSkupinyMicuKteraExploduje(String TvarSkupinyMicuKteraExploduje)
-        { this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje; }
-        public void NastavMinimalniDelkaLinky(int MinimalniDelkaLinky)
-        { this.MinimalniDelkaLinky = MinimalniDelkaLinky; }
+        public void setChanged(bool changed)
+        { this.changed = changed; }
+        public bool isChanged()
+        { return this.changed; }
+        public void setWidth(int width)
+        { this.width = width; }
+        public void setHeight(int height)
+        { this.height = height; }
+        public void setLightGreen(bool lightGreen)
+        { this.lightGreen=lightGreen;}
+        public void setRed(bool red)
+        { this.red = red; }
+        public void setDarkBlue(bool darkBlue)
+        { this.darkBlue = darkBlue; }
+        public void setYellow(bool yellow)
+        { this.yellow = yellow; }
+        public void setLightBlue(bool lightBlue)
+        { this.lightBlue = lightBlue; }
+        public void setPurple(bool purple)
+        { this.purple = purple; }
+        public void setBrown(bool brown)
+        { this.brown = brown; }
+        public void setPink(bool pink)
+        { this.pink = pink; }
+        public void setGreen(bool green)
+        { this.green = green; }
+        public void setGold(bool gold)
+        { this.gold = gold; }
+        public void setOrange(bool orange)
+        { this.orange = orange; }
+        public void setWhite(bool white)
+        { this.white = white; }
+        public void setGrey(bool grey)
+        { this.grey = grey; }
+        public void setBlack(bool black)
+        { this.black = black; }
+        public void setBlue(bool blue)
+        { this.blue = blue; }
+        public void setArmyGreen(bool armyGreen)
+        { this.armyGreen = armyGreen; }
+        public void setNextBallCount(int nextBallCount)
+        { this.nextBallCount = nextBallCount; }
+        public void setStartBallCount(int startBallCount)
+        { this.startBallCount = startBallCount; }
+        public void setJokerBalls(bool jokerBalls)
+        { this.jokerBalls = jokerBalls; }
+        public void setDoubleScoreBalls(bool doubleScoreBalls)
+        { this.doubleScoreBalls = doubleScoreBalls; }
+        public void setShape(String shape)
+        { this.shape = shape; }
+        public void setMinLineLength(int minLineLength)
+        { this.minLineLength = minLineLength; }
 
-        public int VratSirka()
-        { return this.Sirka; }
-        public int VratVyska() { return this.Vyska; }
-        public bool VratSvetleZelena() { return this.SvetleZelena; }
-        public bool VratCervena() { return this.Cervena; }
-        public bool VratTmaveModra() { return this.TmaveModra; }
-        public bool VratZluta() { return this.Zluta; }
-        public bool VratSvetleModra() { return this.SvetleModra; }
-        public bool VratFialova() { return this.Fialova; }
-        public bool VratHneda() { return this.Hneda; }
-        public bool VratRuzova() { return this.Ruzova; }
-        public bool VratZelena() { return this.Zelena; }
-        public bool VratZlata() { return this.Zlata; }
-        public bool VratOranzova() { return this.Oranzova; }
-        public bool VratBila() { return this.Bila; }
-        public bool VratSediva() { return this.Sediva; }
-        public bool VratCerna() { return this.Cerna; }
-        public bool VratModra() { return this.Modra; }
-        public bool VratVojenskaZelena() { return this.VojenskaZelena; }
-        public int VratPocetHazenychMicuNaZacatkuHry() { return this.PocetHazenychMicuNaZacatkuHry; }
-        public int VratPocetHazenychMicuBehemHry() { return this.PocetHazenychMicuBehemHry; }
-        public bool VratDuhoveBalls() { return this.DuhoveBalls; }
-        public bool VratZdvojnasobujiciBalls() { return this.ZdvojnasobujiciBalls; }
-        public string VratTvarSkupinyMicuKteraExploduje() { return this.TvarSkupinyMicuKteraExploduje; }
-        public int VratMinimalniDelkaLinky() { return this.MinimalniDelkaLinky; }
-        public void NastavVychoziHodnoty()// Tato metoda přepíše všechny hodnoty ve formuláři na jejich výchozí hodnoty.
+        public int getWidth()
+        { return this.width; }
+        public int getHeight() { return this.height; }
+        public bool getLightGreen() { return this.lightGreen; }
+        public bool isRed() { return this.red; }
+        public bool isDarkBlue() { return this.darkBlue; }
+        public bool isYellow() { return this.yellow; }
+        public bool isLightBlue() { return this.lightBlue; }
+        public bool isPurple() { return this.purple; }
+        public bool isBrown() { return this.brown; }
+        public bool isPink() { return this.pink; }
+        public bool isGreen() { return this.green; }
+        public bool isGold() { return this.gold; }
+        public bool isOrange() { return this.orange; }
+        public bool isWhite() { return this.white; }
+        public bool isGrey() { return this.grey; }
+        public bool isBlack() { return this.black; }
+        public bool isBlue() { return this.blue; }
+        public bool isArmyGreen() { return this.armyGreen; }
+        public int getStartBallCount() { return this.startBallCount; }
+        public int getNextBallCount() { return this.nextBallCount; }
+        public bool isJokerBalls() { return this.jokerBalls; }
+        public bool isDoubleScoreBalls() { return this.doubleScoreBalls; }
+        public string getShape() { return this.shape; }
+        public int getMinLineLength() { return this.minLineLength; }
+        public void setDefaultValues()
         {
 
-            this.NastavVyska(9);
-            this.NastavSirka(9);
-            this.NastavSvetleZelena(true);
-            this.NastavCervena(true);
-            this.NastavTmaveModra(true);
-            this.NastavZluta(true);
-            this.NastavSvetleModra(true);
-            this.NastavFialova(true);
-            this.NastavHneda(true);
-            this.NastavRuzova(false);
-            this.NastavZelena(false);
-            this.NastavZlata(false);
-            this.NastavOranzova(false);
-            this.NastavBila(false);
-            this.NastavSediva(false);
-            this.NastavCerna(false);
-            this.NastavModra(false);
-            this.NastavVojenskaZelena(false);
-            this.NastavPocetHazenychMicuNaZacatkuHry(5);
-            this.NastavPocetHazenychMicuBehemHry(3);
-            this.NastavDuhoveBalls(false);
-            this.NastavZdvojnasobujiciBalls(false);
-            this.NastavTvarSkupinyMicuKteraExploduje("linka");
-            this.NastavMinimalniDelkaLinky(5);
+            this.setHeight(9);
+            this.setWidth(9);
+            this.setLightGreen(true);
+            this.setRed(true);
+            this.setDarkBlue(true);
+            this.setYellow(true);
+            this.setLightBlue(true);
+            this.setPurple(true);
+            this.setBrown(true);
+            this.setPink(false);
+            this.setGreen(false);
+            this.setGold(false);
+            this.setOrange(false);
+            this.setWhite(false);
+            this.setGrey(false);
+            this.setBlack(false);
+            this.setBlue(false);
+            this.setArmyGreen(false);
+            this.setStartBallCount(5);
+            this.setNextBallCount(3);
+            this.setJokerBalls(false);
+            this.setDoubleScoreBalls(false);
+            this.setShape("linka");
+            this.setMinLineLength(5);
             
         }
 
