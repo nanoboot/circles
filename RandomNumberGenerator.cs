@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Míče
+namespace Balls
 {
     public static class RandomNumberGenerator
     {

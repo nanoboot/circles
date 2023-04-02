@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace Míče
+namespace Balls
 {
     class CellManager
     {

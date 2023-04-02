@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Media.Effects;
-namespace Míče
+namespace Balls
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -900,7 +900,7 @@ namespace Míče
         
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)//Otevře se okno O ...
         {
-            OWindow oWindow = new OWindow();
+            AboutWindow oWindow = new AboutWindow();
             oWindow.ShowDialog();
         }
 
