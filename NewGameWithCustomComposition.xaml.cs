@@ -170,32 +170,32 @@ namespace Balls
         private void zacitNovouHruSVlastnimNastavenimButton_Click(object sender, RoutedEventArgs e)
         {
 
-            sestavaVlastniHry.NastavVyska(Convert.ToInt32(vyskaComboBox.Text));
-            sestavaVlastniHry.NastavSirka(Convert.ToInt32(sirkaComboBox.Text));
-            sestavaVlastniHry.NastavSvetleZelena(Convert.ToBoolean(svetleZelenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavCervena(Convert.ToBoolean(cervenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavTmaveModra(Convert.ToBoolean(tmaveModraCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZluta(Convert.ToBoolean(zlutaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavSvetleModra(Convert.ToBoolean(svetleModraCheckBox.IsChecked));
-            sestavaVlastniHry.NastavFialova(Convert.ToBoolean(fialovaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavHneda(Convert.ToBoolean(hnedaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavRuzova(Convert.ToBoolean(ruzovaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZelena(Convert.ToBoolean(zelenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZlata(Convert.ToBoolean(zlataCheckBox.IsChecked));
+            sestavaVlastniHry.setHeight(Convert.ToInt32(vyskaComboBox.Text));
+            sestavaVlastniHry.setWidth(Convert.ToInt32(sirkaComboBox.Text));
+            sestavaVlastniHry.setLightGreen(Convert.ToBoolean(svetleZelenaCheckBox.IsChecked));
+            sestavaVlastniHry.setRed(Convert.ToBoolean(cervenaCheckBox.IsChecked));
+            sestavaVlastniHry.setDarkBlue(Convert.ToBoolean(tmaveModraCheckBox.IsChecked));
+            sestavaVlastniHry.setYellow(Convert.ToBoolean(zlutaCheckBox.IsChecked));
+            sestavaVlastniHry.setLightBlue(Convert.ToBoolean(svetleModraCheckBox.IsChecked));
+            sestavaVlastniHry.setPurple(Convert.ToBoolean(fialovaCheckBox.IsChecked));
+            sestavaVlastniHry.setBrown(Convert.ToBoolean(hnedaCheckBox.IsChecked));
+            sestavaVlastniHry.setPink(Convert.ToBoolean(ruzovaCheckBox.IsChecked));
+            sestavaVlastniHry.setGreen(Convert.ToBoolean(zelenaCheckBox.IsChecked));
+            sestavaVlastniHry.setGold(Convert.ToBoolean(zlataCheckBox.IsChecked));
             
-            sestavaVlastniHry.NastavOranzova(Convert.ToBoolean(oranzovaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavBila(Convert.ToBoolean(bilaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavSediva(Convert.ToBoolean(sedivaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavCerna(Convert.ToBoolean(cernaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavModra(Convert.ToBoolean(modraCheckBox.IsChecked));
-            sestavaVlastniHry.NastavVojenskaZelena(Convert.ToBoolean(vojenskaZelenaCheckBox.IsChecked));
-            sestavaVlastniHry.NastavPocetHazenychMicuNaZacatkuHry(Convert.ToInt32(pocetHazenychMicuNaZacatkuHryComboBox.Text));
-            sestavaVlastniHry.NastavPocetHazenychMicuBehemHry(Convert.ToInt32(pocetHazenychMicuBehemHryComboBox.Text));
-            sestavaVlastniHry.NastavDuhoveBalls(Convert.ToBoolean(duhoveBallsCheckBox.IsChecked));
-            sestavaVlastniHry.NastavZdvojnasobujiciBalls(Convert.ToBoolean(zdvojnasobujiciBallsCheckBox.IsChecked));
-            sestavaVlastniHry.NastavTvarSkupinyMicuKteraExploduje(this.TvarSkupinyMicuKteraExploduje);
-            sestavaVlastniHry.NastavMinimalniDelkaLinky(Convert.ToInt32(minimalniDelkaLinkyComboBox.Text));
-            sestavaVlastniHry.NastavZmeneno(true);
+            sestavaVlastniHry.setOrange(Convert.ToBoolean(oranzovaCheckBox.IsChecked));
+            sestavaVlastniHry.setWhite(Convert.ToBoolean(bilaCheckBox.IsChecked));
+            sestavaVlastniHry.setGrey(Convert.ToBoolean(sedivaCheckBox.IsChecked));
+            sestavaVlastniHry.setBlack(Convert.ToBoolean(cernaCheckBox.IsChecked));
+            sestavaVlastniHry.setBlue(Convert.ToBoolean(modraCheckBox.IsChecked));
+            sestavaVlastniHry.setArmyGreen(Convert.ToBoolean(vojenskaZelenaCheckBox.IsChecked));
+            sestavaVlastniHry.setStartBallCount(Convert.ToInt32(pocetHazenychMicuNaZacatkuHryComboBox.Text));
+            sestavaVlastniHry.setNextBallCount(Convert.ToInt32(pocetHazenychMicuBehemHryComboBox.Text));
+            sestavaVlastniHry.setJokerBalls(Convert.ToBoolean(duhoveBallsCheckBox.IsChecked));
+            sestavaVlastniHry.setDoubleScoreBalls(Convert.ToBoolean(zdvojnasobujiciBallsCheckBox.IsChecked));
+            sestavaVlastniHry.setShape(this.TvarSkupinyMicuKteraExploduje);
+            sestavaVlastniHry.setMinLineLength(Convert.ToInt32(minimalniDelkaLinkyComboBox.Text));
+            sestavaVlastniHry.setChanged(true);
             Close();
         }
 

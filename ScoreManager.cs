@@ -45,9 +45,9 @@ namespace Balls
 
             }
             int vypocteneBody = 0;
-            if (sestavaHry.VratTvarSkupinyMicuKteraExploduje()== "linka")
+            if (sestavaHry.getShape()== "linka")
             {
-                switch (pocetMicu - sestavaHry.VratMinimalniDelkaLinky())
+                switch (pocetMicu - sestavaHry.getMinLineLength())
                 {
                     case 0: { vypocteneBody = 10; }; break;
                     case 1: { vypocteneBody = 12; }; break;
@@ -56,7 +56,7 @@ namespace Balls
                     case 4: { vypocteneBody = 42; }; break;
                     default:
                         {
-                            vypocteneBody = 42 + (((pocetMicu - sestavaHry.VratMinimalniDelkaLinky()) - 4) * 5)
+                            vypocteneBody = 42 + (((pocetMicu - sestavaHry.getMinLineLength()) - 4) * 5)
                              ;
                         }; break;
                 };
@@ -106,30 +106,30 @@ namespace Balls
         {
             String sqlPrikazPrvniCast = "SELECT ID FROM SestavyHry WHERE ";
             String sqlPrikazDruhaCast = String.Concat(
-                String.Concat("Vyska = ", sestavaHry.VratVyska().ToString(), " AND "),
-                String.Concat("Sirka = ", sestavaHry.VratSirka().ToString(), " AND "),
-                String.Concat("SvetleZelena = ", Convert.ToInt32(sestavaHry.VratSvetleZelena()).ToString(), " AND "),
-                String.Concat("Cervena = ", Convert.ToInt32(sestavaHry.VratCervena()).ToString(), " AND "),
-                String.Concat("TmaveModra = ", Convert.ToInt32(sestavaHry.VratTmaveModra()).ToString(), " AND "),
-                String.Concat("Zluta = ", Convert.ToInt32(sestavaHry.VratZluta()).ToString(), " AND "),
-                String.Concat("SvetleModra = ", Convert.ToInt32(sestavaHry.VratSvetleModra()).ToString(), " AND "),
-                String.Concat("Fialova = ", Convert.ToInt32(sestavaHry.VratFialova()).ToString(), " AND "),
-                String.Concat("Hneda = ", Convert.ToInt32(sestavaHry.VratHneda()).ToString(), " AND "),
-                String.Concat("Ruzova = ", Convert.ToInt32(sestavaHry.VratRuzova()).ToString(), " AND "),
-                String.Concat("Zelena = ", Convert.ToInt32(sestavaHry.VratZelena()).ToString(), " AND "),
-                String.Concat("Zlata = ", Convert.ToInt32(sestavaHry.VratZlata()).ToString(), " AND "),
-                String.Concat("Oranzova = ", Convert.ToInt32(sestavaHry.VratOranzova()).ToString(), " AND "),
-                String.Concat("Bila = ", Convert.ToInt32(sestavaHry.VratBila()).ToString(), " AND "),
-                String.Concat("Sediva = ", Convert.ToInt32(sestavaHry.VratSediva()).ToString(), " AND "),
-                String.Concat("Cerna = ", Convert.ToInt32(sestavaHry.VratCerna()).ToString(), " AND "),
-                String.Concat("Modra = ", Convert.ToInt32(sestavaHry.VratModra()).ToString(), " AND "),
-                String.Concat("VojenskaZelena = ", Convert.ToInt32(sestavaHry.VratVojenskaZelena()).ToString(), " AND "),
-                String.Concat("PocetHazenychMicuNaZacatkuHry = ", sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString(), " AND "),
-                String.Concat("PocetHazenychMicuBehemHry = ", sestavaHry.VratPocetHazenychMicuBehemHry().ToString(), " AND "),
-                String.Concat("DuhoveBalls = ", Convert.ToInt32(sestavaHry.VratDuhoveBalls()).ToString(), " AND "),
-                String.Concat("ZdvojnasobujiciBalls = ", Convert.ToInt32(sestavaHry.VratZdvojnasobujiciBalls()).ToString(), " AND "),
-                String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", sestavaHry.VratTvarSkupinyMicuKteraExploduje(), "'", " AND "),
-                String.Concat("MinimalniDelkaLinky = ", sestavaHry.VratMinimalniDelkaLinky().ToString())
+                String.Concat("Vyska = ", sestavaHry.getHeight().ToString(), " AND "),
+                String.Concat("Sirka = ", sestavaHry.getWidth().ToString(), " AND "),
+                String.Concat("SvetleZelena = ", Convert.ToInt32(sestavaHry.getLightGreen()).ToString(), " AND "),
+                String.Concat("Cervena = ", Convert.ToInt32(sestavaHry.isRed()).ToString(), " AND "),
+                String.Concat("TmaveModra = ", Convert.ToInt32(sestavaHry.isDarkBlue()).ToString(), " AND "),
+                String.Concat("Zluta = ", Convert.ToInt32(sestavaHry.isYellow()).ToString(), " AND "),
+                String.Concat("SvetleModra = ", Convert.ToInt32(sestavaHry.isLightBlue()).ToString(), " AND "),
+                String.Concat("Fialova = ", Convert.ToInt32(sestavaHry.isPurple()).ToString(), " AND "),
+                String.Concat("Hneda = ", Convert.ToInt32(sestavaHry.isBrown()).ToString(), " AND "),
+                String.Concat("Ruzova = ", Convert.ToInt32(sestavaHry.isPink()).ToString(), " AND "),
+                String.Concat("Zelena = ", Convert.ToInt32(sestavaHry.isGreen()).ToString(), " AND "),
+                String.Concat("Zlata = ", Convert.ToInt32(sestavaHry.isGold()).ToString(), " AND "),
+                String.Concat("Oranzova = ", Convert.ToInt32(sestavaHry.isOrange()).ToString(), " AND "),
+                String.Concat("Bila = ", Convert.ToInt32(sestavaHry.isWhite()).ToString(), " AND "),
+                String.Concat("Sediva = ", Convert.ToInt32(sestavaHry.isGrey()).ToString(), " AND "),
+                String.Concat("Cerna = ", Convert.ToInt32(sestavaHry.isBlack()).ToString(), " AND "),
+                String.Concat("Modra = ", Convert.ToInt32(sestavaHry.isBlue()).ToString(), " AND "),
+                String.Concat("VojenskaZelena = ", Convert.ToInt32(sestavaHry.isArmyGreen()).ToString(), " AND "),
+                String.Concat("PocetHazenychMicuNaZacatkuHry = ", sestavaHry.getStartBallCount().ToString(), " AND "),
+                String.Concat("PocetHazenychMicuBehemHry = ", sestavaHry.getNextBallCount().ToString(), " AND "),
+                String.Concat("DuhoveBalls = ", Convert.ToInt32(sestavaHry.isJokerBalls()).ToString(), " AND "),
+                String.Concat("ZdvojnasobujiciBalls = ", Convert.ToInt32(sestavaHry.isDoubleScoreBalls()).ToString(), " AND "),
+                String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", sestavaHry.getShape(), "'", " AND "),
+                String.Concat("MinimalniDelkaLinky = ", sestavaHry.getMinLineLength().ToString())
         );
             String sqlPrikazTretiCast = ";";
             this.sqlPrikazSelectSestavyHry = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
@@ -165,30 +165,30 @@ namespace Balls
             String sqlPrikazDruhaCast = String.Concat(
                 "(",
                 String.Concat(klicIDSestavyHry.ToString(), " , "),
-                String.Concat(sestavaHry.VratVyska().ToString(), " , "),
-                String.Concat(sestavaHry.VratSirka().ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratSvetleZelena()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratCervena()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratTmaveModra()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZluta()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratSvetleModra()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratFialova()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratHneda()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratRuzova()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZelena()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZlata()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratOranzova()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratBila()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratSediva()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratCerna()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratModra()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratVojenskaZelena()).ToString(), " , "),
-                String.Concat(sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString(), " , "),
-                String.Concat(sestavaHry.VratPocetHazenychMicuBehemHry().ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratDuhoveBalls()).ToString(), " , "),
-                String.Concat(Convert.ToInt32(sestavaHry.VratZdvojnasobujiciBalls()).ToString(), " , "),
-                String.Concat("'", sestavaHry.VratTvarSkupinyMicuKteraExploduje(), "'", " , "),
-                String.Concat(sestavaHry.VratMinimalniDelkaLinky().ToString()),
+                String.Concat(sestavaHry.getHeight().ToString(), " , "),
+                String.Concat(sestavaHry.getWidth().ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.getLightGreen()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isRed()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isDarkBlue()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isYellow()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isLightBlue()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isPurple()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isBrown()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isPink()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isGreen()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isGold()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isOrange()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isWhite()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isGrey()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isBlack()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isBlue()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isArmyGreen()).ToString(), " , "),
+                String.Concat(sestavaHry.getStartBallCount().ToString(), " , "),
+                String.Concat(sestavaHry.getNextBallCount().ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isJokerBalls()).ToString(), " , "),
+                String.Concat(Convert.ToInt32(sestavaHry.isDoubleScoreBalls()).ToString(), " , "),
+                String.Concat("'", sestavaHry.getShape(), "'", " , "),
+                String.Concat(sestavaHry.getMinLineLength().ToString()),
                 ")");
             String sqlPrikazTretiCast = ";";
             this.sqlPrikazInsertSestavyHry = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);

@@ -185,30 +185,30 @@ namespace Balls
             ResetujProstredi();//Musí se vyčistit okno od všeho, co v okně zůstalo po nové hře
             hra = new Game(
         this.sestavaHry,
-        sestavaHry.VratVyska(),
-        sestavaHry.VratSirka(),
-        sestavaHry.VratSvetleZelena(),
-        sestavaHry.VratCervena(),
-        sestavaHry.VratTmaveModra(),
-        sestavaHry.VratZluta(),
-        sestavaHry.VratSvetleModra(),
-        sestavaHry.VratFialova(),
-        sestavaHry.VratHneda(),
-        sestavaHry.VratRuzova(),
-        sestavaHry.VratZelena(),
-        sestavaHry.VratZlata(),
-        sestavaHry.VratOranzova(),
-        sestavaHry.VratBila(),
-        sestavaHry.VratSediva(),
-        sestavaHry.VratCerna(),
-        sestavaHry.VratModra(),
-        sestavaHry.VratVojenskaZelena(),
-        sestavaHry.VratPocetHazenychMicuNaZacatkuHry(),
-        sestavaHry.VratPocetHazenychMicuBehemHry(),
-        sestavaHry.VratDuhoveBalls(),
-        sestavaHry.VratZdvojnasobujiciBalls(),
-        sestavaHry.VratTvarSkupinyMicuKteraExploduje(),
-        sestavaHry.VratMinimalniDelkaLinky()
+        sestavaHry.getHeight(),
+        sestavaHry.getWidth(),
+        sestavaHry.getLightGreen(),
+        sestavaHry.isRed(),
+        sestavaHry.isDarkBlue(),
+        sestavaHry.isYellow(),
+        sestavaHry.isLightBlue(),
+        sestavaHry.isPurple(),
+        sestavaHry.isBrown(),
+        sestavaHry.isPink(),
+        sestavaHry.isGreen(),
+        sestavaHry.isGold(),
+        sestavaHry.isOrange(),
+        sestavaHry.isWhite(),
+        sestavaHry.isGrey(),
+        sestavaHry.isBlack(),
+        sestavaHry.isBlue(),
+        sestavaHry.isArmyGreen(),
+        sestavaHry.getStartBallCount(),
+        sestavaHry.getNextBallCount(),
+        sestavaHry.isJokerBalls(),
+        sestavaHry.isDoubleScoreBalls(),
+        sestavaHry.getShape(),
+        sestavaHry.getMinLineLength()
 
                 );//Vytvoří hru a to podle toho, jaké vlastnosti má vlastnost okna sestavyHry.
             int sirkaDesky = 520;
@@ -917,16 +917,16 @@ namespace Balls
 
         private void HlavniOknoWindow_Activated(object sender, EventArgs e)// Pokud byla po aktivaci okna sestava hry změněna, spustí se nová hra s touto sestavou.
         {
-            if (sestavaHry.VratZmeneno())
+            if (sestavaHry.isChanged())
             {
-                sestavaHry.NastavZmeneno(false);
+                sestavaHry.setChanged(false);
                 NovaHra();
             }
         }
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            InformaceOAktualniHreWindow informaceOAktualniHreWindow = new InformaceOAktualniHreWindow(this.sestavaHry);
+            InformationAboutCurrentGameWindow informaceOAktualniHreWindow = new InformationAboutCurrentGameWindow(this.sestavaHry);
             informaceOAktualniHreWindow.Show();
         }
 

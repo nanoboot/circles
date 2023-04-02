@@ -1,60 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Balls
 {
     /// <summary>
-    /// Interaction logic for InformaceOAktuálníHreWindow.xaml
+    /// Interaction logic for InformationAboutCurrentGameWindow.xaml
     /// </summary>
-    public partial class InformaceOAktualniHreWindow : Window
+    public partial class InformationAboutCurrentGameWindow : Window
     {
-        public InformaceOAktualniHreWindow(GameComposition sestavaHry)
+        public InformationAboutCurrentGameWindow(GameComposition gameCompositioin)
         {
             InitializeComponent();
-            vyskaLabel.Content = sestavaHry.VratVyska().ToString();
-            sirkaLabel.Content = sestavaHry.VratSirka().ToString();
-            svetleZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratSvetleZelena());
-            cervenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratCervena());
-            tmaveModraLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratTmaveModra());
-            zlutaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZluta());
-            svetleModraLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratSvetleModra());
-            fialovaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratFialova());
-            hnedaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratHneda());
-            ruzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratRuzova());
-            zelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZelena());
-            zlataLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZlata());
-            oranzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratOranzova());
-            bilaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratBila());
-            sedivaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratSediva());
-            cernaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratCerna());
-            modraLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratModra());
-            vojenskaZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratVojenskaZelena());
-            pocetHazenychMicuNaZacatkuHryLabel.Content = sestavaHry.VratPocetHazenychMicuNaZacatkuHry().ToString();
-            pocetHazenychMicuBehemHryLabel.Content = sestavaHry.VratPocetHazenychMicuBehemHry().ToString();
-            duhoveBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratDuhoveBalls());
-            zdvojnasobujiciBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(sestavaHry.VratZdvojnasobujiciBalls());
+            vyskaLabel.Content = gameCompositioin.getHeight().ToString();
+            sirkaLabel.Content = gameCompositioin.getWidth().ToString();
+            svetleZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.getLightGreen());
+            cervenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isRed());
+            tmaveModraLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isDarkBlue());
+            zlutaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isYellow());
+            svetleModraLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isLightBlue());
+            fialovaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isPurple());
+            hnedaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isBrown());
+            ruzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isPink());
+            zelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isGreen());
+            zlataLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isGold());
+            oranzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isOrange());
+            bilaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isWhite());
+            sedivaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isGrey());
+            cernaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isBlack());
+            modraLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isBlue());
+            vojenskaZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isArmyGreen());
+            pocetHazenychMicuNaZacatkuHryLabel.Content = gameCompositioin.getStartBallCount().ToString();
+            pocetHazenychMicuBehemHryLabel.Content = gameCompositioin.getNextBallCount().ToString();
+            duhoveBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isJokerBalls());
+            zdvojnasobujiciBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isDoubleScoreBalls());
 
-            if (sestavaHry.VratTvarSkupinyMicuKteraExploduje() == "linka")
+            if (gameCompositioin.getShape() == "linka")
             {
                 String tvarSlovaBalls = "";
-                if (sestavaHry.VratMinimalniDelkaLinky() <= 4)
+                if (gameCompositioin.getMinLineLength() <= 4)
                 { tvarSlovaBalls = "míče"; }  else { tvarSlovaBalls = "míčů"; };
-                tvarSkupinyMicuKteraExplodujeLabel.Content = String.Concat(sestavaHry.VratTvarSkupinyMicuKteraExploduje(), " s minimální délkou ", sestavaHry.VratMinimalniDelkaLinky(), " ",tvarSlovaBalls);
+                tvarSkupinyMicuKteraExplodujeLabel.Content = String.Concat(gameCompositioin.getShape(), " s minimální délkou ", gameCompositioin.getMinLineLength(), " ",tvarSlovaBalls);
             }
             else
             {
-                tvarSkupinyMicuKteraExplodujeLabel.Content = sestavaHry.VratTvarSkupinyMicuKteraExploduje();
+                tvarSkupinyMicuKteraExplodujeLabel.Content = gameCompositioin.getShape();
             };
 
         }
