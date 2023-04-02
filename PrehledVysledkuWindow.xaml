@@ -1,0 +1,13 @@
+﻿<Window x:Class="Míče.PrehledVysledkuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Míče"
+        mc:Ignorable="d"
+        Title="Přehled výsledků" Height="500" Width="360" KeyDown="Window_KeyDown" WindowStartupLocation="CenterScreen" MinWidth="360" MinHeight="500" MaxWidth="300" Topmost="True">
+    <Grid>
+        <Button x:Name="button" Content="OK" VerticalAlignment="Bottom" Click="button_Click" Margin="0,0,0,10" Padding="1" HorizontalAlignment="Center" Width="86"/>
+        <DataGrid x:Name="dataGrid" Margin="0,0,0,35"/>
+    </Grid>
+</Window>

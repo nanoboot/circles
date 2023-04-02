@@ -1,0 +1,398 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using System.Windows;
+
+namespace Míče
+{
+    public class Hra
+    {
+        // zde začínají vlastnosti dané hry- její sestava
+        private int Sirka;
+        private int Vyska;
+        private bool SvetleZelena;
+        private bool Cervena;
+        private bool TmaveModra;
+        private bool Zluta;
+        private bool SvetleModra;
+        private bool Fialova;
+        private bool Hneda;
+        private bool Ruzova;
+        private bool Zelena;
+        private bool Zlata;
+        private bool Oranzova;
+        private bool Bila;
+        private bool Sediva;
+        private bool Cerna;
+        private bool Modra;
+        private bool VojenskaZelena;
+        private int PocetHazenychMicuNaZacatkuHry;
+        private int PocetHazenychMicuBehemHry;
+        private bool DuhoveMice;
+        private bool ZdvojnasobujiciMice;
+        private String TvarSkupinyMicuKteraExploduje;
+        private int MinimalniDelkaLinky;
+
+        SestavaHry sestavaHry;
+        private Queue FrontaPrikazu = new Queue();// Vytvoří se fronta příkazů, do které logická vrstva bude ukládat formou zpráv veškeré změny, aplikační vrstva si bude brát informace z této fronty, aby věděla, co má ukazovat hráči.
+        private SpravcePoli spravcePoli;
+        private SpravceMicu spravceMicu;
+        private SpravceDatabaze spravceDatabaze;
+        private SpravceVysledku spravceVysledku;
+        private OdpalovacMicu odpalovacMicu;
+        private Stack<Pole> ZasobnikOdpalenychMicu = new Stack<Pole>();//Zde se dočasně ukládají pole.
+        private Stack<Pole> ZasobnikPoliKtereUzNemajiBytAktivni=new Stack<Pole>();//Zde se dočasně ukládají pole, která budou při dalším kroku mít nastavené pozadí na normální.
+        private enum StavHry// Zde se ukládá stav hry.
+        {
+            Zacatek = 0,
+            CekaNaAktivaciPlnehoPole = 1,
+            CekaNaAktivaciPrazdnehoDostupnehoPole = 2,
+            Konec = 10,
+        }
+        private StavHry stavHry = StavHry.Zacatek;
+
+
+        public Hra(
+            SestavaHry sestavaHry,
+            int Vyska,
+            int Sirka,
+            bool SvetleZelena,
+            bool Cervena,
+            bool TmaveModra,
+            bool Zluta,
+            bool SvetleModra,
+            bool Fialova,
+            bool Hneda,
+            bool Ruzova,
+            bool Zelena,
+            bool Zlata,
+            bool Oranzova,
+            bool Bila,
+            bool Sediva,
+            bool Cerna,
+            bool Modra,
+            bool VojenskaZelena,
+            int PocetHazenychMicuNaZacatkuHry,
+            int PocetHazenychMicuBehemHry,
+            bool DuhoveMice,
+            bool ZdvojnasobujiciMice,
+            string TvarSkupinyMicuKteraExploduje,
+            int MinimalniDelkaLinky)
+        {
+            this.sestavaHry = sestavaHry;
+            this.Vyska = Vyska;
+            this.Sirka = Sirka;
+            this.SvetleZelena = SvetleZelena;
+            this.Cervena = Cervena;
+            this.TmaveModra = TmaveModra;
+            this.Zluta = Zluta;
+            this.SvetleModra = SvetleModra;
+            this.Fialova = Fialova;
+            this.Hneda = Hneda;
+            this.Ruzova = Ruzova;
+            this.Zelena = Zelena;
+            this.Zlata = Zlata;
+            this.Oranzova = Oranzova;
+            this.Bila = Bila;
+            this.Sediva = Sediva;
+            this.Cerna = Cerna;
+            this.Modra = Modra;
+            this.VojenskaZelena = VojenskaZelena;
+            this.PocetHazenychMicuNaZacatkuHry = PocetHazenychMicuNaZacatkuHry;
+            this.PocetHazenychMicuBehemHry = PocetHazenychMicuBehemHry;
+            this.DuhoveMice = DuhoveMice;
+            this.ZdvojnasobujiciMice = ZdvojnasobujiciMice;
+            this.TvarSkupinyMicuKteraExploduje = TvarSkupinyMicuKteraExploduje;
+            this.MinimalniDelkaLinky = MinimalniDelkaLinky;
+            odpalovacMicu = new OdpalovacMicu(TvarSkupinyMicuKteraExploduje, MinimalniDelkaLinky);
+            stavHry = StavHry.Zacatek;// V konstruktoru se zde nastaví stav hry na Zacatek.
+            this.spravceDatabaze = new SpravceDatabaze();//Při zapnutí programu Míče se vytvoří instance třídy SpravceDatabaze, s kterým budou komunikovat objekty, které budou mít za úkol ukládat trvale data nebo je číst
+            this.spravceVysledku = new SpravceVysledku(this.spravceDatabaze, this.sestavaHry);
+            spravcePoli = new SpravcePoli(this.Vyska, this.Sirka);//Sestaví desku polí podle počtu řádků a sloupců.
+
+
+            // Následuje vytvoření instance správce míčů, který bude generovat pouze typy míčů, které si hráč před započetím hry vybral.
+            spravceMicu = new SpravceMicu(
+            this.SvetleZelena,
+            this.Cervena,
+            this.TmaveModra,
+            this.Zluta,
+            this.SvetleModra,
+            this.Fialova,
+            this.Hneda,
+            this.Ruzova,
+            this.Zelena,
+            this.Zlata,
+            this.Oranzova,
+            this.Bila,
+            this.Sediva,
+            this.Cerna,
+            this.Modra,
+            this.VojenskaZelena,
+            this.DuhoveMice = DuhoveMice,
+            this.ZdvojnasobujiciMice = ZdvojnasobujiciMice,
+            this);
+           
+            VlozPrikaz("HRA NOVA");
+            VlozPrikaz(String.Concat("DESKA ", this.Vyska, " ", this.Sirka));
+            ZacatekHry();
+        }
+        public System.Data.DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID() //Vrátí proměnnou typu DataSet, která bude mít v sobě výsledky seřazené dle bodů od největšího.
+        {
+            return spravceVysledku.VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID();
+        }
+        private void ZacatekHry()// Vygeneruje míče do určitého počtu prazdnych poli. Tato metoda se volá pouze na začátku hry.
+        {
+            for (int i = 1; i <= this.PocetHazenychMicuNaZacatkuHry; i++)
+            { VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(false);
+                if (!spravcePoli.ExistujePrazdnePole()) { NastavStavHry(10); break; }// Pokud již neexistuje prázdné pole, není kam míč umisťovat, potom se tento cyklus for předčasně ukončí a stav hry se nastaví na Konec.
+            };
+            if (spravcePoli.ExistujePrazdnePole()) NastavStavHry(1);//Pokud ještě existuje prázdné pole, je kam míč umisťovat, potom se stav hry se nastaví na CekaNaAktivaciPrazdnehoDostupnehoPole.
+        }
+        
+        private void HazeniMicuBehemHry()// Vygeneruje míče do určitého počtu prazdnych poli a to během hry opakovaně.
+        {for (int i = 1; i <= this.PocetHazenychMicuBehemHry  ; i++)
+            { VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(true);
+                switch (i)
+                {
+                    case 1:
+                        {
+                            Mic novyMic = spravceMicu.VygenerujNovyMic();
+                            spravceMicu.DalsiMice.Enqueue(novyMic);
+                            String I = "";
+
+                            switch (novyMic.VratBarvu())
+                            {
+                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); } break;
+                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+
+                            }
+
+
+                        }
+                        break;
+                    case 2:
+                        {
+                            Mic novyMic = spravceMicu.VygenerujNovyMic();
+                            spravceMicu.DalsiMice.Enqueue(novyMic);
+                            String I = "";
+                            switch (novyMic.VratBarvu())
+                            {
+                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I," DALSI2")); } break;
+                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+
+                            }
+
+
+                        }
+                        break;
+                    case 3:
+                        {
+                            Mic novyMic = spravceMicu.VygenerujNovyMic();
+                            spravceMicu.DalsiMice.Enqueue(novyMic);
+                            String I = "";
+                            switch (novyMic.VratBarvu())
+                            {
+                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); } break;
+                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+
+                            }
+
+
+                        }
+                        break;
+                }
+                if (!spravcePoli.ExistujePrazdnePole()) {
+                    NastavStavHry(10);
+                    
+                    i = this.PocetHazenychMicuBehemHry + 1;};
+};}
+        private void NastavStavHry(int Stav)
+        {
+            switch(Stav)
+            {
+                case 0: { stavHry = StavHry.Zacatek; } break;
+                case 1: { stavHry = StavHry.CekaNaAktivaciPlnehoPole; } break;
+                case 2: { stavHry = StavHry.CekaNaAktivaciPrazdnehoDostupnehoPole; } break;
+                case 10: { stavHry = StavHry.Konec; } break;
+                default: break;
+            }
+            
+        }
+        private int VratStavHry()
+        {
+            return (int)this.stavHry;
+         }
+        private void KonecHry()
+        { }
+
+        
+        private Pole VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(bool LogickaHodnota)
+        {
+            Pole PoleKamUmistimMic = spravcePoli.VratNahodnePrazdnePole();
+            Mic MicKteryVlozimDoPole;
+            if (LogickaHodnota)
+            { MicKteryVlozimDoPole = spravceMicu.DalsiMice.Dequeue(); }
+            else
+            { MicKteryVlozimDoPole = spravceMicu.VygenerujNovyMic(); };
+            PoleKamUmistimMic.VlozMic(MicKteryVlozimDoPole);
+            VlozPrikaz(String.Concat("MIC ", PoleKamUmistimMic.VratRadek(), " ", PoleKamUmistimMic.VratSloupec(), " NOVY ", MicKteryVlozimDoPole.VratTyp().ToUpper(), " NAFOUKNOUT"));
+
+            ZasobnikOdpalenychMicu.Clear();
+            ZasobnikOdpalenychMicu = odpalovacMicu.ZkontrolujAPripadneOdpal(PoleKamUmistimMic);
+            if (ZasobnikOdpalenychMicu.Count > 0)
+            {
+                spravceVysledku.SpoctiBody(ZasobnikOdpalenychMicu, this, this.spravcePoli, this.ZasobnikPoliKtereUzNemajiBytAktivni);
+
+            }
+                return PoleKamUmistimMic;
+            }
+        public void NastavHracovoJmeno(String HracovoJmeno)
+        {
+            this.spravceVysledku.NastavHracovoJmeno(HracovoJmeno);
+            
+        }
+        public void VlozPrikaz(String Prikaz)//Metoda, která vloží další příkaz do fronty
+        { FrontaPrikazu.Enqueue(Prikaz);
+        }
+        public string VratPrikaz()//Metoda, která z fronty vrátí první přidaný příkaz
+        {
+            if (FrontaPrikazu.Count > 0)//Pokud fronta není prázdná, vrátí daný příkaz
+            { return Convert.ToString(FrontaPrikazu.Dequeue()); }
+            else return "DNO";//Pokud fronta je prázdná, vrátí příkaz "DNO". Ve frontě v tento okamžik nejsou žádné příkazy.
+        }
+        public void AktivujPole(int Radek, int Sloupec)// Zaktivuje pole, na které hráč kliknul.
+        {
+            Pole poleKtereByloAktivovano = spravcePoli.VratPole(Radek, Sloupec);
+
+           while (ZasobnikPoliKtereUzNemajiBytAktivni.Count != 0)// U polí, která mají mít pozadí již normální, se pošle příslušný příkaz do fronty příkazů.
+            {
+                Pole aktualniPole;
+                aktualniPole = ZasobnikPoliKtereUzNemajiBytAktivni.Pop();
+                VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI NEZVYRAZNENE")));
+            }
+
+            switch (VratStavHry())// Podle stavu hry vybere správný algoritmus.
+            {
+                case 1:// Stav byl, že se čeká na aktivaci pole, ve kterém je míč.
+                    {
+                        if (!(poleKtereByloAktivovano.JePrazdne()))//Pokud pole není prázdné (Aby se mohl míč přesunout , musí v tomto poli nějaký být)
+                        {
+                            spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud
+                            NastavStavHry(2);// Změnil se stav hry a to se musí někde zaznamenat.
+                            VlozPrikaz(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
+                        }
+                       
+                        ;
+                    } break;
+                case 2:// Stav byl, že se čeká na aktivaci prázdného pole, do kterého chceme přesunout míč, který skáká.
+                    {
+                        if (!(poleKtereByloAktivovano.JePrazdne()))//Pokud pole není prázdné, tak se změní aktivované pole odkud na toto pole, skákat teď bude pouze míč v tomto poli.
+                        {
+                            spravcePoli.VratAktivniPoleOdkud().VratMicANeodstranujHo().Neskakej();// Jelikož se bude měnit aktivní pole odkud, je potřeba, aby staré aktivní pole nařídilo svému míči přestat skákat.
+                            VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+
+                            spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud na nové. Vlastně se stalo to, že jsem dříve aktivovali nějaké pole, míč v tomto poli začal skákat. Nyní jsem však aktivovali jiné pole, pole se souřadnicemi, na které jsme kliknuli naposledy.
+                                                                                        /*NastavStavHry(2);*/// Stav hry se nezměnil, stále se čeká na aktivaci neprázdného pole. Proto je kód na tomto řádku zakomentován, protože je zbytečný.
+                            VlozPrikaz(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
+
+                            
+                        }
+                        if ((poleKtereByloAktivovano.JePrazdne()))//Pokud pole je prázdné.
+                        {
+                            
+                            spravcePoli.NastavAktivniPoleKam(poleKtereByloAktivovano);// Nastaví se aktivní pole kam na nové.
+                            HledacCesty hledacCesty = new HledacCesty(spravcePoli.VratAktivniPoleOdkud(),spravcePoli.VratAktivniPoleKam(),this,this.ZasobnikPoliKtereUzNemajiBytAktivni);// Vytvoří se nový hledač cesty.
+                            if (hledacCesty.Hledej())// Pokud hledač cesty našel cestu.
+                            { 
+                                spravcePoli.VratAktivniPoleOdkud().VratMicANeodstranujHo().Neskakej();// Cesta se našla, míč se bude přesouvat a proto se mu pošle příkaz, aby již neskákal.
+                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+                                Mic micKterySePresouva=spravcePoli.VratAktivniPoleOdkud().OdstranMicZPoleAVratHo();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
+                                spravcePoli.VlozPrazdnePoleAbychONemVedel(spravcePoli.VratAktivniPoleOdkud());//Potom je nutné toto pole zařadit do registru prázdných polí.
+                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
+                                spravcePoli.VratAktivniPoleKam().VlozMic(micKterySePresouva);//Míč se přesune do svého nového pole.
+                                spravcePoli.VlozPlnePoleAbychONemVedel(spravcePoli.VratAktivniPoleKam());//Pole, kam jsme přesunuli míč, již není prázdné a musíme o tom informovat správce polí.
+
+                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleKam().VratRadek(), " ", spravcePoli.VratAktivniPoleKam().VratSloupec(), " NOVY ", micKterySePresouva.VratTyp().ToUpper()," NAFOUKNUT"));
+                                //Prezentační vrstvě zašleme další příkaz o změně.
+                                Stack<Pole> zasobnikPoliKamCestovalMic =hledacCesty.VratZasobnikPoliOdkudKam();
+
+                                Pole aktualniPole;
+                                while (zasobnikPoliKamCestovalMic.Count!=0)
+                                {
+                                    aktualniPole=zasobnikPoliKamCestovalMic.Pop();
+                                    ZasobnikPoliKtereUzNemajiBytAktivni.Push(aktualniPole);
+                                    VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI ZVYRAZNENE"))); }
+                                //Tento příkaz způsobí, že pole, přes která přešel míč, dočasně ztmavnou.
+                                ZasobnikOdpalenychMicu.Clear();
+                                ZasobnikOdpalenychMicu = odpalovacMicu.ZkontrolujAPripadneOdpal(spravcePoli.VratAktivniPoleKam());
+                                
+                                if (ZasobnikOdpalenychMicu.Count > 1)
+                                {
+                                    this.spravceVysledku.SpoctiBody(ZasobnikOdpalenychMicu,this,this.spravcePoli,this.ZasobnikPoliKtereUzNemajiBytAktivni);
+
+                                }
+                                else {
+                                    HazeniMicuBehemHry();// Hodí se příslušný počet míčů do prázdných polí.
+                                    
+                                }
+
+                                NastavStavHry(1);//Už se nečeká na aktivaci prázdného pole. Teď se opět čeká na aktivaci pole, ve kterém je míč.
+                                if (spravcePoli.ExistujePrazdnePole())
+                                {
+
+                                }
+                                else
+                                {
+
+                                    NastavStavHry(10);
+                                    VlozPrikaz("HRA KONEC");
+                                }
+
+                            }
+                            else {
+                                //MessageBox.Show("Nenašel jsem cestu");
+                            };
+                            // Pokud hledač cesty nenašel cestu.
+
+                        }
+
+                    ;
+                    }
+                    break;
+                default: break;
+
+            }
+            
+        }
+        public int VratSirku()
+        {
+            return this.Sirka;
+        }
+        public int VratVysku()
+        {
+            return this.Vyska;
+        }
+        
+        
+    }
+}
