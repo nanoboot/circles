@@ -49,7 +49,7 @@ namespace Balls
         }
         public Cell VratNahodnePrazdnePole()//vrátí náhodně pole, které je však prázdné, aby se vybralo pole, kam bude umístěn míč.
         {
-            int i = RandomNumberGenerator.VratNahodneCislo(1, registrPrazdnychPoli.VratPocetUzlu());
+            int i = RandomNumberGenerator.getRandomNumber(1, registrPrazdnychPoli.VratPocetUzlu());
             return registrPrazdnychPoli.VratPole(i);
 
         }

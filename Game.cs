@@ -137,8 +137,8 @@ namespace Balls
             this.ZdvojnasobujiciBalls = ZdvojnasobujiciBalls,
             this);
            
-            VlozPrikaz("HRA NOVA");
-            VlozPrikaz(String.Concat("DESKA ", this.Vyska, " ", this.Sirka));
+            insertCommand("HRA NOVA");
+            insertCommand(String.Concat("DESKA ", this.Vyska, " ", this.Sirka));
             ZacatekHry();
         }
         public System.Data.DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID() //Vrátí proměnnou typu DataSet, která bude mít v sobě výsledky seřazené dle bodů od největšího.
@@ -161,19 +161,19 @@ namespace Balls
                 {
                     case 1:
                         {
-                            Ball novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiBalls.Enqueue(novyMic);
+                            Ball novyMic = spravceMicu.generateNewBall();
+                            spravceMicu.nextBalls.Enqueue(novyMic);
                             String I = "";
 
                             switch (novyMic.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); } break;
-                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); } break;
+                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
 
                             }
 
@@ -182,18 +182,18 @@ namespace Balls
                         break;
                     case 2:
                         {
-                            Ball novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiBalls.Enqueue(novyMic);
+                            Ball novyMic = spravceMicu.generateNewBall();
+                            spravceMicu.nextBalls.Enqueue(novyMic);
                             String I = "";
                             switch (novyMic.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I," DALSI2")); } break;
-                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I," DALSI2")); } break;
+                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
 
                             }
 
@@ -202,18 +202,18 @@ namespace Balls
                         break;
                     case 3:
                         {
-                            Ball novyMic = spravceMicu.VygenerujNovyMic();
-                            spravceMicu.DalsiBalls.Enqueue(novyMic);
+                            Ball novyMic = spravceMicu.generateNewBall();
+                            spravceMicu.nextBalls.Enqueue(novyMic);
                             String I = "";
                             switch (novyMic.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); } break;
-                                case "Cervena": { I = "2"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "TmaveModra": { I = "3"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Zluta": { I = "4"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "SvetleModra": { I = "5"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Fialova": { I = "6"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Hneda": { I = "7"; VlozPrikaz(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); } break;
+                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
 
                             }
 
@@ -251,11 +251,11 @@ namespace Balls
             Cell PoleKamUmistimMic = spravcePoli.VratNahodnePrazdnePole();
             Ball MicKteryVlozimDoPole;
             if (LogickaHodnota)
-            { MicKteryVlozimDoPole = spravceMicu.DalsiBalls.Dequeue(); }
+            { MicKteryVlozimDoPole = spravceMicu.nextBalls.Dequeue(); }
             else
-            { MicKteryVlozimDoPole = spravceMicu.VygenerujNovyMic(); };
+            { MicKteryVlozimDoPole = spravceMicu.generateNewBall(); };
             PoleKamUmistimMic.VlozMic(MicKteryVlozimDoPole);
-            VlozPrikaz(String.Concat("MIC ", PoleKamUmistimMic.VratRadek(), " ", PoleKamUmistimMic.VratSloupec(), " NOVY ", MicKteryVlozimDoPole.getType().ToUpper(), " NAFOUKNOUT"));
+            insertCommand(String.Concat("MIC ", PoleKamUmistimMic.VratRadek(), " ", PoleKamUmistimMic.VratSloupec(), " NOVY ", MicKteryVlozimDoPole.getType().ToUpper(), " NAFOUKNOUT"));
 
             ZasobnikOdpalenychMicu.Clear();
             ZasobnikOdpalenychMicu = odpalovacMicu.checkAndExplodedIfNeeded(PoleKamUmistimMic);
@@ -271,7 +271,7 @@ namespace Balls
             this.spravceVysledku.NastavHracovoJmeno(HracovoJmeno);
             
         }
-        public void VlozPrikaz(String Prikaz)//Metoda, která vloží další příkaz do fronty
+        public void insertCommand(String Prikaz)//Metoda, která vloží další příkaz do fronty
         { FrontaPrikazu.Enqueue(Prikaz);
         }
         public string VratPrikaz()//Metoda, která z fronty vrátí první přidaný příkaz
@@ -288,7 +288,7 @@ namespace Balls
             {
                 Cell aktualniPole;
                 aktualniPole = ZasobnikPoliKtereUzNemajiBytAktivni.Pop();
-                VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI NEZVYRAZNENE")));
+                insertCommand((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI NEZVYRAZNENE")));
             }
 
             switch (VratStavHry())// Podle stavu hry vybere správný algoritmus.
@@ -299,7 +299,7 @@ namespace Balls
                         {
                             spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud
                             NastavStavHry(2);// Změnil se stav hry a to se musí někde zaznamenat.
-                            VlozPrikaz(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
+                            insertCommand(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
                         }
                        
                         ;
@@ -309,11 +309,11 @@ namespace Balls
                         if (!(poleKtereByloAktivovano.isEmpty()))//Pokud pole není prázdné, tak se změní aktivované pole odkud na toto pole, skákat teď bude pouze míč v tomto poli.
                         {
                             spravcePoli.VratAktivniPoleOdkud().getBallAndDoNotRemoteIt().dontJump();// Jelikož se bude měnit aktivní pole odkud, je potřeba, aby staré aktivní pole nařídilo svému míči přestat skákat.
-                            VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+                            insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
 
                             spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud na nové. Vlastně se stalo to, že jsem dříve aktivovali nějaké pole, míč v tomto poli začal skákat. Nyní jsem však aktivovali jiné pole, pole se souřadnicemi, na které jsme kliknuli naposledy.
                                                                                         /*NastavStavHry(2);*/// Stav hry se nezměnil, stále se čeká na aktivaci neprázdného pole. Proto je kód na tomto řádku zakomentován, protože je zbytečný.
-                            VlozPrikaz(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
+                            insertCommand(String.Concat("MIC ", poleKtereByloAktivovano.VratRadek(), " ", poleKtereByloAktivovano.VratSloupec(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
 
                             
                         }
@@ -325,14 +325,14 @@ namespace Balls
                             if (hledacCesty.Hledej())// Pokud hledač cesty našel cestu.
                             { 
                                 spravcePoli.VratAktivniPoleOdkud().getBallAndDoNotRemoteIt().dontJump();// Cesta se našla, míč se bude přesouvat a proto se mu pošle příkaz, aby již neskákal.
-                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+                                insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
                                 Ball micKterySePresouva=spravcePoli.VratAktivniPoleOdkud().OdstranMicZPoleAVratHo();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
                                 spravcePoli.VlozPrazdnePoleAbychONemVedel(spravcePoli.VratAktivniPoleOdkud());//Potom je nutné toto pole zařadit do registru prázdných polí.
-                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
+                                insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().VratRadek(), " ", spravcePoli.VratAktivniPoleOdkud().VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
                                 spravcePoli.VratAktivniPoleKam().VlozMic(micKterySePresouva);//Míč se přesune do svého nového pole.
                                 spravcePoli.VlozPlnePoleAbychONemVedel(spravcePoli.VratAktivniPoleKam());//Pole, kam jsme přesunuli míč, již není prázdné a musíme o tom informovat správce polí.
 
-                                VlozPrikaz(String.Concat("MIC ", spravcePoli.VratAktivniPoleKam().VratRadek(), " ", spravcePoli.VratAktivniPoleKam().VratSloupec(), " NOVY ", micKterySePresouva.getType().ToUpper()," NAFOUKNUT"));
+                                insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleKam().VratRadek(), " ", spravcePoli.VratAktivniPoleKam().VratSloupec(), " NOVY ", micKterySePresouva.getType().ToUpper()," NAFOUKNUT"));
                                 //Prezentační vrstvě zašleme další příkaz o změně.
                                 Stack<Cell> zasobnikPoliKamCestovalMic =hledacCesty.VratZasobnikPoliOdkudKam();
 
@@ -341,7 +341,7 @@ namespace Balls
                                 {
                                     aktualniPole=zasobnikPoliKamCestovalMic.Pop();
                                     ZasobnikPoliKtereUzNemajiBytAktivni.Push(aktualniPole);
-                                    VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI ZVYRAZNENE"))); }
+                                    insertCommand((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI ZVYRAZNENE"))); }
                                 //Tento příkaz způsobí, že pole, přes která přešel míč, dočasně ztmavnou.
                                 ZasobnikOdpalenychMicu.Clear();
                                 ZasobnikOdpalenychMicu = odpalovacMicu.checkAndExplodedIfNeeded(spravcePoli.VratAktivniPoleKam());
@@ -365,7 +365,7 @@ namespace Balls
                                 {
 
                                     NastavStavHry(10);
-                                    VlozPrikaz("HRA KONEC");
+                                    insertCommand("HRA KONEC");
                                 }
 
                             }

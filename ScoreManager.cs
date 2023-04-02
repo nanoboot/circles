@@ -35,10 +35,10 @@ namespace Balls
 
                 spravcePoli.VlozPrazdnePoleAbychONemVedel(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
 
-                hra.VlozPrikaz(String.Concat("MIC ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
+                hra.insertCommand(String.Concat("MIC ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
 
                 ZasobnikPoliKtereUzNemajiBytAktivni.Push(aktualniPole);
-                hra.VlozPrikaz((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI CERVENE")));
+                hra.insertCommand((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI CERVENE")));
 
                 if (jeZdvojnasobujici) { ++pocetZdvojnasobujicichMicu; } else { }; ;
 
@@ -71,7 +71,7 @@ namespace Balls
         private void PrictiBodyKVysledku(int PocetBodu,Game hra)// Přičte body k aktuálnímu výsledku.
         {
             this.Vysledek = this.Vysledek + PocetBodu;
-            hra.VlozPrikaz(String.Concat("VYSLEDEK ", Vysledek));
+            hra.insertCommand(String.Concat("VYSLEDEK ", Vysledek));
         }
         public void NastavHracovoJmeno(String HracovoJmeno)
         {
