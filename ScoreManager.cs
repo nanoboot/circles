@@ -33,7 +33,7 @@ namespace Balls
                 Ball zkoumanyMic = aktualniPole.getBallAndRemoveIt();
                 if (zkoumanyMic.getType().Contains("Zdvojnasobujici")) { jeZdvojnasobujici = true; } else { jeZdvojnasobujici = false; }
 
-                spravcePoli.VlozPrazdnePoleAbychONemVedel(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
+                spravcePoli.addEmptyCell(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
 
                 hra.insertCommand(String.Concat("MIC ", aktualniPole.getRow(), " ", aktualniPole.getColumn(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
 

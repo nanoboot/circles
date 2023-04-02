@@ -149,9 +149,9 @@ namespace Balls
         {
             for (int i = 1; i <= this.PocetHazenychMicuNaZacatkuHry; i++)
             { VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(false);
-                if (!spravcePoli.ExistujePrazdnePole()) { NastavStavHry(10); break; }// Pokud již neexistuje prázdné pole, není kam míč umisťovat, potom se tento cyklus for předčasně ukončí a stav hry se nastaví na Konec.
+                if (!spravcePoli.hasAtLeastOneEmptyCell()) { NastavStavHry(10); break; }// Pokud již neexistuje prázdné pole, není kam míč umisťovat, potom se tento cyklus for předčasně ukončí a stav hry se nastaví na Konec.
             };
-            if (spravcePoli.ExistujePrazdnePole()) NastavStavHry(1);//Pokud ještě existuje prázdné pole, je kam míč umisťovat, potom se stav hry se nastaví na CekaNaAktivaciPrazdnehoDostupnehoPole.
+            if (spravcePoli.hasAtLeastOneEmptyCell()) NastavStavHry(1);//Pokud ještě existuje prázdné pole, je kam míč umisťovat, potom se stav hry se nastaví na CekaNaAktivaciPrazdnehoDostupnehoPole.
         }
         
         private void HazeniMicuBehemHry()// Vygeneruje míče do určitého počtu prazdnych poli a to během hry opakovaně.
@@ -221,7 +221,7 @@ namespace Balls
                         }
                         break;
                 }
-                if (!spravcePoli.ExistujePrazdnePole()) {
+                if (!spravcePoli.hasAtLeastOneEmptyCell()) {
                     NastavStavHry(10);
                     
                     i = this.PocetHazenychMicuBehemHry + 1;};
@@ -248,7 +248,7 @@ namespace Balls
         
         private Cell VygenerujJedenMicAPotomHoPresunDoNejakehoPrazdnehoPole(bool LogickaHodnota)
         {
-            Cell PoleKamUmistimMic = spravcePoli.VratNahodnePrazdnePole();
+            Cell PoleKamUmistimMic = spravcePoli.getRandomEmptyCell();
             Ball MicKteryVlozimDoPole;
             if (LogickaHodnota)
             { MicKteryVlozimDoPole = spravceMicu.nextBalls.Dequeue(); }
@@ -282,7 +282,7 @@ namespace Balls
         }
         public void AktivujPole(int Radek, int Sloupec)// Zaktivuje pole, na které hráč kliknul.
         {
-            Cell poleKtereByloAktivovano = spravcePoli.VratPole(Radek, Sloupec);
+            Cell poleKtereByloAktivovano = spravcePoli.getCell(Radek, Sloupec);
 
            while (ZasobnikPoliKtereUzNemajiBytAktivni.Count != 0)// U polí, která mají mít pozadí již normální, se pošle příslušný příkaz do fronty příkazů.
             {
@@ -297,7 +297,7 @@ namespace Balls
                     {
                         if (!(poleKtereByloAktivovano.isEmpty()))//Pokud pole není prázdné (Aby se mohl míč přesunout , musí v tomto poli nějaký být)
                         {
-                            spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud
+                            spravcePoli.setActiveCellFrom(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud
                             NastavStavHry(2);// Změnil se stav hry a to se musí někde zaznamenat.
                             insertCommand(String.Concat("MIC ", poleKtereByloAktivovano.getRow(), " ", poleKtereByloAktivovano.getColumn(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
                         }
@@ -308,10 +308,10 @@ namespace Balls
                     {
                         if (!(poleKtereByloAktivovano.isEmpty()))//Pokud pole není prázdné, tak se změní aktivované pole odkud na toto pole, skákat teď bude pouze míč v tomto poli.
                         {
-                            spravcePoli.VratAktivniPoleOdkud().getBallAndDoNotRemoveIt().dontJump();// Jelikož se bude měnit aktivní pole odkud, je potřeba, aby staré aktivní pole nařídilo svému míči přestat skákat.
-                            insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().getRow(), " ", spravcePoli.VratAktivniPoleOdkud().getColumn(), " NESKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+                            spravcePoli.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// Jelikož se bude měnit aktivní pole odkud, je potřeba, aby staré aktivní pole nařídilo svému míči přestat skákat.
+                            insertCommand(String.Concat("MIC ", spravcePoli.getActiveCellFrom().getRow(), " ", spravcePoli.getActiveCellFrom().getColumn(), " NESKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
 
-                            spravcePoli.NastavAktivniPoleOdkud(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud na nové. Vlastně se stalo to, že jsem dříve aktivovali nějaké pole, míč v tomto poli začal skákat. Nyní jsem však aktivovali jiné pole, pole se souřadnicemi, na které jsme kliknuli naposledy.
+                            spravcePoli.setActiveCellFrom(poleKtereByloAktivovano);// Nastaví se aktivní pole odkud na nové. Vlastně se stalo to, že jsem dříve aktivovali nějaké pole, míč v tomto poli začal skákat. Nyní jsem však aktivovali jiné pole, pole se souřadnicemi, na které jsme kliknuli naposledy.
                                                                                         /*NastavStavHry(2);*/// Stav hry se nezměnil, stále se čeká na aktivaci neprázdného pole. Proto je kód na tomto řádku zakomentován, protože je zbytečný.
                             insertCommand(String.Concat("MIC ", poleKtereByloAktivovano.getRow(), " ", poleKtereByloAktivovano.getColumn(), " SKAKEJ "));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v tomto poli bude skákat.
 
@@ -320,19 +320,19 @@ namespace Balls
                         if ((poleKtereByloAktivovano.isEmpty()))//Pokud pole je prázdné.
                         {
                             
-                            spravcePoli.NastavAktivniPoleKam(poleKtereByloAktivovano);// Nastaví se aktivní pole kam na nové.
-                            PathFinder hledacCesty = new PathFinder(spravcePoli.VratAktivniPoleOdkud(),spravcePoli.VratAktivniPoleKam(),this,this.ZasobnikPoliKtereUzNemajiBytAktivni);// Vytvoří se nový hledač cesty.
+                            spravcePoli.setActiveCellTo(poleKtereByloAktivovano);// Nastaví se aktivní pole kam na nové.
+                            PathFinder hledacCesty = new PathFinder(spravcePoli.getActiveCellFrom(),spravcePoli.getActiveCellTo(),this,this.ZasobnikPoliKtereUzNemajiBytAktivni);// Vytvoří se nový hledač cesty.
                             if (hledacCesty.Hledej())// Pokud hledač cesty našel cestu.
                             { 
-                                spravcePoli.VratAktivniPoleOdkud().getBallAndDoNotRemoveIt().dontJump();// Cesta se našla, míč se bude přesouvat a proto se mu pošle příkaz, aby již neskákal.
-                                insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().getRow(), " ", spravcePoli.VratAktivniPoleOdkud().getColumn(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
-                                Ball micKterySePresouva=spravcePoli.VratAktivniPoleOdkud().getBallAndRemoveIt();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
-                                spravcePoli.VlozPrazdnePoleAbychONemVedel(spravcePoli.VratAktivniPoleOdkud());//Potom je nutné toto pole zařadit do registru prázdných polí.
-                                insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleOdkud().getRow(), " ", spravcePoli.VratAktivniPoleOdkud().getColumn(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
-                                spravcePoli.VratAktivniPoleKam().setBall(micKterySePresouva);//Míč se přesune do svého nového pole.
-                                spravcePoli.VlozPlnePoleAbychONemVedel(spravcePoli.VratAktivniPoleKam());//Pole, kam jsme přesunuli míč, již není prázdné a musíme o tom informovat správce polí.
+                                spravcePoli.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// Cesta se našla, míč se bude přesouvat a proto se mu pošle příkaz, aby již neskákal.
+                                insertCommand(String.Concat("MIC ", spravcePoli.getActiveCellFrom().getRow(), " ", spravcePoli.getActiveCellFrom().getColumn(), " NESKAKEJ"));// Příkaz, který způsobí, že reprezentace míče v aplikační vrstvě v poli, které již není aktivní, přestane skákat.
+                                Ball micKterySePresouva=spravcePoli.getActiveCellFrom().getBallAndRemoveIt();//Je nutné odstranit míč z pole, odkud ho chceme přesunout.
+                                spravcePoli.addEmptyCell(spravcePoli.getActiveCellFrom());//Potom je nutné toto pole zařadit do registru prázdných polí.
+                                insertCommand(String.Concat("MIC ", spravcePoli.getActiveCellFrom().getRow(), " ", spravcePoli.getActiveCellFrom().getColumn(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
+                                spravcePoli.getActiveCellTo().setBall(micKterySePresouva);//Míč se přesune do svého nového pole.
+                                spravcePoli.addFullCell(spravcePoli.getActiveCellTo());//Pole, kam jsme přesunuli míč, již není prázdné a musíme o tom informovat správce polí.
 
-                                insertCommand(String.Concat("MIC ", spravcePoli.VratAktivniPoleKam().getRow(), " ", spravcePoli.VratAktivniPoleKam().getColumn(), " NOVY ", micKterySePresouva.getType().ToUpper()," NAFOUKNUT"));
+                                insertCommand(String.Concat("MIC ", spravcePoli.getActiveCellTo().getRow(), " ", spravcePoli.getActiveCellTo().getColumn(), " NOVY ", micKterySePresouva.getType().ToUpper()," NAFOUKNUT"));
                                 //Prezentační vrstvě zašleme další příkaz o změně.
                                 Stack<Cell> zasobnikPoliKamCestovalMic =hledacCesty.VratZasobnikPoliOdkudKam();
 
@@ -344,7 +344,7 @@ namespace Balls
                                     insertCommand((String.Concat("POLE ", aktualniPole.getRow(), " ", aktualniPole.getColumn(), " POZADI ZVYRAZNENE"))); }
                                 //Tento příkaz způsobí, že pole, přes která přešel míč, dočasně ztmavnou.
                                 ZasobnikOdpalenychMicu.Clear();
-                                ZasobnikOdpalenychMicu = odpalovacMicu.checkAndExplodedIfNeeded(spravcePoli.VratAktivniPoleKam());
+                                ZasobnikOdpalenychMicu = odpalovacMicu.checkAndExplodedIfNeeded(spravcePoli.getActiveCellTo());
                                 
                                 if (ZasobnikOdpalenychMicu.Count > 1)
                                 {
@@ -357,7 +357,7 @@ namespace Balls
                                 }
 
                                 NastavStavHry(1);//Už se nečeká na aktivaci prázdného pole. Teď se opět čeká na aktivaci pole, ve kterém je míč.
-                                if (spravcePoli.ExistujePrazdnePole())
+                                if (spravcePoli.hasAtLeastOneEmptyCell())
                                 {
 
                                 }

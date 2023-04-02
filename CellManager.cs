@@ -1,98 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Windows;
-
-
+﻿
 namespace Balls
 {
     class CellManager
     {
 
-        EmptyCellsRegistry registrPrazdnychPoli = new EmptyCellsRegistry();// Zde jsou registrovány všechna prázdná pole
-        Cell AktivniPoleOdkud = null;
-        Cell AktivniPoleKam = null;
-        Cell Pole1A1 = null;//pole, ktere odkazuje na Pole na souřadnici 1 a 1 sloupce a řádku
-        public CellManager(int Vyska, int Sirka)
-        { SestavDesku(Vyska, Sirka); }
+        EmptyCellsRegistry emptyCellsRegistry = new EmptyCellsRegistry();
+        Cell activeCellFrom = null;
+        Cell activeCellTo = null;
+        Cell cellRow1Column1 = null;
+        public CellManager(int height, int width)
+        { buildBoard(height, width); }
 
-        public void NastavAktivniPoleOdkud(Cell AktivniPoleOdkud)
-        {this.AktivniPoleOdkud=AktivniPoleOdkud;
-            AktivniPoleOdkud.getBallAndDoNotRemoveIt().jump();
+        public void setActiveCellFrom(Cell activeCellFrom)
+        {this.activeCellFrom=activeCellFrom;
+            activeCellFrom.getBallAndDoNotRemoveIt().jump();
         }
-        public void VlozPrazdnePoleAbychONemVedel(Cell novePrazdnePole)// Vloží dané pole do registru prázdných polí.
-        { registrPrazdnychPoli.VlozPole(novePrazdnePole); }
-        public void VlozPlnePoleAbychONemVedel(Cell novePlnePole)//Odstraní dané pole z registru prázdných polí.
-        { registrPrazdnychPoli.OdstranPole(novePlnePole); }
-        public Cell VratAktivniPoleOdkud()
-        { return this.AktivniPoleOdkud; }
+        public void addEmptyCell(Cell newEmptyCell)
+        { emptyCellsRegistry.addCell(newEmptyCell); }
+        public void addFullCell(Cell newFullCell)
+        { emptyCellsRegistry.removeCell(newFullCell); }
+        public Cell getActiveCellFrom()
+        { return this.activeCellFrom; }
 
-        public void NastavAktivniPoleKam(Cell AktivniPoleKam)
-        { this.AktivniPoleKam = AktivniPoleKam; }
+        public void setActiveCellTo(Cell activeCellTo)
+        { this.activeCellTo = activeCellTo; }
 
-        public Cell VratAktivniPoleKam()
-        { return this.AktivniPoleKam; }
+        public Cell getActiveCellTo()
+        { return this.activeCellTo; }
 
-        public Cell VratPole(int Radek, int Sloupec)//vrátí pole, které se nachází na dané souřadnici řádku a sloupce
+        public Cell getCell(int row, int column)
         {
-            Cell aktualniPole = new Cell();
-            aktualniPole=Pole1A1;
+            Cell currentCell = new Cell();
+            currentCell=cellRow1Column1;
 
-            while(aktualniPole.getColumn()!=Sloupec)
-            { aktualniPole = aktualniPole.getRightCell(); }// Přesune se do pole, které je v hledaném sloupci.
-            while (aktualniPole.getRow() != Radek)
-            { aktualniPole = aktualniPole.getBottomCell(); }// Přesune se do pole, které je v hledaném řádku.
-            return aktualniPole;
+            while(currentCell.getColumn()!=column)
+            { currentCell = currentCell.getRightCell(); }
+            while (currentCell.getRow() != row)
+            { currentCell = currentCell.getBottomCell(); }
+            return currentCell;
         }
-        public Cell VratNahodnePrazdnePole()//vrátí náhodně pole, které je však prázdné, aby se vybralo pole, kam bude umístěn míč.
+        public Cell getRandomEmptyCell()
         {
-            int i = RandomNumberGenerator.getRandomNumber(1, registrPrazdnychPoli.VratPocetUzlu());
-            return registrPrazdnychPoli.VratPole(i);
+            int i = RandomNumberGenerator.getRandomNumber(1, emptyCellsRegistry.getCountOfNodes());
+            return emptyCellsRegistry.getCell(i);
 
         }
-        public bool ExistujePrazdnePole()
-        { if (registrPrazdnychPoli.VratPocetUzlu()!=0) {return true; } else return false; }
-        private void SestavDesku(int Vyska, int Sirka)// Sestaví dynamicky desku navzájem propojených polí.
+        public bool hasAtLeastOneEmptyCell()
+        { if (emptyCellsRegistry.getCountOfNodes()!=0) {return true; } else return false; }
+        private void buildBoard(int height, int width)
         {
-            Cell poleStare = null;// Zde je pole, které bylo nové naposledy, než se stalo novým polem jiné pole.
-            Cell poleNove = null;// Zde je nově vytvářené pole. 
-            Cell polePrvniAktualnihoRadku = null;// Zde se ukládá první pole aktuálního řádku aby, až se dokončí aktuální řádek, se mohlo pokračovat s tvorbou řádku následujícího.
-            Cell poleNahore = null;// Od nového pole.
-            Cell poleVlevo = null;// Od nového pole.
-            for (int radek = 1; radek <= Vyska; radek++)// Proměnná radek obsahuje hodnotu řádku, jehož nějaké pole bude tvořeno.
+            Cell oldCell = null;
+            Cell newCell = null;
+            Cell firstCellOfCurrentRow = null;
+            Cell topCell = null;
+            Cell leftCell = null;
+            for (int row = 1; row <= height; row++)
             {
-                for (int sloupec = 1; sloupec <= Sirka; sloupec++)// Proměnná sloupec obsahuje hodnotu sloupce, jehož nějaké pole bude tvořeno.
+                for (int column = 1; column <= width; column++)
                 {
-                    poleStare = poleNove;// Nové pole už nebude nové ale staré.
-                    poleNove = new Cell(radek, sloupec);//Vytvoří se nové pole s daným řádkem a sloupcem.
-                    registrPrazdnychPoli.VlozPole(poleNove);// Toto pole se vloží do registru prázdných polí, jelikož v něm ještě není žádný míč.
-                    if (radek == 1) // Pokud je řádek 1.
+                    oldCell = newCell;
+                    newCell = new Cell(row, column);
+                    emptyCellsRegistry.addCell(newCell);
+                    if (row == 1)
                     {
-                        poleNahore = null;//Pokud je řádek první, budou mít odkazy na všechna pole směrem nahoru hodnotu null
-                        if (sloupec == 1) { polePrvniAktualnihoRadku = poleNove; poleVlevo = null; Pole1A1 = poleNove; }// První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek. Pole vlevo neexistuje. Pole1A1 se nastaví na nové pole.
-                        if ((sloupec > 1) & (sloupec < Sirka)) { poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); }// Pole vlevo se nastaví na staré. Pole vpravo od pole vlevo se nastaví na nové.
-                        if (sloupec == Sirka) { poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); poleNove.setRightCell(null); }// Pole vlevo se nastaví na staré. Pole vpravo od pole vlevo se nastaví na nové. Pole vpravo od nového pole neexistuje.
+                        topCell = null;
+                        if (column == 1) { firstCellOfCurrentRow = newCell; leftCell = null; cellRow1Column1 = newCell; }
+                        if ((column > 1) & (column < width)) { leftCell = oldCell; leftCell.setRightCell(newCell); }
+                        if (column == width) { leftCell = oldCell; leftCell.setRightCell(newCell); newCell.setRightCell(null); }
                     }
-                    if ((radek > 1) & (radek < Vyska)) // Pokud je řádek větší než 1 a zároveň není řádek poslední.
+                    if ((row > 1) & (row < height))
                     {
-                        if (sloupec == 1) { poleNahore = polePrvniAktualnihoRadku; poleNahore.setBottomCell(poleNove); polePrvniAktualnihoRadku = poleNove; poleVlevo = null; }// Pole nahoře od nového pole se nastaví na první pole předchozího řádku. Pole dole od pole nahoře se nastaví na nové pole. První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek. Pole vlevo neexistuje. 
-                        if ((sloupec > 1) & (sloupec < Sirka)) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); }// Pole nahoře od nového pole se nastaví na pole vpravo od současného pole nahoře. Pole dole od pole nahoře se nastaví na nové pole. Pole vlevo od nového pole se nastaví na staré pole. Pole vpravo od pole vlevo od nového pole se nastaví na nové pole.
-                        if (sloupec == Sirka) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); poleNove.setRightCell(null); }
+                        if (column == 1) { topCell = firstCellOfCurrentRow; topCell.setBottomCell(newCell); firstCellOfCurrentRow = newCell; leftCell = null; }
+                        if ((column > 1) & (column < width)) { topCell = topCell.getRightCell(); topCell.setBottomCell(newCell); leftCell = oldCell; leftCell.setRightCell(newCell); }
+                        if (column == width) { topCell = topCell.getRightCell(); topCell.setBottomCell(newCell); leftCell = oldCell; leftCell.setRightCell(newCell); newCell.setRightCell(null); }
 
                     }
-                    if (radek == Vyska) // Pokud je řádek poslední.
+                    if (row == height)
                     {
-                        if (sloupec == 1) { poleNahore = polePrvniAktualnihoRadku; poleNahore.setBottomCell(poleNove); polePrvniAktualnihoRadku = poleNove; poleVlevo = null; }// První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek.
-                        if ((sloupec > 1) & (sloupec < Sirka)) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); }
-                        if (sloupec == Sirka) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); poleNove.setRightCell(null); }
-                        poleNove.setBottomCell(null);
+                        if (column == 1) { topCell = firstCellOfCurrentRow; topCell.setBottomCell(newCell); firstCellOfCurrentRow = newCell; leftCell = null; }
+                        if ((column > 1) & (column < width)) { topCell = topCell.getRightCell(); topCell.setBottomCell(newCell); leftCell = oldCell; leftCell.setRightCell(newCell); }
+                        if (column == width) { topCell = topCell.getRightCell(); topCell.setBottomCell(newCell); leftCell = oldCell; leftCell.setRightCell(newCell); newCell.setRightCell(null); }
+                        newCell.setBottomCell(null);
                     }
                     
-                    poleNove.setTopCell(poleNahore);
-                    poleNove.setLeftCell(poleVlevo);
+                    newCell.setTopCell(topCell);
+                    newCell.setLeftCell(leftCell);
 
                 }
             }

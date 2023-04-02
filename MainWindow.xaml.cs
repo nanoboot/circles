@@ -822,7 +822,7 @@ namespace Balls
         private void SouradniceSloupceDoSberaceSouradnic(int CisloSloupce)
         {
             sberacSouradnic = new CellCoordination();
-            sberacSouradnic.VlozSouradniciSloupce(CisloSloupce);
+            sberacSouradnic.setColumn(CisloSloupce);
         }
         private void KliknutoNaSloupec1(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(1); }
         private void KliknutoNaSloupec2(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(2); }
@@ -860,8 +860,8 @@ namespace Balls
 
         private void SouradniceRadkuDoSberaceSouradnic(int CisloRadku)
         {
-            sberacSouradnic.VlozSouradniciRadku(CisloRadku);
-            hra.AktivujPole(sberacSouradnic.VratSouradniciRadku(), sberacSouradnic.VratSouradniciSloupce());
+            sberacSouradnic.setRow(CisloRadku);
+            hra.AktivujPole(sberacSouradnic.getRow(), sberacSouradnic.getColumn());
             ProvestPrikazy();
         }
 

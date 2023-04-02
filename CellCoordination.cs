@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Balls
 {
     class CellCoordination
     {
-        int Sloupec=0;
-        int Radek;
-        public void VlozSouradniciSloupce(int Sloupec)
-        { this.Sloupec = Sloupec; }
-        public void VlozSouradniciRadku(int Radek)
-        { this.Radek = Radek; }
-        public int VratSouradniciSloupce()
-        { return this.Sloupec; }
-        public int VratSouradniciRadku()
-        { return this.Radek; }
+        int column=0;
+        int row;
+        public void setColumn(int column)
+        { this.column = column; }
+        public void setRow(int row)
+        { this.row = row; }
+        public int getColumn()
+        { return this.column; }
+        public int getRow()
+        { return this.row; }
     }
 }
