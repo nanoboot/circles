@@ -20,7 +20,7 @@ namespace Balls
         {
             this.cellToBeChecked = cellToBeChecked;
             currentCell=cellToBeChecked;
-            colour = cellToBeChecked.getBallAndDoNotRemoteIt().getColour();
+            colour = cellToBeChecked.getBallAndDoNotRemoveIt().getColour();
             shapeIsFound = false;
             switch (this.shape)
             {
@@ -42,7 +42,7 @@ namespace Balls
         {
             {
                 currentCell = cellToBeChecked;
-                while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoteIt().hasColour(colour)))
+                while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoveIt().hasColour(colour)))
                 {
                     explodedBalls.Push(currentCell);
                     switch (Pozice)
@@ -72,7 +72,7 @@ namespace Balls
 
                 }
                 
-                while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoteIt().hasColour(colour)))
+                while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoveIt().hasColour(colour)))
                 {
                     explodedBalls.Push(currentCell);
                     switch (Pozice)
@@ -136,9 +136,9 @@ namespace Balls
             {
 
                 if (
-                    ((!cell1.isEmpty()) && (cell1.getBallAndDoNotRemoteIt().hasColour(colour))) &&
-                    ((!cell2.isEmpty()) && (cell2.getBallAndDoNotRemoteIt().hasColour(colour))) &&
-                    ((!cell3.isEmpty()) && (cell3.getBallAndDoNotRemoteIt().hasColour(colour)))
+                    ((!cell1.isEmpty()) && (cell1.getBallAndDoNotRemoveIt().hasColour(colour))) &&
+                    ((!cell2.isEmpty()) && (cell2.getBallAndDoNotRemoveIt().hasColour(colour))) &&
+                    ((!cell3.isEmpty()) && (cell3.getBallAndDoNotRemoveIt().hasColour(colour)))
                     )
                 {
                     shapeIsFound = true;
@@ -201,9 +201,9 @@ namespace Balls
             {
 
                 if (
-                    ((!cell1.isEmpty()) && (cell1.getBallAndDoNotRemoteIt().hasColour(colour))) &&
-                    ((!cell2.isEmpty()) && (cell2.getBallAndDoNotRemoteIt().hasColour(colour))) &&
-                    ((!cell3.isEmpty()) && (cell3.getBallAndDoNotRemoteIt().hasColour(colour)))
+                    ((!cell1.isEmpty()) && (cell1.getBallAndDoNotRemoveIt().hasColour(colour))) &&
+                    ((!cell2.isEmpty()) && (cell2.getBallAndDoNotRemoveIt().hasColour(colour))) &&
+                    ((!cell3.isEmpty()) && (cell3.getBallAndDoNotRemoveIt().hasColour(colour)))
                     )
                 {
                     shapeIsFound = true;

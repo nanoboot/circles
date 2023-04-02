@@ -30,15 +30,15 @@ namespace Balls
             while (ZasobnikOdpalenychMicuPredany.Count != 0)
             {
                 aktualniPole = ZasobnikOdpalenychMicuPredany.Pop();
-                Ball zkoumanyMic = aktualniPole.OdstranMicZPoleAVratHo();
+                Ball zkoumanyMic = aktualniPole.getBallAndRemoveIt();
                 if (zkoumanyMic.getType().Contains("Zdvojnasobujici")) { jeZdvojnasobujici = true; } else { jeZdvojnasobujici = false; }
 
                 spravcePoli.VlozPrazdnePoleAbychONemVedel(aktualniPole);//Potom je nutné toto pole zařadit do registru prázdných polí.
 
-                hra.insertCommand(String.Concat("MIC ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
+                hra.insertCommand(String.Concat("MIC ", aktualniPole.getRow(), " ", aktualniPole.getColumn(), " ODSTRANIT"));//Prezentační vrstvě zašleme příkaz o změně.
 
                 ZasobnikPoliKtereUzNemajiBytAktivni.Push(aktualniPole);
-                hra.insertCommand((String.Concat("POLE ", aktualniPole.VratRadek(), " ", aktualniPole.VratSloupec(), " POZADI CERVENE")));
+                hra.insertCommand((String.Concat("POLE ", aktualniPole.getRow(), " ", aktualniPole.getColumn(), " POZADI CERVENE")));
 
                 if (jeZdvojnasobujici) { ++pocetZdvojnasobujicichMicu; } else { }; ;
 

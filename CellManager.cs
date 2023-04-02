@@ -21,7 +21,7 @@ namespace Balls
 
         public void NastavAktivniPoleOdkud(Cell AktivniPoleOdkud)
         {this.AktivniPoleOdkud=AktivniPoleOdkud;
-            AktivniPoleOdkud.getBallAndDoNotRemoteIt().jump();
+            AktivniPoleOdkud.getBallAndDoNotRemoveIt().jump();
         }
         public void VlozPrazdnePoleAbychONemVedel(Cell novePrazdnePole)// Vloží dané pole do registru prázdných polí.
         { registrPrazdnychPoli.VlozPole(novePrazdnePole); }
@@ -41,9 +41,9 @@ namespace Balls
             Cell aktualniPole = new Cell();
             aktualniPole=Pole1A1;
 
-            while(aktualniPole.VratSloupec()!=Sloupec)
+            while(aktualniPole.getColumn()!=Sloupec)
             { aktualniPole = aktualniPole.getRightCell(); }// Přesune se do pole, které je v hledaném sloupci.
-            while (aktualniPole.VratRadek() != Radek)
+            while (aktualniPole.getRow() != Radek)
             { aktualniPole = aktualniPole.getBottomCell(); }// Přesune se do pole, které je v hledaném řádku.
             return aktualniPole;
         }
@@ -73,26 +73,26 @@ namespace Balls
                     {
                         poleNahore = null;//Pokud je řádek první, budou mít odkazy na všechna pole směrem nahoru hodnotu null
                         if (sloupec == 1) { polePrvniAktualnihoRadku = poleNove; poleVlevo = null; Pole1A1 = poleNove; }// První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek. Pole vlevo neexistuje. Pole1A1 se nastaví na nové pole.
-                        if ((sloupec > 1) & (sloupec < Sirka)) { poleVlevo = poleStare; poleVlevo.NastavPoleVpravo(poleNove); }// Pole vlevo se nastaví na staré. Pole vpravo od pole vlevo se nastaví na nové.
-                        if (sloupec == Sirka) { poleVlevo = poleStare; poleVlevo.NastavPoleVpravo(poleNove); poleNove.NastavPoleVpravo(null); }// Pole vlevo se nastaví na staré. Pole vpravo od pole vlevo se nastaví na nové. Pole vpravo od nového pole neexistuje.
+                        if ((sloupec > 1) & (sloupec < Sirka)) { poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); }// Pole vlevo se nastaví na staré. Pole vpravo od pole vlevo se nastaví na nové.
+                        if (sloupec == Sirka) { poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); poleNove.setRightCell(null); }// Pole vlevo se nastaví na staré. Pole vpravo od pole vlevo se nastaví na nové. Pole vpravo od nového pole neexistuje.
                     }
                     if ((radek > 1) & (radek < Vyska)) // Pokud je řádek větší než 1 a zároveň není řádek poslední.
                     {
-                        if (sloupec == 1) { poleNahore = polePrvniAktualnihoRadku; poleNahore.NastavPoleDole(poleNove); polePrvniAktualnihoRadku = poleNove; poleVlevo = null; }// Pole nahoře od nového pole se nastaví na první pole předchozího řádku. Pole dole od pole nahoře se nastaví na nové pole. První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek. Pole vlevo neexistuje. 
-                        if ((sloupec > 1) & (sloupec < Sirka)) { poleNahore = poleNahore.getRightCell(); poleNahore.NastavPoleDole(poleNove); poleVlevo = poleStare; poleVlevo.NastavPoleVpravo(poleNove); }// Pole nahoře od nového pole se nastaví na pole vpravo od současného pole nahoře. Pole dole od pole nahoře se nastaví na nové pole. Pole vlevo od nového pole se nastaví na staré pole. Pole vpravo od pole vlevo od nového pole se nastaví na nové pole.
-                        if (sloupec == Sirka) { poleNahore = poleNahore.getRightCell(); poleNahore.NastavPoleDole(poleNove); poleVlevo = poleStare; poleVlevo.NastavPoleVpravo(poleNove); poleNove.NastavPoleVpravo(null); }
+                        if (sloupec == 1) { poleNahore = polePrvniAktualnihoRadku; poleNahore.setBottomCell(poleNove); polePrvniAktualnihoRadku = poleNove; poleVlevo = null; }// Pole nahoře od nového pole se nastaví na první pole předchozího řádku. Pole dole od pole nahoře se nastaví na nové pole. První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek. Pole vlevo neexistuje. 
+                        if ((sloupec > 1) & (sloupec < Sirka)) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); }// Pole nahoře od nového pole se nastaví na pole vpravo od současného pole nahoře. Pole dole od pole nahoře se nastaví na nové pole. Pole vlevo od nového pole se nastaví na staré pole. Pole vpravo od pole vlevo od nového pole se nastaví na nové pole.
+                        if (sloupec == Sirka) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); poleNove.setRightCell(null); }
 
                     }
                     if (radek == Vyska) // Pokud je řádek poslední.
                     {
-                        if (sloupec == 1) { poleNahore = polePrvniAktualnihoRadku; poleNahore.NastavPoleDole(poleNove); polePrvniAktualnihoRadku = poleNove; poleVlevo = null; }// První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek.
-                        if ((sloupec > 1) & (sloupec < Sirka)) { poleNahore = poleNahore.getRightCell(); poleNahore.NastavPoleDole(poleNove); poleVlevo = poleStare; poleVlevo.NastavPoleVpravo(poleNove); }
-                        if (sloupec == Sirka) { poleNahore = poleNahore.getRightCell(); poleNahore.NastavPoleDole(poleNove); poleVlevo = poleStare; poleVlevo.NastavPoleVpravo(poleNove); poleNove.NastavPoleVpravo(null); }
-                        poleNove.NastavPoleDole(null);
+                        if (sloupec == 1) { poleNahore = polePrvniAktualnihoRadku; poleNahore.setBottomCell(poleNove); polePrvniAktualnihoRadku = poleNove; poleVlevo = null; }// První pole aktuálního řádku se nastaví na nové pole, protože začal nový řádek.
+                        if ((sloupec > 1) & (sloupec < Sirka)) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); }
+                        if (sloupec == Sirka) { poleNahore = poleNahore.getRightCell(); poleNahore.setBottomCell(poleNove); poleVlevo = poleStare; poleVlevo.setRightCell(poleNove); poleNove.setRightCell(null); }
+                        poleNove.setBottomCell(null);
                     }
                     
-                    poleNove.NastavPoleNahore(poleNahore);
-                    poleNove.NastavPoleVlevo(poleVlevo);
+                    poleNove.setTopCell(poleNahore);
+                    poleNove.setLeftCell(poleVlevo);
 
                 }
             }
