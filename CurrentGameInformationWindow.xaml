@@ -63,29 +63,29 @@
             <Label x:Name="label_Copy13" Content="Double score balls:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="21" Margin="0,0,5,0" />
             <Label x:Name="label_Copy12" Content="Shape:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="22" Margin="0,0,5,0" />
 
-            <Label x:Name="vyskaLabel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="0" Grid.Column="1" Grid.Row="0" Margin="0,0,5,1"/>
-            <Label x:Name="sirkaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0"/>
-            <Label x:Name="svetleZelenaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="2" Margin="0,0,5,0" />
-            <Label x:Name="cervenaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="3" Margin="0,0,5,0" />
-            <Label x:Name="tmaveModraLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="4" Margin="0,0,5,0" />
-            <Label x:Name="zlutaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="5" Margin="0,0,5,0" />
-            <Label x:Name="svetleModraLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="6" Margin="0,0,5,0" />
-            <Label x:Name="fialovaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="7" Margin="0,0,5,0" />
-            <Label x:Name="hnedaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="8" Margin="0,0,5,0" />
-            <Label x:Name="ruzovaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="9" Margin="0,0,5,0" />
-            <Label x:Name="zelenaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="10" Margin="0,0,5,0" />
-            <Label x:Name="zlataLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="11" Margin="0,0,5,0" />
-            <Label x:Name="oranzovaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="12" Margin="0,0,5,0" />
-            <Label x:Name="bilaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="13" Margin="0,0,5,0" />
-            <Label x:Name="sedivaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="14" Margin="0,0,5,0" />
-            <Label x:Name="cernaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="15" Margin="0,0,5,0" />
-            <Label x:Name="modraLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="16" Margin="0,0,5,0" />
-            <Label x:Name="vojenskaZelenaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="17" Margin="0,0,5,0" />
-            <Label x:Name="pocetHazenychMicuNaZacatkuHryLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="18" Margin="0,0,5,0" />
-            <Label x:Name="pocetHazenychMicuBehemHryLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="19" Margin="0,0,5,0" />
-            <Label x:Name="duhoveBallsLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="20" Margin="0,0,5,0" />
-            <Label x:Name="zdvojnasobujiciBallsLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="21" Margin="0,0,5,0" />
-            <Label x:Name="tvarSkupinyMicuKteraExplodujeLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="22" Margin="0,0,5,0" />
+            <Label x:Name="heightLabel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="0" Grid.Column="1" Grid.Row="0" Margin="0,0,5,1"/>
+            <Label x:Name="widthLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0"/>
+            <Label x:Name="lightGreenLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="2" Margin="0,0,5,0" />
+            <Label x:Name="redLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="3" Margin="0,0,5,0" />
+            <Label x:Name="darkBlueLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="4" Margin="0,0,5,0" />
+            <Label x:Name="yellowLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="5" Margin="0,0,5,0" />
+            <Label x:Name="lightBlueLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="6" Margin="0,0,5,0" />
+            <Label x:Name="purpleLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="7" Margin="0,0,5,0" />
+            <Label x:Name="brownLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="8" Margin="0,0,5,0" />
+            <Label x:Name="pinkLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="9" Margin="0,0,5,0" />
+            <Label x:Name="greenLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="10" Margin="0,0,5,0" />
+            <Label x:Name="goldLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="11" Margin="0,0,5,0" />
+            <Label x:Name="orangeLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="12" Margin="0,0,5,0" />
+            <Label x:Name="whiteLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="13" Margin="0,0,5,0" />
+            <Label x:Name="greyLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="14" Margin="0,0,5,0" />
+            <Label x:Name="blackLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="15" Margin="0,0,5,0" />
+            <Label x:Name="blueLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="16" Margin="0,0,5,0" />
+            <Label x:Name="armyGreenLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="17" Margin="0,0,5,0" />
+            <Label x:Name="startBallCountLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="18" Margin="0,0,5,0" />
+            <Label x:Name="nextBallCountLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="19" Margin="0,0,5,0" />
+            <Label x:Name="jokerBallsLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="20" Margin="0,0,5,0" />
+            <Label x:Name="doubleScoreBallsLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="21" Margin="0,0,5,0" />
+            <Label x:Name="shapeLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="22" Margin="0,0,5,0" />
         </Grid>
     </Grid>
 </Window>

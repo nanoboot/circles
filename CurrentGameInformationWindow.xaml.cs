@@ -12,39 +12,36 @@ namespace Balls
         public InformationAboutCurrentGameWindow(GameComposition gameCompositioin)
         {
             InitializeComponent();
-            vyskaLabel.Content = gameCompositioin.getHeight().ToString();
-            sirkaLabel.Content = gameCompositioin.getWidth().ToString();
-            svetleZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.getLightGreen());
-            cervenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isRed());
-            tmaveModraLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isDarkBlue());
-            zlutaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isYellow());
-            svetleModraLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isLightBlue());
-            fialovaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isPurple());
-            hnedaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isBrown());
-            ruzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isPink());
-            zelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isGreen());
-            zlataLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isGold());
-            oranzovaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isOrange());
-            bilaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isWhite());
-            sedivaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isGrey());
-            cernaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isBlack());
-            modraLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isBlue());
-            vojenskaZelenaLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isArmyGreen());
-            pocetHazenychMicuNaZacatkuHryLabel.Content = gameCompositioin.getStartBallCount().ToString();
-            pocetHazenychMicuBehemHryLabel.Content = gameCompositioin.getNextBallCount().ToString();
-            duhoveBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isJokerBalls());
-            zdvojnasobujiciBallsLabel.Content = PrevedLogickouHodnotuNaRetezec(gameCompositioin.isDoubleScoreBalls());
+            heightLabel.Content = gameCompositioin.getHeight().ToString();
+            widthLabel.Content = gameCompositioin.getWidth().ToString();
+            lightGreenLabel.Content = convertBooleanToString(gameCompositioin.getLightGreen());
+            redLabel.Content = convertBooleanToString(gameCompositioin.isRed());
+            darkBlueLabel.Content = convertBooleanToString(gameCompositioin.isDarkBlue());
+            yellowLabel.Content = convertBooleanToString(gameCompositioin.isYellow());
+            lightBlueLabel.Content = convertBooleanToString(gameCompositioin.isLightBlue());
+            purpleLabel.Content = convertBooleanToString(gameCompositioin.isPurple());
+            brownLabel.Content = convertBooleanToString(gameCompositioin.isBrown());
+            pinkLabel.Content = convertBooleanToString(gameCompositioin.isPink());
+            greenLabel.Content = convertBooleanToString(gameCompositioin.isGreen());
+            goldLabel.Content = convertBooleanToString(gameCompositioin.isGold());
+            orangeLabel.Content = convertBooleanToString(gameCompositioin.isOrange());
+            whiteLabel.Content = convertBooleanToString(gameCompositioin.isWhite());
+            greyLabel.Content = convertBooleanToString(gameCompositioin.isGrey());
+            blackLabel.Content = convertBooleanToString(gameCompositioin.isBlack());
+            blueLabel.Content = convertBooleanToString(gameCompositioin.isBlue());
+            armyGreenLabel.Content = convertBooleanToString(gameCompositioin.isArmyGreen());
+            startBallCountLabel.Content = gameCompositioin.getStartBallCount().ToString();
+            nextBallCountLabel.Content = gameCompositioin.getNextBallCount().ToString();
+            jokerBallsLabel.Content = convertBooleanToString(gameCompositioin.isJokerBalls());
+            doubleScoreBallsLabel.Content = convertBooleanToString(gameCompositioin.isDoubleScoreBalls());
 
             if (gameCompositioin.getShape() == "linka")
             {
-                String tvarSlovaBalls = "";
-                if (gameCompositioin.getMinLineLength() <= 4)
-                { tvarSlovaBalls = "míče"; }  else { tvarSlovaBalls = "míčů"; };
-                tvarSkupinyMicuKteraExplodujeLabel.Content = String.Concat(gameCompositioin.getShape(), " s minimální délkou ", gameCompositioin.getMinLineLength(), " ",tvarSlovaBalls);
+                shapeLabel.Content = String.Concat(gameCompositioin.getShape(), " with minimal length ", gameCompositioin.getMinLineLength(), " ","balls");
             }
             else
             {
-                tvarSkupinyMicuKteraExplodujeLabel.Content = gameCompositioin.getShape();
+                shapeLabel.Content = gameCompositioin.getShape();
             };
 
         }
@@ -53,8 +50,8 @@ namespace Balls
         {
             this.Close();
         }
-        private String PrevedLogickouHodnotuNaRetezec(bool LogickaHodnota)
-        { if (LogickaHodnota) { return "ano"; } else { return "ne"; }; }
+        private String convertBooleanToString(bool logicValue)
+        { return logicValue ? "yes":"no"; }
 
         private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {
