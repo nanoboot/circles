@@ -38,14 +38,14 @@ namespace Balls
             { if (shapeIsFound) { break; } else { checkLine(position); } }
 
         }
-        private void checkLine(String Pozice)
+        private void checkLine(String position)
         {
             {
                 currentCell = cellToBeChecked;
                 while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoveIt().hasColour(colour)))
                 {
                     explodedBalls.Push(currentCell);
-                    switch (Pozice)
+                    switch (position)
                     {
                         case "svisla":
                             currentCell = currentCell.getTopCell(); break;
@@ -59,7 +59,7 @@ namespace Balls
                             } 
                 };
                 currentCell = cellToBeChecked;
-                switch (Pozice)
+                switch (position)
                 {
                     case "svisla":
                         currentCell = currentCell.getBottomCell(); break;
@@ -75,7 +75,7 @@ namespace Balls
                 while ((currentCell != null) && (!currentCell.isEmpty()) && (currentCell.getBallAndDoNotRemoveIt().hasColour(colour)))
                 {
                     explodedBalls.Push(currentCell);
-                    switch (Pozice)
+                    switch (position)
                     {
                         case "svisla":
                             currentCell = currentCell.getBottomCell(); break;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Balls"
         mc:Ignorable="d"
-        Title="Informace o aktuální hře" Height="500" Width="440" MinHeight="500" MinWidth="440" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown_1">
+        Title="Information about current game" Height="500" Width="440" MinHeight="500" MinWidth="440" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown_1">
     <Grid>
         <Button x:Name="button" Content="OK" VerticalAlignment="Bottom" Click="button_Click" Margin="0,0,0,10" Padding="1" HorizontalAlignment="Center" Width="86"/>
 
@@ -39,29 +39,29 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="label" Content="Výška:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="0" Margin="0,0,5,1"/>
-            <Label x:Name="label_Copy" Content="Šířka:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="1" Margin="0,0,5,0"/>
-            <Label x:Name="label_Copy10" Content="Světle zelená:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="2" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy9" Content="Červená:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="3" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy8" Content="Tmavě modrá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="4" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy7" Content="Žlutá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="5" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy6" Content="Světle modrá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="6" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy5" Content="Fialová:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="7" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy4" Content="Hnědá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="8" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy3" Content="Růžová:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="9" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy2" Content="Zelená:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="10" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy1" Content="Zlatá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="11" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy22" Content="Oranžová" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="12" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy21" Content="Bílá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="13" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy20" Content="Šedivá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="14" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy19" Content="Černá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="15" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy18" Content="Modrá:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="16" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy17" Content="Vojenská zelená:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="17" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy16" Content="Počet házených míčů na začátku hry:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="18" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy15" Content="Počet házených míčů během hry:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="19" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy14" Content="Duhové míče:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="20" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy13" Content="Zdvojnásobující míče:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="21" Margin="0,0,5,0" />
-            <Label x:Name="label_Copy12" Content="Tvar skupiny míčů, která exploduje:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="22" Margin="0,0,5,0" />
+            <Label x:Name="label" Content="Height:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="0" Margin="0,0,5,1"/>
+            <Label x:Name="label_Copy" Content="Width:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="1" Margin="0,0,5,0"/>
+            <Label x:Name="label_Copy10" Content="Light green:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="2" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy9" Content="Red:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="3" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy8" Content="Dark blue:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="4" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy7" Content="Yellow:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="5" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy6" Content="Light blue:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="6" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy5" Content="Purple:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="7" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy4" Content="Brown:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="8" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy3" Content="Pink:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="9" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy2" Content="Green:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="10" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy1" Content="Gold:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="11" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy22" Content="Orange" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="12" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy21" Content="White:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="13" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy20" Content="Grey:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="14" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy19" Content="Black:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="15" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy18" Content="Blue:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="16" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy17" Content="Army green:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="17" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy16" Content="Start ball count:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="18" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy15" Content="Next ball count:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="19" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy14" Content="Joker balls:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="20" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy13" Content="Double score balls:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="21" Margin="0,0,5,0" />
+            <Label x:Name="label_Copy12" Content="Shape:" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Grid.Column="0" Grid.Row="22" Margin="0,0,5,0" />
 
             <Label x:Name="vyskaLabel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="0" Grid.Column="1" Grid.Row="0" Margin="0,0,5,1"/>
             <Label x:Name="sirkaLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0"/>
