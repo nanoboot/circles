@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Circles
 {
@@ -80,24 +75,24 @@ namespace Circles
             switch (Smer)
             {
                 case "nahore":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getTopCell(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.getCell().getTopCell(); break;
                 case "vpravo":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getRightCell(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.getCell().getRightCell(); break;
                 case "dole":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getBottomCell(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.getCell().getBottomCell(); break;
                 case "vlevo":
-                    ZkoumanePole = AktualniUzelHledaceCesty.VratPoleUzlu().getLeftCell(); break;
+                    ZkoumanePole = AktualniUzelHledaceCesty.getCell().getLeftCell(); break;
 
             }
             if (ZkoumanePole == AktivniPoleKam)
             {
-                this.PokudCestaExistujeJejiPosledniUzelJeZdeUzelHledaceCesty = AktualniUzelHledaceCesty.VytvorDite(ZkoumanePole);
+                this.PokudCestaExistujeJejiPosledniUzelJeZdeUzelHledaceCesty = AktualniUzelHledaceCesty.createChild(ZkoumanePole);
 
                 {
-                    while (AktualniUzelHledaceCesty.VratRodice() != null)
+                    while (AktualniUzelHledaceCesty.getParent() != null)
                     {
-                        ZasobnikPoliOdkudKam.Push(AktualniUzelHledaceCesty.VratPoleUzlu());
-                        AktualniUzelHledaceCesty = AktualniUzelHledaceCesty.VratRodice();
+                        ZasobnikPoliOdkudKam.Push(AktualniUzelHledaceCesty.getCell());
+                        AktualniUzelHledaceCesty = AktualniUzelHledaceCesty.getParent();
                     }
                 }
 
@@ -109,7 +104,7 @@ namespace Circles
         {
             if ((ZkoumanePole != null) && (ZkoumanePole.isEmpty()) && (!(NavstivenaPole.Contains(ZkoumanePole))))// Pokud pole nahoře je prázdné, nebylo již navštívené a existuje, tak potom se vytvoří nový uzel s tímto polem v dolní frontě a toto pole se přidá do seznamu již navštívených polí.
             {
-                FrontaPoTransformaci.Enqueue(AktualniUzelHledaceCesty.VytvorDite(ZkoumanePole));
+                FrontaPoTransformaci.Enqueue(AktualniUzelHledaceCesty.createChild(ZkoumanePole));
                 NavstivenaPole.Add(ZkoumanePole);
 
                 //ZasobnikPoliKtereUzNemajiBytAktivni.Push(ZkoumanePole);

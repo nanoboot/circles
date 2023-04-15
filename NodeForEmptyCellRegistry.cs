@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Circles
 {
     class NodeForEmptyCellRegistry
     {
-        private NodeForEmptyCellRegistry DalsiUzel = null;
-        private Cell PoleUzlu = null;
-        public NodeForEmptyCellRegistry(Cell PoleUzlu)
-        { this.PoleUzlu = PoleUzlu; }
-        public void addNewNode(NodeForEmptyCellRegistry DalsiUzel)
-        { this.DalsiUzel = DalsiUzel; }
+        private NodeForEmptyCellRegistry nextNode = null;
+        private Cell cell = null;
+        public NodeForEmptyCellRegistry(Cell cell)
+        { this.cell = cell; }
+        public void addNewNode(NodeForEmptyCellRegistry nextNode)
+        { this.nextNode = nextNode; }
         public NodeForEmptyCellRegistry getNextNode()
-        {return this.DalsiUzel; }
+        {return this.nextNode; }
         public Cell getCell()
-        { return this.PoleUzlu; }
+        { return this.cell; }
     }
 }
