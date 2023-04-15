@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Windows.Media.Effects;
 namespace Circles
 {
     /// <summary>
@@ -22,56 +13,56 @@ namespace Circles
     /// </summary>
     public partial class MainWindow : Window
     {
-        Grid[,] pole = new Grid[32, 32];//Vlastnost pole uchovaná ve dvojrozměrném poli pro identifikaci objektů typu Grid zastupující jedno pole hry. Díky tomu bude možné identifikovat pole, u kterého se budou chtít změnit jeho vlastnosti.
-        private Game hra;// Instance jedné hry.
-        private GameComposition sestavaHry = new GameComposition();//Instance aktuální hrané hry
-        private CellCoordination sberacSouradnic;//Instance sběrače souřadnic, do kterého se uloží souřadnice pole, na které hráč kliknul, a to pro pozdější použití.
-        private double SirkaIVyskaElipsy;// Vlastnost, ve které bude uchováný dynamicky vypočítaný průměr míče dle počtu řádků a sloupců desky.
-        private bool RezimCeleObrazovky = false;
-        // Začíná definice štetců příslušných barev.
-        System.Windows.Media.SolidColorBrush SvetleZelenaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LawnGreen);
-        System.Windows.Media.SolidColorBrush CervenaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Red);
-        System.Windows.Media.SolidColorBrush TmaveModraStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Blue);
-        System.Windows.Media.SolidColorBrush ZlutaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Yellow);
-        System.Windows.Media.SolidColorBrush SvetleModraStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Cyan);
-        System.Windows.Media.SolidColorBrush FialovaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.BlueViolet);
-        System.Windows.Media.SolidColorBrush HnedaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Maroon);
-        System.Windows.Media.SolidColorBrush RuzovaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Pink);
-        System.Windows.Media.SolidColorBrush ZelenaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.ForestGreen);
-        System.Windows.Media.SolidColorBrush ZlataStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gold);
-        System.Windows.Media.SolidColorBrush OranzovaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkOrange);
-        System.Windows.Media.SolidColorBrush BilaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-        System.Windows.Media.SolidColorBrush SedivaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
-        System.Windows.Media.SolidColorBrush CernaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black);
-        System.Windows.Media.SolidColorBrush ModraStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DodgerBlue);
-        System.Windows.Media.SolidColorBrush VojenskaZelenaStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Olive);
+        Grid[,] cell = new Grid[32, 32];// An array property held in a two-dimensional array to identify Grid objects representing a single game field. Thanks to this, it will be possible to identify the field whose properties will be changed.
+        private Game game;// One game instance.
+        private GameComposition gameComposition = new GameComposition();// An instance of the currently playing game
+        private CellCoordination cellCoordination;// A coordinate collector instance to store the coordinates of the box the player clicked on for later use.
+        private double widthAndHeightOfEllipse;// A property in which the dynamically calculated diameter of the ball according to the number of rows and columns of the board will be stored.
+        private bool fullScreenMode = false;
+        // The definition of the brushes of the respective colors begins.
+        System.Windows.Media.SolidColorBrush lightGreenBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LawnGreen);
+        System.Windows.Media.SolidColorBrush redBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Red);
+        System.Windows.Media.SolidColorBrush darkBlueBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Blue);
+        System.Windows.Media.SolidColorBrush yellowBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Yellow);
+        System.Windows.Media.SolidColorBrush lightBlueBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Cyan);
+        System.Windows.Media.SolidColorBrush purpleBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.BlueViolet);
+        System.Windows.Media.SolidColorBrush brownBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Maroon);
+        System.Windows.Media.SolidColorBrush pinkBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Pink);
+        System.Windows.Media.SolidColorBrush greenBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.ForestGreen);
+        System.Windows.Media.SolidColorBrush goldBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gold);
+        System.Windows.Media.SolidColorBrush orangeBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkOrange);
+        System.Windows.Media.SolidColorBrush whiteBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
+        System.Windows.Media.SolidColorBrush greyBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
+        System.Windows.Media.SolidColorBrush blackBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black);
+        System.Windows.Media.SolidColorBrush blueBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DodgerBlue);
+        System.Windows.Media.SolidColorBrush armyGreenBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Olive);
         
-        LinearGradientBrush SvetleZelenaLinearniPrechodStetec= new LinearGradientBrush();
-        LinearGradientBrush CervenaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush TmaveModraLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush ZlutaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush SvetleModraLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush FialovaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush HnedaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush RuzovaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush ZelenaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush ZlataLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush OranzovaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush BilaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush SedivaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush CernaLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush ModraLinearniPrechodStetec = new LinearGradientBrush();
-        LinearGradientBrush VojenskaZelenaLinearniPrechodStetec = new LinearGradientBrush();
+        LinearGradientBrush lightGreenLinearGradientBrush= new LinearGradientBrush();
+        LinearGradientBrush redLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush darkBlueLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush yellowLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush lightBlueLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush purpleLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush brownLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush pinkLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush greenLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush goldLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush orangeLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush whiteLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush greyLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush blackLinearGradientBrush = new LinearGradientBrush();
+        LinearGradientBrush blue = new LinearGradientBrush();
+        LinearGradientBrush armyGreenLinearGradientBrush = new LinearGradientBrush();
 
-        LinearGradientBrush DuhoveLinearniPrechodStetec = new LinearGradientBrush();
+        LinearGradientBrush jokerLinearGradientBrush = new LinearGradientBrush();
 
-        System.Windows.Media.SolidColorBrush pozadiPoleStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Silver);
-        System.Windows.Media.SolidColorBrush pozadiZvyraznenePoleStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkGray);
-        System.Windows.Media.SolidColorBrush pozadiZvyrazneneCervenePoleStetec = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.IndianRed);
+        System.Windows.Media.SolidColorBrush cellBackgroundBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Silver);
+        System.Windows.Media.SolidColorBrush activatedCellBackgroundBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkGray);
+        System.Windows.Media.SolidColorBrush activatedCellBackgroundRedBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.IndianRed);
 
-        private void SestavStetceSLinearnimPrechodem()
+        private void buildLinearGradientBrushes()
         {
-            System.Windows.Media.Color[] svetlejsiBarvaPole = {
+            System.Windows.Media.Color[] lightColours = {
                 Colors.LawnGreen,
                 Colors.Red,
                 Colors.Blue,
@@ -90,7 +81,7 @@ namespace Circles
                 Colors.Olive
                 
             };
-            System.Windows.Media.Color[] tmavsiBarvaPole = {
+            System.Windows.Media.Color[] darkColours = {
                 Colors.Green,
                 Colors.DarkRed,
                 Colors.DarkBlue,
@@ -108,28 +99,28 @@ namespace Circles
                 Colors.DodgerBlue,
                 Colors.DarkOliveGreen
             };
-            LinearGradientBrush[] stetecSLinearnimPrechodemPole = {
-            SvetleZelenaLinearniPrechodStetec,
-            CervenaLinearniPrechodStetec,
-            TmaveModraLinearniPrechodStetec,
-            ZlutaLinearniPrechodStetec,
-            SvetleModraLinearniPrechodStetec,
-            FialovaLinearniPrechodStetec,
-            HnedaLinearniPrechodStetec,
-            RuzovaLinearniPrechodStetec,
-            ZelenaLinearniPrechodStetec,
-            ZlataLinearniPrechodStetec,
-            OranzovaLinearniPrechodStetec,
-            BilaLinearniPrechodStetec,
-            SedivaLinearniPrechodStetec,
-            CernaLinearniPrechodStetec,
-            ModraLinearniPrechodStetec,
-            VojenskaZelenaLinearniPrechodStetec
+            LinearGradientBrush[] linearGradientBrushes = {
+            lightGreenLinearGradientBrush,
+            redLinearGradientBrush,
+            darkBlueLinearGradientBrush,
+            yellowLinearGradientBrush,
+            lightBlueLinearGradientBrush,
+            purpleLinearGradientBrush,
+            brownLinearGradientBrush,
+            pinkLinearGradientBrush,
+            greenLinearGradientBrush,
+            goldLinearGradientBrush,
+            orangeLinearGradientBrush,
+            whiteLinearGradientBrush,
+            greyLinearGradientBrush,
+            blackLinearGradientBrush,
+            blue,
+            armyGreenLinearGradientBrush
         };
             for (int i=0; i<=15;i++)
-            { NastavStetecSLinearnimPrechodem(stetecSLinearnimPrechodemPole[i],svetlejsiBarvaPole[i],tmavsiBarvaPole[i]); }
+            { changeLinearGradientBrush(linearGradientBrushes[i],lightColours[i],darkColours[i]); }
             NastavStetecSDuhouSLinearnimPrechodem();        }
-        private void NastavStetecSLinearnimPrechodem(LinearGradientBrush StetecSLinearnimPrechodem, System.Windows.Media.Color Color1, System.Windows.Media.Color Color2)
+        private void changeLinearGradientBrush(LinearGradientBrush linearGradientBrush, System.Windows.Media.Color Color1, System.Windows.Media.Color Color2)
         {
             GradientStopCollection linearStops = new GradientStopCollection();
 
@@ -143,10 +134,10 @@ namespace Circles
             linearStops.Add(Stop3);
             linearStops.Add(Stop4);
 
-            StetecSLinearnimPrechodem.StartPoint = new Point(0.5, 0.1);
-            StetecSLinearnimPrechodem.EndPoint = new Point(0.5, 0.9);
+            linearGradientBrush.StartPoint = new Point(0.5, 0.1);
+            linearGradientBrush.EndPoint = new Point(0.5, 0.9);
 
-            StetecSLinearnimPrechodem.GradientStops = linearStops;
+            linearGradientBrush.GradientStops = linearStops;
         }
         private void NastavStetecSDuhouSLinearnimPrechodem()
         {
@@ -168,74 +159,74 @@ namespace Circles
             linearStops.Add(Stop6);
             linearStops.Add(Stop7);
 
-            DuhoveLinearniPrechodStetec.StartPoint = new Point(0.5, 0.0);
-            DuhoveLinearniPrechodStetec.EndPoint = new Point(0.5, 1);
+            jokerLinearGradientBrush.StartPoint = new Point(0.5, 0.0);
+            jokerLinearGradientBrush.EndPoint = new Point(0.5, 1);
 
-            DuhoveLinearniPrechodStetec.GradientStops = linearStops;
+            jokerLinearGradientBrush.GradientStops = linearStops;
         }
         public MainWindow()
         {
-            SestavStetceSLinearnimPrechodem();
+            buildLinearGradientBrushes();
             InitializeComponent();
-            NovaHra();// Při inicializaci okna se spustí nová hra.
+            newGame();// A new game will start when the window is initialized.
         }
 
-        private void NovaHra()// Tato metoda se provede vždy, když začne nová hra.
+        private void newGame()// This method is executed every time a new game starts.
         {
-            ResetujProstredi();//Musí se vyčistit okno od všeho, co v okně zůstalo po nové hře
-            hra = new Game(
-        this.sestavaHry,
-        sestavaHry.getHeight(),
-        sestavaHry.getWidth(),
-        sestavaHry.getLightGreen(),
-        sestavaHry.isRed(),
-        sestavaHry.isDarkBlue(),
-        sestavaHry.isYellow(),
-        sestavaHry.isLightBlue(),
-        sestavaHry.isPurple(),
-        sestavaHry.isBrown(),
-        sestavaHry.isPink(),
-        sestavaHry.isGreen(),
-        sestavaHry.isGold(),
-        sestavaHry.isOrange(),
-        sestavaHry.isWhite(),
-        sestavaHry.isGrey(),
-        sestavaHry.isBlack(),
-        sestavaHry.isBlue(),
-        sestavaHry.isArmyGreen(),
-        sestavaHry.getStartBallCount(),
-        sestavaHry.getNextBallCount(),
-        sestavaHry.isJokerBalls(),
-        sestavaHry.isDoubleScoreBalls(),
-        sestavaHry.getShape(),
-        sestavaHry.getMinLineLength()
+            resetEnvironment();// The window must be cleaned of everything left in the window after the new game
+            game = new Game(
+        this.gameComposition,
+        gameComposition.getHeight(),
+        gameComposition.getWidth(),
+        gameComposition.getLightGreen(),
+        gameComposition.isRed(),
+        gameComposition.isDarkBlue(),
+        gameComposition.isYellow(),
+        gameComposition.isLightBlue(),
+        gameComposition.isPurple(),
+        gameComposition.isBrown(),
+        gameComposition.isPink(),
+        gameComposition.isGreen(),
+        gameComposition.isGold(),
+        gameComposition.isOrange(),
+        gameComposition.isWhite(),
+        gameComposition.isGrey(),
+        gameComposition.isBlack(),
+        gameComposition.isBlue(),
+        gameComposition.isArmyGreen(),
+        gameComposition.getStartBallCount(),
+        gameComposition.getNextBallCount(),
+        gameComposition.isJokerBalls(),
+        gameComposition.isDoubleScoreBalls(),
+        gameComposition.getShape(),
+        gameComposition.getMinLineLength()
 
-                );//Vytvoří hru a to podle toho, jaké vlastnosti má vlastnost okna sestavyHry.
-            int sirkaDesky = 520;
-            double jakyBudePodilPrumeruBallsOprotiDelcePole = 0.75;
-            this.SirkaIVyskaElipsy = jakyBudePodilPrumeruBallsOprotiDelcePole * sirkaDesky / Math.Max(hra.getHeight(), hra.getWidth());// Zde se vypočte a uloží hodnota, která bude znamenat šířku a výšku míče, která se vypočte dynamicky podle výšky a šířky desky
+                );// Creates a game according to the properties of the Game assembly window property.
+            int boardWidth = 520;
+            double whatWillBeTheRatioOfTheDiameterOfTheCircleToTheLengthOfTheField = 0.75;
+            this.widthAndHeightOfEllipse = whatWillBeTheRatioOfTheDiameterOfTheCircleToTheLengthOfTheField * boardWidth / Math.Max(game.getHeight(), game.getWidth());// Here a value will be calculated and stored which will mean the width and height of the ball which will be calculated dynamically based on the height and width of the board
 
-            ProvestPrikazy();//To, co vypočítala logická vrstva, se nyní projeví ve vrstvě aplikační
+            executeCommands();// What the logic layer has calculated will now be reflected in the application layer
         }
-        public String ProvestPrikaz()// Provede jeden příkaz ve frontě příkazů z logické vrstvy
+        public String executeCommand()// Executes one command in the command queue from the logical layer
         {
-            String prikaz = hra.getCommand();// Vezme si jeden příkaz z fronty příkazů v hře.
-            //MessageBox.Show(prikaz);
-            string[] parametrPrikazu = prikaz.Split(' ');//Zde je příkaz rozdělen po mezerách na jednotlivé parametry
-            switch (parametrPrikazu[0])//Zde se zkoumá 0. parametr
+            String command = game.getCommand();// Takes one command from the in-game command queue.
+            //MessageBox.Show(command);
+            string[] commandParts = command.Split(' ');// Here, the command is divided by spaces into individual parameters
+            switch (commandParts[0])// The 0th parameter is examined here
             {
                 case "HRA":
-                    switch (parametrPrikazu[1])//Zde se zkoumá 1. parametr
+                    switch (commandParts[1])// The 1st parameter is examined here
                     {
                         case "NOVA":
-                            { ResetujProstredi(); }
+                            { resetEnvironment(); }
                             break;
 
                         case "KONEC":
-                            EnterYourNameWindow zadejteVaseJmenoWindow = new EnterYourNameWindow(this.hra);
-                            zadejteVaseJmenoWindow.ShowDialog();// Zobrazí dialog pro zadání jména hráče.
+                            EnterYourNameWindow enterYourNameWindow = new EnterYourNameWindow(this.game);
+                            enterYourNameWindow.ShowDialog();// Displays a dialog for entering the player's name.
 
-                            NovaHra();//Hra skončila, výsledky se uložily, nyní začíná nová hra
+                            newGame();// Game over, results saved, now a new game begins
                             break;
                         default:
                             ;
@@ -245,7 +236,7 @@ namespace Circles
 
                 case "DESKA":
                     {
-                        VykresliDesku(Int32.Parse(parametrPrikazu[1]), Int32.Parse(parametrPrikazu[2]));
+                        buildBoard(Int32.Parse(commandParts[1]), Int32.Parse(commandParts[2]));
 
                     };
                     break;
@@ -256,56 +247,56 @@ namespace Circles
                     break;
                 case "MIC":
                     {
-                        switch (parametrPrikazu[3])//Zde se zkoumá 3. parametr
+                        switch (commandParts[3])// The 3rd parameter is examined here
                         {
                             case "NOVY":
                                 {
-                                    VytvorNovyMic(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2]), parametrPrikazu[4], parametrPrikazu[5]);
+                                    createNewBall(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2]), commandParts[4], commandParts[5]);
                                 }
                                 break;
                             case "SKAKEJ":
-                                MiciSkakej(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2]));
+                                ballStartJumping(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2]));
                                 break;
                             case "NESKAKEJ":
-                                MiciNeskakej(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2])); break;
+                                ballStopJumping(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); break;
                             case "ODSTRANIT":
-                                VycistitPole(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2])); break;
+                                clearCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); break;
                             case "DALSI1":
                                 {
-                                    switch(Convert.ToInt32(parametrPrikazu[2]))
+                                    switch(Convert.ToInt32(commandParts[2]))
                                     {
-                                        case 1: dalsiMic1.Fill = SvetleZelenaLinearniPrechodStetec; break;
-                                        case 2: dalsiMic1.Fill = CervenaLinearniPrechodStetec; break;
-                                        case 3: dalsiMic1.Fill = TmaveModraLinearniPrechodStetec; break;
-                                        case 4: dalsiMic1.Fill = ZlutaLinearniPrechodStetec; break;
-                                        case 5: dalsiMic1.Fill = SvetleModraLinearniPrechodStetec; break;
-                                        case 6: dalsiMic1.Fill = FialovaLinearniPrechodStetec; break;
-                                        case 7: dalsiMic1.Fill = HnedaLinearniPrechodStetec; break;
+                                        case 1: nextBall1.Fill = lightGreenLinearGradientBrush; break;
+                                        case 2: nextBall1.Fill = redLinearGradientBrush; break;
+                                        case 3: nextBall1.Fill = darkBlueLinearGradientBrush; break;
+                                        case 4: nextBall1.Fill = yellowLinearGradientBrush; break;
+                                        case 5: nextBall1.Fill = lightBlueLinearGradientBrush; break;
+                                        case 6: nextBall1.Fill = purpleLinearGradientBrush; break;
+                                        case 7: nextBall1.Fill = brownLinearGradientBrush; break;
                                     }
                                 }
                                  break;
                             case "DALSI2":
-                                switch (Convert.ToInt32(parametrPrikazu[2]))
+                                switch (Convert.ToInt32(commandParts[2]))
                                 {
-                                    case 1: dalsiMic2.Fill = SvetleZelenaLinearniPrechodStetec; break;
-                                    case 2: dalsiMic2.Fill = CervenaLinearniPrechodStetec; break;
-                                    case 3: dalsiMic2.Fill = TmaveModraLinearniPrechodStetec; break;
-                                    case 4: dalsiMic2.Fill = ZlutaLinearniPrechodStetec; break;
-                                    case 5: dalsiMic2.Fill = SvetleModraLinearniPrechodStetec; break;
-                                    case 6: dalsiMic2.Fill = FialovaLinearniPrechodStetec; break;
-                                    case 7: dalsiMic2.Fill = HnedaLinearniPrechodStetec; break;
+                                    case 1: nextBall2.Fill = lightGreenLinearGradientBrush; break;
+                                    case 2: nextBall2.Fill = redLinearGradientBrush; break;
+                                    case 3: nextBall2.Fill = darkBlueLinearGradientBrush; break;
+                                    case 4: nextBall2.Fill = yellowLinearGradientBrush; break;
+                                    case 5: nextBall2.Fill = lightBlueLinearGradientBrush; break;
+                                    case 6: nextBall2.Fill = purpleLinearGradientBrush; break;
+                                    case 7: nextBall2.Fill = brownLinearGradientBrush; break;
                                 }
                                 break;
                             case "DALSI3":
-                                switch (Convert.ToInt32(parametrPrikazu[2]))
+                                switch (Convert.ToInt32(commandParts[2]))
                                 {
-                                    case 1: dalsiMic3.Fill = SvetleZelenaLinearniPrechodStetec; break;
-                                    case 2: dalsiMic3.Fill = CervenaLinearniPrechodStetec; break;
-                                    case 3: dalsiMic3.Fill = TmaveModraLinearniPrechodStetec; break;
-                                    case 4: dalsiMic3.Fill = ZlutaLinearniPrechodStetec; break;
-                                    case 5: dalsiMic3.Fill = SvetleModraLinearniPrechodStetec; break;
-                                    case 6: dalsiMic3.Fill = FialovaLinearniPrechodStetec; break;
-                                    case 7: dalsiMic3.Fill = HnedaLinearniPrechodStetec; break;
+                                    case 1: nextBall3.Fill = lightGreenLinearGradientBrush; break;
+                                    case 2: nextBall3.Fill = redLinearGradientBrush; break;
+                                    case 3: nextBall3.Fill = darkBlueLinearGradientBrush; break;
+                                    case 4: nextBall3.Fill = yellowLinearGradientBrush; break;
+                                    case 5: nextBall3.Fill = lightBlueLinearGradientBrush; break;
+                                    case 6: nextBall3.Fill = purpleLinearGradientBrush; break;
+                                    case 7: nextBall3.Fill = brownLinearGradientBrush; break;
                                 }
                                 break;
                             default: ;break;
@@ -314,626 +305,626 @@ namespace Circles
                     break;
                 case "POLE":
                     {
-                        switch (parametrPrikazu[3])//Zde se zkoumá 3. parametr
+                        switch (commandParts[3])// The 3rd parameter is examined here
                         {
                             case "POZADI":
                                 {
-                                    switch (parametrPrikazu[4])
+                                    switch (commandParts[4])
                                     {
-                                        case "ZVYRAZNENE": { ZvyrazniPole(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2])); }; break;
-                                        case "NEZVYRAZNENE": { ZnevyrazniPole(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2])); }; break;
-                                        case "CERVENE": { ZvyrazniCervenePole(Convert.ToInt32(parametrPrikazu[1]), Convert.ToInt32(parametrPrikazu[2])); }; break;
+                                        case "ZVYRAZNENE": { highlightCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
+                                        case "NEZVYRAZNENE": { stopHighlightingCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
+                                        case "CERVENE": { highlightCellWithRedBackground(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
                                         default: { }; break;
                                     }
                                 }; break;
                         }
                     }; break;
                 case "VYSLEDEK":
-                    { NastavVysledek(Convert.ToInt32(parametrPrikazu[1])); }
+                    { changeScore(Convert.ToInt32(commandParts[1])); }
                     break;
                 default:
-                    MessageBox.Show("Chyba: Logická vrstva vygenerovala změnu, které grafická vrstva nerozumí"); ;
+                    MessageBox.Show("Error: The logic layer generated a change that the graphics layer does not understand"); ;
                     break;
 
             }
-            return prikaz;
+            return command;
         }
         /*
         -------------------------------------------------------------------------------
-        Začíná popis syntaxe příkazů speciálního jazyka, který generuje logická vrstva.
+        It begins with a description of the command syntax of the special language generated by the logic layer.
         -------------------------------------------------------------------------------
-        Tím, co generuje logická vrstva, informuje ostatní o tom, jaké prvky se změnily a jak.
-        Velkými písmeny jsou slova příkazu. 
-        To, co je ve spičatých závorkách, je nutné nahradit konkrétním číslem nebo textovým řetězcem. 
-        Řetězce se zapisují bez dvojitých nebo jednoduchých uvozovek.
-        Příklad: Následující příkaz zobrazí nový černý míč v poli 4. řádku a 6. sloupce a to tak, že použije efekt nafouknutí.
+        By what the logic layer generates, it informs others about what elements have changed and how.
+        Command words are capitalized.
+        What is in the angle brackets must be replaced with a specific number or text string.
+        Strings are written without double or single quotes.
+        Example: The following command displays a new black ball in the 4th row and 6th column field by applying the inflate effect.
         MIC 4 6 NOVY CERNY NAFOUKNOUT
         ------------------------------------------------------------------------------
 
-        Příkaz:   HRA NOVA
-        Popis:    Prezentační vrstva musí na rozkaz tohoto příkazu připravit prezentační vrstvu pro novou hru a smazat vše, co zbylo po hře minulé.
+        Command:   HRA NOVA
+        Description:    The presentation layer must, at the behest of this command, prepare the presentation layer for the new game and delete everything left over from the last game.
 
-        Příkaz:   HRA KONEC
-        Popis:    Prezentační vrstva musí na rozkaz tohoto příkazu připravit prezentační vrstvu pro operace prováděné po dohrání hry.
+        Command:   HRA KONEC
+        Description:    The presentation layer must, at the behest of this command, prepare the presentation layer for operations performed after the game is finished.
 
-        Příkaz:   DESKA <výška> <šířka> 
-        Popis:    Tento příkaz musí následovat ihned za příkazem HRA NOVA. Podle tohoto příkazu prezentační vrstva sestaví desku o daných rozměrech.
+        Command:   DESKA <výška> <šířka> 
+        Description:    This command must immediately follow the GAME NOVA command. According to this command, the presentation layer builds a board with the given dimensions.
 
-        Příkaz:   DNO
-        Popis:    Tento příkaz negeneruje logická vrstva, tento příkaz si generuje prezentační vrstva automaticky, pokud již byly všechny příkazy ve frontě příkazů vykonány a tato fronta je nyní prázdná. Aplikační vrstva je tímto příkazem informována, že je aktuální podoba prezentační vrstvy shodná s tím, jak jsou prvky hry reprezentovány v logické vrstvě.
+        Command:   DNO
+        Description:    This command is not generated by the logic layer, this command is generated by the presentation layer automatically if all the commands in the command queue have already been executed and this queue is now empty. The application layer is informed by this command that the current form of the presentation layer is the same as how the elements of the game are represented in the logic layer.
 
-        Příkaz:   MIC <řádek> <sloupec> NOVY <typ> NAFOUKNOUT
-        Popis:    V desce se na dané pozici objeví nový míč daného typu a bude nafouknut, což znamená, že bude nejdříve malý a postupně se bude zvětšovat do konečné podoby.
+        Command:   MIC <řádek> <sloupec> NOVY <typ> NAFOUKNOUT
+        Description:    A new ball of the given type will appear in the board at the given position and will be inflated, meaning that it will be small at first and gradually increase to its final size.
 
-        Příkaz:   MIC <řádek> <sloupec> NOVY <typ> 
-        Popis:    V desce se na dané pozici objeví nový míč daného typu a nebude nafouknut, což znamená, že se zobrazí do konečné podoby již nafouknutý.
+        Command:   MIC <řádek> <sloupec> NOVY <typ> 
+        Description:    A new ball of the given type will appear in the board at the given position and will not be inflated, meaning it will appear already inflated to its final form.
 
-        Příkaz:   MIC <řádek> <sloupec> SKAKEJ
-        Popis:    Daný míč začne skákat.
+        Command:   MIC <řádek> <sloupec> SKAKEJ
+        Description:    The given ball starts to bounce.
 
-        Příkaz:   MIC <řádek> <sloupec> NESKAKEJ
-        Popis:    Daný míč přestane skákat.
+        Command:   MIC <řádek> <sloupec> NESKAKEJ
+        Description:    The given ball stops bouncing.
 
-        Příkaz:   MIC <řádek> <sloupec> ODSTRANIT
-        Popis:    Daný míč bude odstraněn.
+        Command:   MIC <řádek> <sloupec> ODSTRANIT
+        Description:    The given ball will be removed.
             
-        Příkaz:   POLE <řádek> <sloupec> POZADI ZVYRAZNENE
-        Popis:    Dané pole bude zvýrazněno.
+        Command:   POLE <řádek> <sloupec> POZADI ZVYRAZNENE
+        Description:    The given field will be highlighted.
 
-        Příkaz:   POLE <řádek> <sloupec> POZADI NEZVYRAZNENE
-        Popis:    Dané pole bude nezvýrazněno.
+        Command:   POLE <řádek> <sloupec> POZADI NEZVYRAZNENE
+        Description:    The given field will be unhighlighted.
 
-        Příkaz:   POLE <řádek> <sloupec> POZADI CERVENE
-        Popis:    Dané pole bude zvýrazněno červeně po výbuchu.
+        Command:   POLE <řádek> <sloupec> POZADI CERVENE
+        Description:    The given field will be highlighted in red after the explosion.
 
-        Příkaz:   VYSLEDEK <počet bodů>
-        Popis:    Informuje, že se počet bodů aktuálního výsledku změnil.
+        Command:   VYSLEDEK <počet bodů>
+        Description:    It informs that the number of points of the current result has changed.
 
         ------------------------------------------------------------------------------
-        Končí popis syntaxe příkazů speciálního jazyka, který generuje logická vrstva.
+        The description of the command syntax of the special language generated by the logic layer ends.
         ------------------------------------------------------------------------------
         */
 
 
-        public void ProvestPrikazy() // Provede všechny příkazy z fronty příkazů.
+        public void executeCommands() // Executes all commands from the command queue.
         {
-            bool pokracovat = true;
+            bool shouldIContinue = true;
             do
-            {// Dělej.
-                if (ProvestPrikaz() == "DNO") { pokracovat = false; };
-            }//Pokud příkaz ve frontě příkazů není DNO, neměň hodnotu proměnné pokracovat, jinak ji nastav na true.
-            while (pokracovat);// Dokud je hodnota proměnné pokracovat pravdivá.
+            {// Do.
+                if (executeCommand() == "DNO") { shouldIContinue = false; };
+            }// If the command in the command queue is not DNO, do not change the value of the continue variable, otherwise set it to true.
+            while (shouldIContinue);// As long as the value of the variable continues to be true.
 
         }
-        private void ZvyrazniPole(int Radek, int Sloupec)//Nastaví v prezentační vrstvě dané pozadí daného pole.
+        private void highlightCell(int row, int column)// Sets the background of the given field in the presentation layer.
         {
-            pole[Radek - 1, Sloupec - 1].Background = pozadiZvyraznenePoleStetec;
+            cell[row - 1, column - 1].Background = activatedCellBackgroundBrush;
         }
-        private void ZnevyrazniPole(int Radek, int Sloupec)//Nastaví v prezentační vrstvě dané pozadí daného pole.
+        private void stopHighlightingCell(int row, int column)// Sets the background of the given field in the presentation layer.
         {
-            pole[Radek - 1, Sloupec - 1].Background = pozadiPoleStetec;
+            cell[row - 1, column - 1].Background = cellBackgroundBrush;
         }
-        private void ZvyrazniCervenePole(int Radek, int Sloupec)//Nastaví v prezentační vrstvě dané pozadí daného pole.
+        private void highlightCellWithRedBackground(int row, int column)// Sets the background of the given field in the presentation layer.
         {
-            pole[Radek - 1, Sloupec - 1].Background = pozadiZvyrazneneCervenePoleStetec;
+            cell[row - 1, column - 1].Background = activatedCellBackgroundRedBrush;
         }
-        public void VytvorNovyMic(int Radek, int Sloupec, String Typ, String Efekt)// Vytvoří v prezentační vrstvě nový míč v daném poli daného typu a s daným efektem.
-                                                                                   //Vždy před zahájením nové hry tato metoda nastaví grafické prostředí do výchozí podoby. Jinými slovy vyčistí to, co zůstalo po předchozí hře.
+        public void createNewBall(int row, int column, String type, String effect)// Creates in the presentation layer a new ball in the given field of the given type and with the given effect.
+                                                                                  // Always before starting a new game, this method resets the graphical environment to its default form. In other words, it cleans up what was left after the previous game.
         {
-            Ellipse NovyMic = new Ellipse();
-            NovyMic.Height = SirkaIVyskaElipsy;
-            NovyMic.Width = SirkaIVyskaElipsy;
-            TextBlock popisekTextBlock = new TextBlock { Text = "2×", FontSize = 24, VerticalAlignment = System.Windows.VerticalAlignment.Center, HorizontalAlignment = System.Windows.HorizontalAlignment.Center };//Pokud je míč zdvojnásobující, bude mít před sebou tento popisek.
-            switch (Typ)// Podle typu míče se nastaví příslušný míč.
+            Ellipse newBall = new Ellipse();
+            newBall.Height = widthAndHeightOfEllipse;
+            newBall.Width = widthAndHeightOfEllipse;
+            TextBlock popisekTextBlock = new TextBlock { Text = "2×", FontSize = 24, VerticalAlignment = System.Windows.VerticalAlignment.Center, HorizontalAlignment = System.Windows.HorizontalAlignment.Center };// If the ball is doubling, it will have this label in front of it.
+            switch (type)// Depending on the type of ball, the corresponding ball is set.
             {
                 case "SVETLEZELENA":
                     {
-                        NovyMic.Fill = SvetleZelenaLinearniPrechodStetec;
+                        newBall.Fill = lightGreenLinearGradientBrush;
                     }; break;
                 case "CERVENA":
                     {
-                        NovyMic.Fill = CervenaLinearniPrechodStetec;
+                        newBall.Fill = redLinearGradientBrush;
                     }; break;
                 case "TMAVEMODRA":
                     {
-                        NovyMic.Fill = TmaveModraLinearniPrechodStetec;
+                        newBall.Fill = darkBlueLinearGradientBrush;
                     }; break;
                 case "ZLUTA":
                     {
-                        NovyMic.Fill = ZlutaLinearniPrechodStetec;
+                        newBall.Fill = yellowLinearGradientBrush;
                     }; break;
                 case "SVETLEMODRA":
                     {
-                        NovyMic.Fill = SvetleModraLinearniPrechodStetec;
+                        newBall.Fill = lightBlueLinearGradientBrush;
                     }; break;
                 case "FIALOVA":
                     {
-                        NovyMic.Fill = FialovaLinearniPrechodStetec;
+                        newBall.Fill = purpleLinearGradientBrush;
                     }; break;
                 case "HNEDA":
                     {
-                        NovyMic.Fill = HnedaLinearniPrechodStetec;
+                        newBall.Fill = brownLinearGradientBrush;
                     }; break;
                 case "RUZOVA":
                     {
-                        NovyMic.Fill = RuzovaLinearniPrechodStetec;
+                        newBall.Fill = pinkLinearGradientBrush;
                     }; break;
                 case "ZELENA":
                     {
-                        NovyMic.Fill = ZelenaLinearniPrechodStetec;
+                        newBall.Fill = greenLinearGradientBrush;
                     }; break;
                 case "ZLATA":
                     {
-                        NovyMic.Fill = ZlataLinearniPrechodStetec;
+                        newBall.Fill = goldLinearGradientBrush;
                     }; break;
                 case "ORANZOVA":
                     {
-                        NovyMic.Fill = OranzovaLinearniPrechodStetec;
+                        newBall.Fill = orangeLinearGradientBrush;
                     }; break;
                 case "BILA":
                     {
-                        NovyMic.Fill = BilaLinearniPrechodStetec;
+                        newBall.Fill = whiteLinearGradientBrush;
                     }; break;
                 case "SEDIVA":
                     {
-                        NovyMic.Fill = SedivaLinearniPrechodStetec;
+                        newBall.Fill = greyLinearGradientBrush;
                     }; break;
                 case "CERNA":
                     {
-                        NovyMic.Fill = CernaLinearniPrechodStetec;
+                        newBall.Fill = blackLinearGradientBrush;
                     }; break;
                 case "MODRA":
                     {
-                        NovyMic.Fill = ModraLinearniPrechodStetec;
+                        newBall.Fill = blue;
                     }; break;
                 case "VOJENSKAZELENA":
                     {
-                        NovyMic.Fill = VojenskaZelenaLinearniPrechodStetec;
+                        newBall.Fill = armyGreenLinearGradientBrush;
                     }; break;
                 case "DUHOVE":
                     {
-                        NovyMic.Fill = DuhoveLinearniPrechodStetec;
+                        newBall.Fill = jokerLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICISVETLEZELENA":
                     {
-                        NovyMic.Fill = SvetleZelenaLinearniPrechodStetec;
+                        newBall.Fill = lightGreenLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICICERVENA":
                     {
-                        NovyMic.Fill = CervenaLinearniPrechodStetec;
+                        newBall.Fill = redLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICITMAVEMODRA":
                     {
-                        NovyMic.Fill = TmaveModraLinearniPrechodStetec;
-                        popisekTextBlock.Foreground = BilaStetec;// Zde se musí nastavit barva textu na jinou než černou, aby bylo vidět, že je míč zdvojnásobující.
+                        newBall.Fill = darkBlueLinearGradientBrush;
+                        popisekTextBlock.Foreground = whiteBrush;// Here the text color must be set to something other than black to show that the ball is doubling.
                     }; break;
                 case "ZDVOJNASOBUJICIZLUTA":
                     {
-                        NovyMic.Fill = ZlutaLinearniPrechodStetec;
+                        newBall.Fill = yellowLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICISVETLEMODRA":
                     {
-                        NovyMic.Fill = SvetleModraLinearniPrechodStetec;
+                        newBall.Fill = lightBlueLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICIFIALOVA":
                     {
-                        NovyMic.Fill = FialovaLinearniPrechodStetec;
+                        newBall.Fill = purpleLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICIHNEDA":
                     {
-                        NovyMic.Fill = HnedaLinearniPrechodStetec;
-                        popisekTextBlock.Foreground = BilaStetec;// Zde se musí nastavit barva textu na jinou než černou, aby bylo vidět, že je míč zdvojnásobující.
+                        newBall.Fill = brownLinearGradientBrush;
+                        popisekTextBlock.Foreground = whiteBrush;// Here the text color must be set to something other than black to show that the ball is doubling.
                     }; break;
                 case "ZDVOJNASOBUJICIRUZOVA":
                     {
-                        NovyMic.Fill = RuzovaLinearniPrechodStetec;
+                        newBall.Fill = pinkLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICIZELENA":
                     {
-                        NovyMic.Fill = ZelenaLinearniPrechodStetec;
+                        newBall.Fill = greenLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICIZLATA":
                     {
-                        NovyMic.Fill = ZlataLinearniPrechodStetec;
+                        newBall.Fill = goldLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICIORANZOVA":
                     {
-                        NovyMic.Fill = OranzovaLinearniPrechodStetec;
+                        newBall.Fill = orangeLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICIBILA":
                     {
-                        NovyMic.Fill = BilaLinearniPrechodStetec;
+                        newBall.Fill = whiteLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICISEDIVA":
                     {
-                        NovyMic.Fill = SedivaLinearniPrechodStetec;
+                        newBall.Fill = greyLinearGradientBrush;
                     }; break;
                 case "ZDVOJNASOBUJICICERNA":
                     {
-                        NovyMic.Fill = CernaLinearniPrechodStetec;
-                        popisekTextBlock.Foreground = BilaStetec;// Zde se musí nastavit barva textu na jinou než černou, aby bylo vidět, že je míč zdvojnásobující.
+                        newBall.Fill = blackLinearGradientBrush;
+                        popisekTextBlock.Foreground = whiteBrush;// Here the text color must be set to something other than black to show that the ball is doubling.
                     }; break;
                 case "ZDVOJNASOBUJICIMODRA":
                     {
-                        NovyMic.Fill = ModraLinearniPrechodStetec;
+                        newBall.Fill = blue;
                     }; break;
                 case "ZDVOJNASOBUJICIVOJENSKAZELENA":
                     {
-                        NovyMic.Fill = VojenskaZelenaLinearniPrechodStetec;
+                        newBall.Fill = armyGreenLinearGradientBrush;
                     }; break;
                 default:
                     {
-                        NovyMic.Fill = CervenaStetec;
+                        newBall.Fill = redBrush;
                     }; break;
             }
-            if (Efekt == "NAFOUKNOUT")//Pokud se míč objevil, nepřesouvá se, je potřeba jej nafouknout
+            if (effect == "NAFOUKNOUT")// If the ball appeared, it does not move, it needs to be inflated
             {
-                NovyMic.Height = (int)(SirkaIVyskaElipsy / 2.5);// Nejprve se míč objeví nenafouknutý.
-                NovyMic.Width = (int)(SirkaIVyskaElipsy / 2.5);// Šířka je stejná jako výška. Šířka a výška se mění pouze, pokud míč skáče, zde míč neskáče.
+                newBall.Height = (int)(widthAndHeightOfEllipse / 2.5);// First, the ball appears deflated.
+                newBall.Width = (int)(widthAndHeightOfEllipse / 2.5);// The width is the same as the height. The width and height only change if the ball bounces, here the ball doesn't bounce.
 
             }
-            pole[Radek - 1, Sloupec - 1].Children.Add(NovyMic);// Daný míč se přidá do příslušného pole.
-            if (Typ.Contains("ZDVOJNASOBUJICI")) { pole[Radek - 1, Sloupec - 1].Children.Add(popisekTextBlock); };//Pokud je míč zdvojnásobující, bude mít před sebou tento popisek.
+            cell[row - 1, column - 1].Children.Add(newBall);// The given ball is added to the appropriate box.
+            if (type.Contains("ZDVOJNASOBUJICI")) { cell[row - 1, column - 1].Children.Add(popisekTextBlock); };// If the ball is doubling, it will have this label in front of it.
 
-            if (Efekt == "NAFOUKNOUT")//Pokud se míč objevil, nepřesouvá se, je potřeba jej nafouknout
+            if (effect == "NAFOUKNOUT")// If the ball appeared, it does not move, it needs to be inflated
             {
-                double podilPrumeruBallsPredNafouknutimOprotiPrumeruPoNafouknuti = 2.5;
-                double trvani = 0.25;
-                DoubleAnimation nafouknutiAnimace = new DoubleAnimation();
-                nafouknutiAnimace.From = (int)(SirkaIVyskaElipsy / podilPrumeruBallsPredNafouknutimOprotiPrumeruPoNafouknuti);
-                nafouknutiAnimace.To = SirkaIVyskaElipsy;
-                nafouknutiAnimace.Duration = new Duration(TimeSpan.FromSeconds(trvani));
-                nafouknutiAnimace.AutoReverse = false;// Animace se nebude opakovat
-                NovyMic.BeginAnimation(Ellipse.HeightProperty, nafouknutiAnimace);
-                NovyMic.BeginAnimation(Ellipse.WidthProperty, nafouknutiAnimace);
+                double ratioOfBallDiameterBeforeInflationToDiameterAfterInflation = 2.5;
+                double duration = 0.25;
+                DoubleAnimation inflationAnimation = new DoubleAnimation();
+                inflationAnimation.From = (int)(widthAndHeightOfEllipse / ratioOfBallDiameterBeforeInflationToDiameterAfterInflation);
+                inflationAnimation.To = widthAndHeightOfEllipse;
+                inflationAnimation.Duration = new Duration(TimeSpan.FromSeconds(duration));
+                inflationAnimation.AutoReverse = false;// The animation will not repeat
+                newBall.BeginAnimation(Ellipse.HeightProperty, inflationAnimation);
+                newBall.BeginAnimation(Ellipse.WidthProperty, inflationAnimation);
             }
 
         }
-        private void MiciSkakej(int Radek, int Sloupec)// Tato metoda má za účel zapnout animaci elipsy vytvářející efekt skákání.
+        private void ballStartJumping(int row, int column)// The purpose of this method is to turn on the animation of the ellipse creating a jumping effect.
         {
-            Ellipse SkakajiciMic = pole[Radek - 1, Sloupec - 1].Children.OfType<Ellipse>().FirstOrDefault();
-            double trvaniAnimace = 300;
-            double minimalniPrumerBalls = 0.8;
-            DoubleAnimation animaceVysky = new DoubleAnimation();
-            animaceVysky.From = SirkaIVyskaElipsy * minimalniPrumerBalls;
-            animaceVysky.To = SirkaIVyskaElipsy;
-            animaceVysky.RepeatBehavior = RepeatBehavior.Forever;
-            animaceVysky.Duration = new Duration(TimeSpan.FromMilliseconds(trvaniAnimace));
-            animaceVysky.AutoReverse = true;
+            Ellipse jumpingBall = cell[row - 1, column - 1].Children.OfType<Ellipse>().FirstOrDefault();
+            double durationOfAnimation = 300;
+            double minimalAverageOfBall = 0.8;
+            DoubleAnimation heightAnimation = new DoubleAnimation();
+            heightAnimation.From = widthAndHeightOfEllipse * minimalAverageOfBall;
+            heightAnimation.To = widthAndHeightOfEllipse;
+            heightAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            heightAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(durationOfAnimation));
+            heightAnimation.AutoReverse = true;
 
-            DoubleAnimation animaceSirky = new DoubleAnimation();
-            animaceSirky.From = SirkaIVyskaElipsy;
-            animaceSirky.To = SirkaIVyskaElipsy * minimalniPrumerBalls;
-            animaceSirky.RepeatBehavior = RepeatBehavior.Forever;
-            animaceSirky.Duration = new Duration(TimeSpan.FromMilliseconds(trvaniAnimace));
-            animaceSirky.AutoReverse = true;
+            DoubleAnimation widthAnimation = new DoubleAnimation();
+            widthAnimation.From = widthAndHeightOfEllipse;
+            widthAnimation.To = widthAndHeightOfEllipse * minimalAverageOfBall;
+            widthAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            widthAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(durationOfAnimation));
+            widthAnimation.AutoReverse = true;
 
-            double hodnotaOd = SirkaIVyskaElipsy * 0.2;
-            double hodnotaDo = -2;
-            TranslateTransform skokTransform = new TranslateTransform();
-            SkakajiciMic.RenderTransform = skokTransform;
-            DoubleAnimation skokAnimation = new DoubleAnimation(hodnotaOd, hodnotaDo, TimeSpan.FromMilliseconds(trvaniAnimace));
-            skokAnimation.RepeatBehavior = RepeatBehavior.Forever;
-            skokAnimation.AutoReverse = true;
+            double valueFrom = widthAndHeightOfEllipse * 0.2;
+            double valueTo = -2;
+            TranslateTransform jumpTransform = new TranslateTransform();
+            jumpingBall.RenderTransform = jumpTransform;
+            DoubleAnimation jumpAnimation = new DoubleAnimation(valueFrom, valueTo, TimeSpan.FromMilliseconds(durationOfAnimation));
+            jumpAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            jumpAnimation.AutoReverse = true;
 
-            skokTransform.BeginAnimation(TranslateTransform.YProperty, skokAnimation);
-            SkakajiciMic.BeginAnimation(Ellipse.HeightProperty, animaceVysky);
-            SkakajiciMic.BeginAnimation(Ellipse.WidthProperty, animaceSirky);
+            jumpTransform.BeginAnimation(TranslateTransform.YProperty, jumpAnimation);
+            jumpingBall.BeginAnimation(Ellipse.HeightProperty, heightAnimation);
+            jumpingBall.BeginAnimation(Ellipse.WidthProperty, widthAnimation);
         }
-        private void MiciNeskakej(int Radek, int Sloupec)
+        private void ballStopJumping(int row, int column)
         {
-            Ellipse SkakajiciMic = pole[Radek - 1, Sloupec - 1].Children.OfType<Ellipse>().FirstOrDefault();
-            SkakajiciMic.RenderTransform = null;
-            SkakajiciMic.BeginAnimation(Ellipse.HeightProperty, null);
-            SkakajiciMic.BeginAnimation(Ellipse.WidthProperty, null);
-            SkakajiciMic.Height = SirkaIVyskaElipsy;
-            SkakajiciMic.Width = SirkaIVyskaElipsy;
+            Ellipse jumpingBall = cell[row - 1, column - 1].Children.OfType<Ellipse>().FirstOrDefault();
+            jumpingBall.RenderTransform = null;
+            jumpingBall.BeginAnimation(Ellipse.HeightProperty, null);
+            jumpingBall.BeginAnimation(Ellipse.WidthProperty, null);
+            jumpingBall.Height = widthAndHeightOfEllipse;
+            jumpingBall.Width = widthAndHeightOfEllipse;
         }
-        private void VycistitPole(int Radek, int Sloupec)// Odstraní všechny děti tohoto pole.
+        private void clearCell(int row, int column)// Removes all children of this array.
         {
-            pole[Radek - 1, Sloupec - 1].Children.Clear();
+            cell[row - 1, column - 1].Children.Clear();
         }
 
-        public void ResetujProstredi()//Vždy před zahájením nové hry tato metoda nastaví grafické prostředí do výchozí podoby. Jinými slovy vyčistí to, co zůstalo po předchozí hře.
+        public void resetEnvironment()// Always before starting a new game, this method resets the graphical environment to its default form. In other words, it cleans up what was left after the previous game.
         {
-            deskaGrid.Children.Clear();
-            deskaGrid.ColumnDefinitions.Clear();
-            deskaGrid.RowDefinitions.Clear();
-            vysledekLabel.Content = 0;// Výsledek se nastaví na nulu.
+            boardGrid.Children.Clear();
+            boardGrid.ColumnDefinitions.Clear();
+            boardGrid.RowDefinitions.Clear();
+            scoreLabel.Content = 0;// The result is set to zero.
         }
-        public void NastavVysledek(int AktualniVysledek) //Nastaví výsledek do aktuální podoby.
-        { vysledekLabel.Content = AktualniVysledek; }
+        public void changeScore(int currentScore) // Sets the result to the current form.
+        { scoreLabel.Content = currentScore; }
 
-        public void VykresliDesku(int vyska, int sirka)//Sestaví pole desky v aplikační vrstvě do kontrolky typu Grid s názvem Deska
+        public void buildBoard(int height, int width)// Assembles the board array in the application layer into a Grid control named Board
         {
-            int maximumRozmeru = Math.Max(vyska, sirka);
-            //začátek: sestavení desky
-            for (int i = 0; i <= maximumRozmeru - 1; i++) //Začíná přidávání sloupců a řádků.
+            int maxFromHeightAndWidth = Math.Max(height, width);
+            // start: board assembly
+            for (int i = 0; i <= maxFromHeightAndWidth - 1; i++) // It starts adding columns and rows.
             {
                 ColumnDefinition columnDefinition1 = new ColumnDefinition();
-                deskaGrid.ColumnDefinitions.Add(columnDefinition1);
+                boardGrid.ColumnDefinitions.Add(columnDefinition1);
 
                 RowDefinition rowDefinition1 = new RowDefinition();
-                deskaGrid.RowDefinitions.Add(rowDefinition1);
+                boardGrid.RowDefinitions.Add(rowDefinition1);
             };
-            //konec: sestavení desky
-            //Začíná přidávání řádků a sloupců identifikovanými řádkem a sloupcem
-            for (int r = 0; r <= maximumRozmeru - 1; r++)
+            // end: build the board
+            // Starts adding rows and columns identified by row and column
+            for (int r = 0; r <= maxFromHeightAndWidth - 1; r++)
             {
 
-                for (int s = 0; s <= maximumRozmeru - 1; s++)
+                for (int s = 0; s <= maxFromHeightAndWidth - 1; s++)
                 {
 
-                    pole[r, s] = new Grid();
-                    deskaGrid.Children.Add(pole[r, s]);
-                    Grid.SetRow(pole[r, s], r);
-                    Grid.SetColumn(pole[r, s], s);
-                    //Začíná přidávání manipulátorů k polím v aplikační vrstě, když hráč klikne na nějaké pole, toto pole informuje logickou vrstvu o tom, že bylo aktivováno a používá ke své identifikaci souřadnice řádku a sloupce daného pole.
+                    cell[r, s] = new Grid();
+                    boardGrid.Children.Add(cell[r, s]);
+                    Grid.SetRow(cell[r, s], r);
+                    Grid.SetColumn(cell[r, s], s);
+                    // It starts adding handlers to fields in the application layer, when the player clicks on a field, that field informs the logic layer that it has been activated and uses the field's row and column coordinates to identify itself.
                     switch (s + 1)
                     {
-                        case 1: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec1)); } break;
-                        case 2: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec2)); } break;
-                        case 3: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec3)); } break;
-                        case 4: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec4)); } break;
-                        case 5: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec5)); } break;
-                        case 6: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec6)); } break;
-                        case 7: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec7)); } break;
-                        case 8: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec8)); } break;
-                        case 9: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec9)); } break;
-                        case 10: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec10)); } break;
-                        case 11: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec11)); } break;
-                        case 12: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec12)); } break;
-                        case 13: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec13)); } break;
-                        case 14: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec14)); } break;
-                        case 15: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec15)); } break;
-                        case 16: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec16)); } break;
-                        case 17: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec17)); } break;
-                        case 18: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec18)); } break;
-                        case 19: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec19)); } break;
-                        case 20: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec20)); } break;
-                        case 21: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec21)); } break;
-                        case 22: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec22)); } break;
-                        case 23: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec23)); } break;
-                        case 24: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec24)); } break;
-                        case 25: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec25)); } break;
-                        case 26: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec26)); } break;
-                        case 27: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec27)); } break;
-                        case 28: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec28)); } break;
-                        case 29: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec29)); } break;
-                        case 30: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec30)); } break;
-                        case 31: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec31)); } break;
-                        case 32: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaSloupec32)); } break;
+                        case 1: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn1)); } break;
+                        case 2: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn2)); } break;
+                        case 3: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn3)); } break;
+                        case 4: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn4)); } break;
+                        case 5: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn5)); } break;
+                        case 6: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn6)); } break;
+                        case 7: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn7)); } break;
+                        case 8: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn8)); } break;
+                        case 9: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn9)); } break;
+                        case 10: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn10)); } break;
+                        case 11: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn11)); } break;
+                        case 12: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn12)); } break;
+                        case 13: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn13)); } break;
+                        case 14: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn14)); } break;
+                        case 15: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn15)); } break;
+                        case 16: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn16)); } break;
+                        case 17: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn17)); } break;
+                        case 18: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn18)); } break;
+                        case 19: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn19)); } break;
+                        case 20: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn20)); } break;
+                        case 21: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn21)); } break;
+                        case 22: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn22)); } break;
+                        case 23: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn23)); } break;
+                        case 24: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn24)); } break;
+                        case 25: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn25)); } break;
+                        case 26: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn26)); } break;
+                        case 27: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn27)); } break;
+                        case 28: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn28)); } break;
+                        case 29: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn29)); } break;
+                        case 30: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn30)); } break;
+                        case 31: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn31)); } break;
+                        case 32: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtColumn32)); } break;
                         default: { } break;
                     };
                     switch (r + 1)
                     {
-                        case 1: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek1)); } break;
-                        case 2: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek2)); } break;
-                        case 3: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek3)); } break;
-                        case 4: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek4)); } break;
-                        case 5: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek5)); } break;
-                        case 6: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek6)); } break;
-                        case 7: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek7)); } break;
-                        case 8: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek8)); } break;
-                        case 9: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek9)); } break;
-                        case 10: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek10)); } break;
-                        case 11: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek11)); } break;
-                        case 12: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek12)); } break;
-                        case 13: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek13)); } break;
-                        case 14: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek14)); } break;
-                        case 15: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek15)); } break;
-                        case 16: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek16)); } break;
-                        case 17: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek17)); } break;
-                        case 18: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek18)); } break;
-                        case 19: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek19)); } break;
-                        case 20: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek20)); } break;
-                        case 21: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek21)); } break;
-                        case 22: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek22)); } break;
-                        case 23: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek23)); } break;
-                        case 24: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek24)); } break;
-                        case 25: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek25)); } break;
-                        case 26: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek26)); } break;
-                        case 27: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek27)); } break;
-                        case 28: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek28)); } break;
-                        case 29: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek29)); } break;
-                        case 30: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek30)); } break;
-                        case 31: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek31)); } break;
-                        case 32: { pole[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(KliknutoNaRadek32)); } break;
+                        case 1: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow1)); } break;
+                        case 2: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow2)); } break;
+                        case 3: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow3)); } break;
+                        case 4: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow4)); } break;
+                        case 5: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow5)); } break;
+                        case 6: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow6)); } break;
+                        case 7: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow7)); } break;
+                        case 8: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow8)); } break;
+                        case 9: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow9)); } break;
+                        case 10: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow10)); } break;
+                        case 11: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow11)); } break;
+                        case 12: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow12)); } break;
+                        case 13: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow13)); } break;
+                        case 14: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow14)); } break;
+                        case 15: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow15)); } break;
+                        case 16: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow16)); } break;
+                        case 17: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow17)); } break;
+                        case 18: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow18)); } break;
+                        case 19: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow19)); } break;
+                        case 20: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow20)); } break;
+                        case 21: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow21)); } break;
+                        case 22: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow22)); } break;
+                        case 23: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow23)); } break;
+                        case 24: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow24)); } break;
+                        case 25: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow25)); } break;
+                        case 26: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow26)); } break;
+                        case 27: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow27)); } break;
+                        case 28: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow28)); } break;
+                        case 29: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow29)); } break;
+                        case 30: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow30)); } break;
+                        case 31: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow31)); } break;
+                        case 32: { cell[r, s].AddHandler(Grid.MouseLeftButtonDownEvent, new RoutedEventHandler(ClickedAtRow32)); } break;
                         default: { } break;
                     };
 
-                    pole[r, s].Margin = new Thickness(1);// Nastaví se délka vnější vzdálenosti prostoru pole.
-                    if ((r <= vyska - 1) && (s <= sirka - 1))//Pokud je pole mimo pole, s kterými se bude hrát,
-                    { pole[r, s].Background = pozadiPoleStetec; }
+                    cell[r, s].Margin = new Thickness(1);// The length of the outer distance of the field space is set.
+                    if ((r <= height - 1) && (s <= width - 1))// If the square is outside the squares to be played with,
+                    { cell[r, s].Background = cellBackgroundBrush; }
                     else
-                    { pole[r, s].Visibility = Visibility.Collapsed; }// tak se viditelnost pole nastaví na zbořené.
+                    { cell[r, s].Visibility = Visibility.Collapsed; }// so the visibility of the field is set to collapsed.
 
                 };
             };
-            //konec: naplnění desky poli
+            // end: filling the field plate
 
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
-        private void PrepnoutDoRezimuCeleObrazovky()
+        private void switchToFullScreenMode()
         {
             WindowStyle = WindowStyle.None;
             WindowState = WindowState.Maximized;
             ResizeMode = ResizeMode.NoResize;
-            rezimObrazovkyMenuItem.Header = "Režim okna";
+            fullscreenModeMenuItem.Header = "Window Mode";
         }
-        private void PrepnoutDoRezimuOkna()
+        private void switchToWindowMode()
         {
             WindowStyle = WindowStyle.SingleBorderWindow;
             WindowState = WindowState.Normal;
             ResizeMode = ResizeMode.CanResizeWithGrip;
-            rezimObrazovkyMenuItem.Header = "Režim celé obrazovky";
+            fullscreenModeMenuItem.Header = "Fullscreen mode";
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
-            if (RezimCeleObrazovky)
+            if (fullScreenMode)
             {
-                PrepnoutDoRezimuOkna();
+                switchToWindowMode();
             }
             else
 
             {
-                PrepnoutDoRezimuCeleObrazovky();
+                switchToFullScreenMode();
             }
-            RezimCeleObrazovky = !RezimCeleObrazovky;
+            fullScreenMode = !fullScreenMode;
 
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)// Metoda, která zajišťuje, že po stisknutí určitých kláves se něco provede.
+        private void Window_KeyDown(object sender, KeyEventArgs e)// A method that ensures that something is done when certain keys are pressed.
         {
             switch (e.Key)
             {
                 case Key.F1:
                     {
-                        HelpWindow napovedaWindow = new HelpWindow();
-                        napovedaWindow.Show();
+                        HelpWindow helpWindow = new HelpWindow();
+                        helpWindow.Show();
                     }; break;
-                case Key.F4: { novaHraSVychozimNastavenimNastavenimMenuItem_Click(sender, e); }; break;
+                case Key.F4: { newGameWithDefaultGameCompositionMenuItem_Click(sender, e); }; break;
                 case Key.F5: { MenuItem_Click_5(sender, e); }; break;
-                case Key.F6: { novaHraMenuItem_Click(sender, e); }; break;
+                case Key.F6: { newGameMenuItem_Click(sender, e); }; break;
                 case Key.F8: { MenuItem_Click_4(sender, e); }; break;
                 case Key.F11: { MenuItem_Click(sender, e); }; break;
             }
         }
 
-        private void novaHraMenuItem_Click(object sender, RoutedEventArgs e)// Otevře se okno, kde si hráč nastaví hru, kterou bude hrát.
+        private void newGameMenuItem_Click(object sender, RoutedEventArgs e)// A window will open where the player can set the game to play.
         {
-            NovaHraSVlastnimNastavenimWindow novaHraSVlastnimNastavenimWindow = new NovaHraSVlastnimNastavenimWindow(this.sestavaHry);
-            novaHraSVlastnimNastavenimWindow.ShowDialog();
+            NewGameWithCustomGameCompositionWindow newGameWithCustomGameCompositionWindow = new NewGameWithCustomGameCompositionWindow(this.gameComposition);
+            newGameWithCustomGameCompositionWindow.ShowDialog();
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            this.Close();// Ukončí úplně aplikaci Míče.
+            this.Close();// Terminates the Circles application completely.
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
 
         }
-        //Začínají události kliknutí na určitý sloupec nebo řádek, tyto události posílají souřadnice sběrači souřadnic. Když jsou sběrači souřadnic poslány všechny souřadnice, tak se následovně logické vrstvě pošle informace, že bylo aktivované určité pole
-        private void SouradniceSloupceDoSberaceSouradnic(int CisloSloupce)
+        //Click events on a certain column or row are triggered, these events send the coordinates to the coordinate collector. When all the coordinates are sent to the coordinate collector, then the following information is sent to the logic layer that a certain field has been activated
+        private void setColumnCoordination(int columnNumber)
         {
-            sberacSouradnic = new CellCoordination();
-            sberacSouradnic.setColumn(CisloSloupce);
+            cellCoordination = new CellCoordination();
+            cellCoordination.setColumn(columnNumber);
         }
-        private void KliknutoNaSloupec1(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(1); }
-        private void KliknutoNaSloupec2(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(2); }
-        private void KliknutoNaSloupec3(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(3); }
-        private void KliknutoNaSloupec4(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(4); }
-        private void KliknutoNaSloupec5(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(5); }
-        private void KliknutoNaSloupec6(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(6); }
-        private void KliknutoNaSloupec7(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(7); }
-        private void KliknutoNaSloupec8(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(8); }
-        private void KliknutoNaSloupec9(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(9); }
-        private void KliknutoNaSloupec10(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(10); }
-        private void KliknutoNaSloupec11(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(11); }
-        private void KliknutoNaSloupec12(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(12); }
-        private void KliknutoNaSloupec13(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(13); }
-        private void KliknutoNaSloupec14(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(14); }
-        private void KliknutoNaSloupec15(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(15); }
-        private void KliknutoNaSloupec16(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(16); }
-        private void KliknutoNaSloupec17(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(17); }
-        private void KliknutoNaSloupec18(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(18); }
-        private void KliknutoNaSloupec19(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(19); }
-        private void KliknutoNaSloupec20(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(20); }
-        private void KliknutoNaSloupec21(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(21); }
-        private void KliknutoNaSloupec22(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(22); }
-        private void KliknutoNaSloupec23(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(23); }
-        private void KliknutoNaSloupec24(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(24); }
-        private void KliknutoNaSloupec25(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(25); }
-        private void KliknutoNaSloupec26(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(26); }
-        private void KliknutoNaSloupec27(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(27); }
-        private void KliknutoNaSloupec28(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(28); }
-        private void KliknutoNaSloupec29(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(29); }
-        private void KliknutoNaSloupec30(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(30); }
-        private void KliknutoNaSloupec31(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(31); }
-        private void KliknutoNaSloupec32(object sender, RoutedEventArgs e) { SouradniceSloupceDoSberaceSouradnic(32); }
+        private void ClickedAtColumn1(object sender, RoutedEventArgs e) { setColumnCoordination(1); }
+        private void ClickedAtColumn2(object sender, RoutedEventArgs e) { setColumnCoordination(2); }
+        private void ClickedAtColumn3(object sender, RoutedEventArgs e) { setColumnCoordination(3); }
+        private void ClickedAtColumn4(object sender, RoutedEventArgs e) { setColumnCoordination(4); }
+        private void ClickedAtColumn5(object sender, RoutedEventArgs e) { setColumnCoordination(5); }
+        private void ClickedAtColumn6(object sender, RoutedEventArgs e) { setColumnCoordination(6); }
+        private void ClickedAtColumn7(object sender, RoutedEventArgs e) { setColumnCoordination(7); }
+        private void ClickedAtColumn8(object sender, RoutedEventArgs e) { setColumnCoordination(8); }
+        private void ClickedAtColumn9(object sender, RoutedEventArgs e) { setColumnCoordination(9); }
+        private void ClickedAtColumn10(object sender, RoutedEventArgs e) { setColumnCoordination(10); }
+        private void ClickedAtColumn11(object sender, RoutedEventArgs e) { setColumnCoordination(11); }
+        private void ClickedAtColumn12(object sender, RoutedEventArgs e) { setColumnCoordination(12); }
+        private void ClickedAtColumn13(object sender, RoutedEventArgs e) { setColumnCoordination(13); }
+        private void ClickedAtColumn14(object sender, RoutedEventArgs e) { setColumnCoordination(14); }
+        private void ClickedAtColumn15(object sender, RoutedEventArgs e) { setColumnCoordination(15); }
+        private void ClickedAtColumn16(object sender, RoutedEventArgs e) { setColumnCoordination(16); }
+        private void ClickedAtColumn17(object sender, RoutedEventArgs e) { setColumnCoordination(17); }
+        private void ClickedAtColumn18(object sender, RoutedEventArgs e) { setColumnCoordination(18); }
+        private void ClickedAtColumn19(object sender, RoutedEventArgs e) { setColumnCoordination(19); }
+        private void ClickedAtColumn20(object sender, RoutedEventArgs e) { setColumnCoordination(20); }
+        private void ClickedAtColumn21(object sender, RoutedEventArgs e) { setColumnCoordination(21); }
+        private void ClickedAtColumn22(object sender, RoutedEventArgs e) { setColumnCoordination(22); }
+        private void ClickedAtColumn23(object sender, RoutedEventArgs e) { setColumnCoordination(23); }
+        private void ClickedAtColumn24(object sender, RoutedEventArgs e) { setColumnCoordination(24); }
+        private void ClickedAtColumn25(object sender, RoutedEventArgs e) { setColumnCoordination(25); }
+        private void ClickedAtColumn26(object sender, RoutedEventArgs e) { setColumnCoordination(26); }
+        private void ClickedAtColumn27(object sender, RoutedEventArgs e) { setColumnCoordination(27); }
+        private void ClickedAtColumn28(object sender, RoutedEventArgs e) { setColumnCoordination(28); }
+        private void ClickedAtColumn29(object sender, RoutedEventArgs e) { setColumnCoordination(29); }
+        private void ClickedAtColumn30(object sender, RoutedEventArgs e) { setColumnCoordination(30); }
+        private void ClickedAtColumn31(object sender, RoutedEventArgs e) { setColumnCoordination(31); }
+        private void ClickedAtColumn32(object sender, RoutedEventArgs e) { setColumnCoordination(32); }
 
 
-        private void SouradniceRadkuDoSberaceSouradnic(int CisloRadku)
+        private void setRowCoordination(int rowNumber)
         {
-            sberacSouradnic.setRow(CisloRadku);
-            hra.activateCell(sberacSouradnic.getRow(), sberacSouradnic.getColumn());
-            ProvestPrikazy();
+            cellCoordination.setRow(rowNumber);
+            game.activateCell(cellCoordination.getRow(), cellCoordination.getColumn());
+            executeCommands();
         }
 
-        private void KliknutoNaRadek1(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(1); }
-        private void KliknutoNaRadek2(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(2); }
-        private void KliknutoNaRadek3(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(3); }
-        private void KliknutoNaRadek4(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(4); }
-        private void KliknutoNaRadek5(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(5); }
-        private void KliknutoNaRadek6(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(6); }
-        private void KliknutoNaRadek7(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(7); }
-        private void KliknutoNaRadek8(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(8); }
-        private void KliknutoNaRadek9(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(9); }
-        private void KliknutoNaRadek10(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(10); }
-        private void KliknutoNaRadek11(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(11); }
-        private void KliknutoNaRadek12(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(12); }
-        private void KliknutoNaRadek13(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(13); }
-        private void KliknutoNaRadek14(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(14); }
-        private void KliknutoNaRadek15(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(15); }
-        private void KliknutoNaRadek16(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(16); }
-        private void KliknutoNaRadek17(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(17); }
-        private void KliknutoNaRadek18(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(18); }
-        private void KliknutoNaRadek19(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(19); }
-        private void KliknutoNaRadek20(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(20); }
-        private void KliknutoNaRadek21(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(21); }
-        private void KliknutoNaRadek22(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(22); }
-        private void KliknutoNaRadek23(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(23); }
-        private void KliknutoNaRadek24(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(24); }
-        private void KliknutoNaRadek25(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(25); }
-        private void KliknutoNaRadek26(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(26); }
-        private void KliknutoNaRadek27(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(27); }
-        private void KliknutoNaRadek28(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(28); }
-        private void KliknutoNaRadek29(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(29); }
-        private void KliknutoNaRadek30(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(30); }
-        private void KliknutoNaRadek31(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(31); }
-        private void KliknutoNaRadek32(object sender, RoutedEventArgs e) { SouradniceRadkuDoSberaceSouradnic(32); }
+        private void ClickedAtRow1(object sender, RoutedEventArgs e) { setRowCoordination(1); }
+        private void ClickedAtRow2(object sender, RoutedEventArgs e) { setRowCoordination(2); }
+        private void ClickedAtRow3(object sender, RoutedEventArgs e) { setRowCoordination(3); }
+        private void ClickedAtRow4(object sender, RoutedEventArgs e) { setRowCoordination(4); }
+        private void ClickedAtRow5(object sender, RoutedEventArgs e) { setRowCoordination(5); }
+        private void ClickedAtRow6(object sender, RoutedEventArgs e) { setRowCoordination(6); }
+        private void ClickedAtRow7(object sender, RoutedEventArgs e) { setRowCoordination(7); }
+        private void ClickedAtRow8(object sender, RoutedEventArgs e) { setRowCoordination(8); }
+        private void ClickedAtRow9(object sender, RoutedEventArgs e) { setRowCoordination(9); }
+        private void ClickedAtRow10(object sender, RoutedEventArgs e) { setRowCoordination(10); }
+        private void ClickedAtRow11(object sender, RoutedEventArgs e) { setRowCoordination(11); }
+        private void ClickedAtRow12(object sender, RoutedEventArgs e) { setRowCoordination(12); }
+        private void ClickedAtRow13(object sender, RoutedEventArgs e) { setRowCoordination(13); }
+        private void ClickedAtRow14(object sender, RoutedEventArgs e) { setRowCoordination(14); }
+        private void ClickedAtRow15(object sender, RoutedEventArgs e) { setRowCoordination(15); }
+        private void ClickedAtRow16(object sender, RoutedEventArgs e) { setRowCoordination(16); }
+        private void ClickedAtRow17(object sender, RoutedEventArgs e) { setRowCoordination(17); }
+        private void ClickedAtRow18(object sender, RoutedEventArgs e) { setRowCoordination(18); }
+        private void ClickedAtRow19(object sender, RoutedEventArgs e) { setRowCoordination(19); }
+        private void ClickedAtRow20(object sender, RoutedEventArgs e) { setRowCoordination(20); }
+        private void ClickedAtRow21(object sender, RoutedEventArgs e) { setRowCoordination(21); }
+        private void ClickedAtRow22(object sender, RoutedEventArgs e) { setRowCoordination(22); }
+        private void ClickedAtRow23(object sender, RoutedEventArgs e) { setRowCoordination(23); }
+        private void ClickedAtRow24(object sender, RoutedEventArgs e) { setRowCoordination(24); }
+        private void ClickedAtRow25(object sender, RoutedEventArgs e) { setRowCoordination(25); }
+        private void ClickedAtRow26(object sender, RoutedEventArgs e) { setRowCoordination(26); }
+        private void ClickedAtRow27(object sender, RoutedEventArgs e) { setRowCoordination(27); }
+        private void ClickedAtRow28(object sender, RoutedEventArgs e) { setRowCoordination(28); }
+        private void ClickedAtRow29(object sender, RoutedEventArgs e) { setRowCoordination(29); }
+        private void ClickedAtRow30(object sender, RoutedEventArgs e) { setRowCoordination(30); }
+        private void ClickedAtRow31(object sender, RoutedEventArgs e) { setRowCoordination(31); }
+        private void ClickedAtRow32(object sender, RoutedEventArgs e) { setRowCoordination(32); }
         
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)//Otevře se okno O ...
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)// Will open the About window.
         {
-            AboutWindow oWindow = new AboutWindow();
-            oWindow.ShowDialog();
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
         }
 
-        private void MenuItem_Click_3(object sender, RoutedEventArgs e)//Otevře se okno Nápovědy.
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)// Will open the Help window.
         {
-            HelpWindow napovedaWindow = new HelpWindow();
-            napovedaWindow.ShowDialog();
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.ShowDialog();
         }
 
-        private void novaHraSVychozimNastavenimNastavenimMenuItem_Click(object sender, RoutedEventArgs e)
+        private void newGameWithDefaultGameCompositionMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            NovaHra();
+            newGame();
         }
 
-        private void HlavniOknoWindow_Activated(object sender, EventArgs e)// Pokud byla po aktivaci okna sestava hry změněna, spustí se nová hra s touto sestavou.
+        private void MainWindow_Window_Activated(object sender, EventArgs e)// If the game setup was changed after the window was activated, a new game will be started with this setup.
         {
-            if (sestavaHry.isChanged())
+            if (gameComposition.isChanged())
             {
-                sestavaHry.setChanged(false);
-                NovaHra();
+                gameComposition.setChanged(false);
+                newGame();
             }
         }
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            InformationAboutCurrentGameWindow informaceOAktualniHreWindow = new InformationAboutCurrentGameWindow(this.sestavaHry);
-            informaceOAktualniHreWindow.Show();
+            InformationAboutCurrentGameWindow informationAboutCurrentGameWindow = new InformationAboutCurrentGameWindow(this.gameComposition);
+            informationAboutCurrentGameWindow.Show();
         }
 
         private void MenuItem_Click_5(object sender, RoutedEventArgs e)
         {
-            PrehledVysledkuWindow prehledVysledkuWindow = new PrehledVysledkuWindow(this.hra, this.sestavaHry);
-            prehledVysledkuWindow.ShowDialog();
+            ScoreListWindow scoreListWindow = new ScoreListWindow(this.game, this.gameComposition);
+            scoreListWindow.ShowDialog();
         }
         
     }

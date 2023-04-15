@@ -17,11 +17,11 @@ namespace Circles
     /// <summary>
     /// Interaction logic for NewGameWindow.xaml
     /// </summary>
-    public partial class NovaHraSVlastnimNastavenimWindow : Window
+    public partial class NewGameWithCustomGameCompositionWindow : Window
     {
         private GameComposition sestavaVlastniHry;
         private String TvarSkupinyMicuKteraExploduje = "linka";
-        public NovaHraSVlastnimNastavenimWindow(GameComposition sestavaHry)
+        public NewGameWithCustomGameCompositionWindow(GameComposition sestavaHry)
         {
             InitializeComponent();
             this.sestavaVlastniHry = sestavaHry;

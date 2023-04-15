@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Circles"
         mc:Ignorable="d"
-        Title="Míče" Height="645" Width="800" WindowStartupLocation="CenterScreen" Background="#FFFFF3AB" SizeToContent="Height" ResizeMode="CanResizeWithGrip" MinHeight="600" MinWidth="800" KeyDown="Window_KeyDown" Activated="HlavniOknoWindow_Activated">
+        Title="Circles" Height="645" Width="800" WindowStartupLocation="CenterScreen" Background="#FFFFF3AB" SizeToContent="Height" ResizeMode="CanResizeWithGrip" MinHeight="600" MinWidth="800" KeyDown="Window_KeyDown" Activated="MainWindow_Window_Activated">
     <Viewbox OpacityMask="#FFF0F0F0" VerticalAlignment="Top">
         <Grid Height="600" Width="800" Background="#FFAFB7DC">
             <StackPanel Background="Bisque" Height="600" Width="800" VerticalAlignment="Top" >
@@ -17,25 +17,25 @@
                                 <DockPanel HorizontalAlignment="Stretch"/>
                             </ItemsPanelTemplate>
                         </Menu.ItemsPanel>
-                        <MenuItem Header="Hra" Margin="0" Background="#FFFFF3AB" x:Name="hraMenuItem">
-                            <MenuItem Header="Nová s aktuálním nastavením" x:Name="novaHraSVychozimNastavenimNastavenimMenuItem" InputGestureText="F4" Click="novaHraSVychozimNastavenimNastavenimMenuItem_Click"/>
-                            <MenuItem Header="Nová s vlastním nastavením" x:Name="novaHraSVlastnimNastavenimMenuItem" InputGestureText="F6" Click="novaHraMenuItem_Click"/>
+                        <MenuItem Header="Game" Margin="0" Background="#FFFFF3AB" x:Name="hraMenuItem">
+                            <MenuItem Header="New with current game composition" x:Name="newWithCurrentGameCompositionMenuItem" InputGestureText="F4" Click="newGameWithDefaultGameCompositionMenuItem_Click"/>
+                            <MenuItem Header="New with custom game composition" x:Name="newWithCustomGameCompositionMenuItem" InputGestureText="F6" Click="newGameMenuItem_Click"/>
 
                             <Separator BorderThickness="2"/>
-                            <MenuItem Header="Ukončit" Click="MenuItem_Click_1"/>
+                            <MenuItem Header="Exit" Click="MenuItem_Click_1"/>
                         </MenuItem>
-                        <MenuItem Header="Možnosti" Margin="5,0,0,0">
-                            <MenuItem Header="Ukázat výsledky"  InputGestureText="F5" Click="MenuItem_Click_5"/>
-                            <MenuItem Header="Informace o aktuální hře"  InputGestureText="F8" Click="MenuItem_Click_4"/>
+                        <MenuItem Header="Options" Margin="5,0,0,0">
+                            <MenuItem Header="Show score list"  InputGestureText="F5" Click="MenuItem_Click_5"/>
+                            <MenuItem Header="Information about current game"  InputGestureText="F8" Click="MenuItem_Click_4"/>
                             <Separator BorderThickness="2"/>
 
-                            <MenuItem Header="Režim celé obrazovky"  x:Name="rezimObrazovkyMenuItem" Click="MenuItem_Click"  InputGestureText="F11"/>
+                            <MenuItem Header="Fullscreen mode"  x:Name="fullscreenModeMenuItem" Click="MenuItem_Click"  InputGestureText="F11"/>
                         </MenuItem>
-                        <MenuItem Header="Pomoc" Margin="5,0,0,0" HorizontalAlignment="Right" >
-                            <MenuItem Header="Nápověda" Margin="5,0,0,0" InputGestureText="F1" Click="MenuItem_Click_3"/>
+                        <MenuItem Header="Help" Margin="5,0,0,0" HorizontalAlignment="Right" >
+                            <MenuItem Header="Help" Margin="5,0,0,0" InputGestureText="F1" Click="MenuItem_Click_3"/>
                             <Separator BorderThickness="2"/>
 
-                            <MenuItem Header="O hře Míče" Margin="5,0,0,0" Click="MenuItem_Click_2"/>
+                            <MenuItem Header="About game Circles" Margin="5,0,0,0" Click="MenuItem_Click_2"/>
                         </MenuItem>
 
                     </Menu>
@@ -50,19 +50,19 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="550"/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="label" Content="Výsledek:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" Margin="10,0,0,209" Grid.Column="0" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Height="31" Width="82" Grid.RowSpan="2"/>
-                    <Grid x:Name="deskaGrid" HorizontalAlignment="Left" Grid.RowSpan="2" Grid.ColumnSpan="1" VerticalAlignment="Top" Width="520" Height="520" Grid.Column="1" Grid.Row="1" Background="Gray" Margin="0,10,0,0"/>
-                    <Label x:Name="vysledekLabel" Content="0" FontSize="42.667" Margin="100,-5,0,203" Grid.Column="0" RenderTransformOrigin="0.492,0.941" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" TextBlock.TextAlignment="Right" FontWeight="Bold" Padding="0,0,10,0" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right" Foreground="#FF41F025" FontFamily="Arial" Background="Gray" Grid.RowSpan="2"/>
-                    <Label x:Name="label_Copy" Content="Další míče:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" Margin="53,0,0,209" Grid.Column="1" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Height="31" Width="99" Grid.RowSpan="2"/>
+                    <Label x:Name="label" Content="Score:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" Margin="10,0,0,209" Grid.Column="0" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Height="31" Width="82" Grid.RowSpan="2"/>
+                    <Grid x:Name="boardGrid" HorizontalAlignment="Left" Grid.RowSpan="2" Grid.ColumnSpan="1" VerticalAlignment="Top" Width="520" Height="520" Grid.Column="1" Grid.Row="1" Background="Gray" Margin="0,10,0,0"/>
+                    <Label x:Name="scoreLabel" Content="0" FontSize="42.667" Margin="100,-5,0,203" Grid.Column="0" RenderTransformOrigin="0.492,0.941" Height="52" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" TextBlock.TextAlignment="Right" FontWeight="Bold" Padding="0,0,10,0" VerticalContentAlignment="Center"  HorizontalContentAlignment="Right" Foreground="#FF41F025" FontFamily="Arial" Background="Gray" Grid.RowSpan="2"/>
+                    <Label x:Name="label_Copy" Content="Next balls:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" Margin="53,0,0,209" Grid.Column="1" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Height="31" Width="99" Grid.RowSpan="2"/>
                     <Grid HorizontalAlignment="Left" Height="58" VerticalAlignment="Top" Width="172" Margin="174,-12,0,0" Background="Silver" Grid.Column="1" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Ellipse x:Name="dalsiMic1" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" StrokeThickness="0" Grid.Column="0"/>
-                        <Ellipse x:Name="dalsiMic2" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" StrokeThickness="0"  Grid.Column="1"/>
-                        <Ellipse x:Name="dalsiMic3" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" StrokeThickness="0" Grid.Column="2"/>
+                        <Ellipse x:Name="nextBall1" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" StrokeThickness="0" Grid.Column="0"/>
+                        <Ellipse x:Name="nextBall2" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" StrokeThickness="0"  Grid.Column="1"/>
+                        <Ellipse x:Name="nextBall3" Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="25" Stroke="Black" VerticalAlignment="Center" Width="25" StrokeThickness="0" Grid.Column="2"/>
                         <Rectangle HorizontalAlignment="Left" Height="57" Stroke="Gray" VerticalAlignment="Top" Width="57" Margin="0,1,0,0"/>
                         <Rectangle HorizontalAlignment="Left" Height="57" Stroke="Gray" VerticalAlignment="Top" Width="58" Margin="0,1,0,0" Grid.Column="1"/>
                         <Rectangle HorizontalAlignment="Left" Height="57" Stroke="Gray" VerticalAlignment="Top" Width="57" Grid.Column="2" Margin="0,1,0,0"/>

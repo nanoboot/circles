@@ -17,10 +17,10 @@ namespace Circles
     /// <summary>
     /// Interaction logic for PrehledVysledkuWindow.xaml
     /// </summary>
-    public partial class PrehledVysledkuWindow : Window
+    public partial class ScoreListWindow : Window
     {
         System.Data.DataSet dset;
-        public PrehledVysledkuWindow(Game hra, GameComposition sestavaHry)
+        public ScoreListWindow(Game hra, GameComposition sestavaHry)
         {
             InitializeComponent();
             dset = hra.getScoreListForGivenTGameCompositionWithGivenId();
