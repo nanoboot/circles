@@ -793,7 +793,7 @@ namespace Circles
             {
                 case Key.F1:
                     {
-                        NapovedaWindow napovedaWindow = new NapovedaWindow();
+                        HelpWindow napovedaWindow = new HelpWindow();
                         napovedaWindow.Show();
                     }; break;
                 case Key.F4: { novaHraSVychozimNastavenimNastavenimMenuItem_Click(sender, e); }; break;
@@ -906,7 +906,7 @@ namespace Circles
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)//Otevře se okno Nápovědy.
         {
-            NapovedaWindow napovedaWindow = new NapovedaWindow();
+            HelpWindow napovedaWindow = new HelpWindow();
             napovedaWindow.ShowDialog();
         }
 
