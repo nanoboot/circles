@@ -34,9 +34,9 @@ namespace Circles
             ZasobnikPoliOdkudKam.Push(AktivniPoleKam);
         }
         
-        public Stack<Cell> VratZasobnikPoliOdkudKam()
+        public Stack<Cell> getCellsFromTo()
         {return this.ZasobnikPoliOdkudKam; }
-        public bool Hledej()
+        public bool search()
         {
             NaslaSeJizCesta = false;
             AktualniUzelHledaceCesty = new NodeForPathFinder(null, AktivniPoleOdkud);// Vytvořil jsem úplně první uzel hledače cesty, který má v sobě odkaz na pole, z kterého chceme přesouvat míč.

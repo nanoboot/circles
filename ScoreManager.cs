@@ -21,7 +21,7 @@ namespace Circles
         { this.spravceDatabaze = spravceDatabaze;
             this.sestavaHry = sestavaHry;
         }
-        public int SpoctiBody(Stack<Cell> ZasobnikOdpalenychMicuPredany, Game hra, CellManager spravcePoli, Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni)// Spočte body podle toho, jaké míče a kolik je v zásobníku.
+        public int countPoints(Stack<Cell> ZasobnikOdpalenychMicuPredany, Game hra, CellManager spravcePoli, Stack<Cell> ZasobnikPoliKtereUzNemajiBytAktivni)// Spočte body podle toho, jaké míče a kolik je v zásobníku.
         {
             Cell aktualniPole;
             int pocetMicu = ZasobnikOdpalenychMicuPredany.Count;
@@ -73,7 +73,7 @@ namespace Circles
             this.Vysledek = this.Vysledek + PocetBodu;
             hra.insertCommand(String.Concat("VYSLEDEK ", Vysledek));
         }
-        public void NastavHracovoJmeno(String HracovoJmeno)
+        public void setPlayerName(String HracovoJmeno)
         {
             this.HracovoJmeno = HracovoJmeno;
 
@@ -194,7 +194,7 @@ namespace Circles
             this.sqlPrikazInsertSestavyHry = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
             
         }
-        public System.Data.DataSet VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID()
+        public System.Data.DataSet getScoreListForGivenTGameCompositionWithGivenId()
         { int ID=spravceDatabaze.getIdOfFirstFoundRow(SestavPrikazNaSestavuHryProUlozeniDoDatabaze());
             return spravceDatabaze.getScoreListForGivenGameComposition(ID);
         }

@@ -23,7 +23,7 @@ namespace Circles
         public PrehledVysledkuWindow(Game hra, GameComposition sestavaHry)
         {
             InitializeComponent();
-            dset = hra.VratPoleSerazenychVysledkuOdNejvetsihoZSestavyHrySDanymID();
+            dset = hra.getScoreListForGivenTGameCompositionWithGivenId();
             dataGrid.ItemsSource = dset.Tables[0].DefaultView;
             
         }

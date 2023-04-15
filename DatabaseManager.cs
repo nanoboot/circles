@@ -18,13 +18,13 @@ namespace Circles
          }
         private void initCheck()//
         {
-            if (File.Exists("./balls.balls"))
+            if (File.Exists("./circles.circles"))
             {
 
             }
             else
             {
-                SQLiteConnection.CreateFile("balls.balls");
+                SQLiteConnection.CreateFile("circles.circles");
                 createDatabase();
                 MessageBox.Show("You can show Help by pressing key F1. We wish you many successes.","Welcome, new player.");
             }
@@ -38,7 +38,7 @@ namespace Circles
         private void initConnection()
         {
             sqlConnection = new SQLiteConnection
-                  ("Data Source=balls.miballsce;Version=3;New=False;Compress=True; default timeout=10; Pooling=True; Max Pool Size=100;");
+                  ("Data Source=circles.circles;Version=3;New=False;Compress=True; default timeout=10; Pooling=True; Max Pool Size=100;");
         }
         public void executeSqlStatement(string statement)
         {

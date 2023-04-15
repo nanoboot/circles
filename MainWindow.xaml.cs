@@ -213,13 +213,13 @@ namespace Circles
                 );//Vytvoří hru a to podle toho, jaké vlastnosti má vlastnost okna sestavyHry.
             int sirkaDesky = 520;
             double jakyBudePodilPrumeruBallsOprotiDelcePole = 0.75;
-            this.SirkaIVyskaElipsy = jakyBudePodilPrumeruBallsOprotiDelcePole * sirkaDesky / Math.Max(hra.VratVysku(), hra.VratSirku());// Zde se vypočte a uloží hodnota, která bude znamenat šířku a výšku míče, která se vypočte dynamicky podle výšky a šířky desky
+            this.SirkaIVyskaElipsy = jakyBudePodilPrumeruBallsOprotiDelcePole * sirkaDesky / Math.Max(hra.getHeight(), hra.getWidth());// Zde se vypočte a uloží hodnota, která bude znamenat šířku a výšku míče, která se vypočte dynamicky podle výšky a šířky desky
 
             ProvestPrikazy();//To, co vypočítala logická vrstva, se nyní projeví ve vrstvě aplikační
         }
         public String ProvestPrikaz()// Provede jeden příkaz ve frontě příkazů z logické vrstvy
         {
-            String prikaz = hra.VratPrikaz();// Vezme si jeden příkaz z fronty příkazů v hře.
+            String prikaz = hra.getCommand();// Vezme si jeden příkaz z fronty příkazů v hře.
             //MessageBox.Show(prikaz);
             string[] parametrPrikazu = prikaz.Split(' ');//Zde je příkaz rozdělen po mezerách na jednotlivé parametry
             switch (parametrPrikazu[0])//Zde se zkoumá 0. parametr
@@ -232,7 +232,7 @@ namespace Circles
                             break;
 
                         case "KONEC":
-                            ZadejteVaseJmenoWindow zadejteVaseJmenoWindow = new ZadejteVaseJmenoWindow(this.hra);
+                            EnterYourNameWindow zadejteVaseJmenoWindow = new EnterYourNameWindow(this.hra);
                             zadejteVaseJmenoWindow.ShowDialog();// Zobrazí dialog pro zadání jména hráče.
 
                             NovaHra();//Hra skončila, výsledky se uložily, nyní začíná nová hra
@@ -861,7 +861,7 @@ namespace Circles
         private void SouradniceRadkuDoSberaceSouradnic(int CisloRadku)
         {
             sberacSouradnic.setRow(CisloRadku);
-            hra.AktivujPole(sberacSouradnic.getRow(), sberacSouradnic.getColumn());
+            hra.activateCell(sberacSouradnic.getRow(), sberacSouradnic.getColumn());
             ProvestPrikazy();
         }
 
