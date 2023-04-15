@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Balls
+namespace Circles
 {
     class BallExploder
     {

@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Media.Effects;
-namespace Balls
+namespace Circles
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

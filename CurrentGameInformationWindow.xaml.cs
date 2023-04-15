@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Balls
+namespace Circles
 {
     /// <summary>
     /// Interaction logic for InformationAboutCurrentGameWindow.xaml

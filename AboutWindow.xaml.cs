@@ -1,7 +1,7 @@
 ﻿
 using System.Windows;
 
-namespace Balls
+namespace Circles
 {
     /// <summary>
     /// Interaction logic for AboutWindow.xaml

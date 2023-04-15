@@ -1,5 +1,5 @@
 ﻿
-namespace Balls
+namespace Circles
 {
     class CellCoordination
     {

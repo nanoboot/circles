@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Balls
+namespace Circles
 {
     class EmptyCellsRegistry
     {

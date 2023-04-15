@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows;
 
 
-namespace Balls
+namespace Circles
 {
     public class DatabaseManager
     {

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Balls
+namespace Circles
 {
     /// <summary>
     /// Interaction logic for NapovedaWindow.xaml

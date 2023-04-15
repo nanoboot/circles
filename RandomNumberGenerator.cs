@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Balls
+namespace Circles
 {
     public static class RandomNumberGenerator
     {

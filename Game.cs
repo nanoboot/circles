@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using System.Windows;
 
-namespace Balls
+namespace Circles
 {
     public class Game
     {

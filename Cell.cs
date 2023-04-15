@@ -1,4 +1,4 @@
-﻿namespace Balls;
+﻿namespace Circles;
 
 public class Cell
 {
