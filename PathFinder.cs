@@ -108,7 +108,7 @@ namespace Circles
                 visitedCells.Add(checkedCell);
 
                 //cellsWhichShouldNotBeActiveAnymore.Push(checkedCell);
-                //game.insertCommand((String.Concat("POLE ", ZkoumanePole.getRow(), " ", ZkoumanePole.getColumn(), " POZADI CERVENE")));
+                //game.insertCommand((String.Concat("POLE ", checkedCell.getRow(), " ", checkedCell.getColumn(), " POZADI CERVENE")));
                 return true;
             }
             else
