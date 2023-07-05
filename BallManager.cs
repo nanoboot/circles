@@ -6,7 +6,7 @@ namespace Circles
 {
     class BallManager
     {
-        List<String> ballTypes = new List<String>();
+        List<String> ballTypes = new List<String>();// All used ball types are registered here, only balls whose types are in this register will be generated.
         private String[] colours = new String [16];
         private int indexForColours = 0;
         public Queue<Ball> nextBalls = new Queue<Ball>();
