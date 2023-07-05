@@ -83,9 +83,9 @@ namespace Circles
             using (sqlConnection)
             {
                 sqlConnection.Open();
-                using (SQLiteCommand SqlPrikaz = new SQLiteCommand(String.Concat("SELECT MAX(ID) AS maxid FROM ", tableName, ";"), sqlConnection))
+                using (SQLiteCommand sqlStatement = new SQLiteCommand(String.Concat("SELECT MAX(ID) AS maxid FROM ", tableName, ";"), sqlConnection))
                 {
-                    maxId = Convert.ToInt32(SqlPrikaz.ExecuteScalar());
+                    maxId = Convert.ToInt32(sqlStatement.ExecuteScalar());
                 }
 
             }
