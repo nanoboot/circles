@@ -161,13 +161,13 @@ namespace Circles
 
                             switch (newBall.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); } break;
-                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                                case "LightGreen": { I = "1"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); } break;
+                                case "Red": { I = "2"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                                case "DarkBlue": { I = "3"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                                case "Yellow": { I = "4"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                                case "LightBlue": { I = "5"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                                case "Purple": { I = "6"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                                case "Brown": { I = "7"; insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
 
                             }
 
@@ -181,13 +181,13 @@ namespace Circles
                             String I = "";
                             switch (newBall.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I," DALSI2")); } break;
-                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                                case "LightGreen": { I = "1"; insertCommand(String.Concat("BALL X ", I," NEXT2")); } break;
+                                case "Red": { I = "2"; insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                                case "DarkBlue": { I = "3"; insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                                case "Yellow": { I = "4"; insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                                case "LightBlue": { I = "5"; insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                                case "Purple": { I = "6"; insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                                case "Brown": { I = "7"; insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
 
                             }
 
@@ -201,13 +201,13 @@ namespace Circles
                             String I = "";
                             switch (newBall.getColour())
                             {
-                                case "SvetleZelena": { I = "1"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); } break;
-                                case "Cervena": { I = "2"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "TmaveModra": { I = "3"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Zluta": { I = "4"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "SvetleModra": { I = "5"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Fialova": { I = "6"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                                case "Hneda": { I = "7"; insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                                case "LightGreen": { I = "1"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); } break;
+                                case "Red": { I = "2"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                                case "DarkBlue": { I = "3"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                                case "Yellow": { I = "4"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                                case "LightBlue": { I = "5"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                                case "Purple": { I = "6"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                                case "Brown": { I = "7"; insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
 
                             }
 
@@ -249,7 +249,7 @@ namespace Circles
             else
             { ballWhichWillBeInsertedIntoRandomEmptyCell = ballManager.generateNewBall(); };
             randomEmptyCell.setBall(ballWhichWillBeInsertedIntoRandomEmptyCell);
-            insertCommand(String.Concat("MIC ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " NAFOUKNOUT"));
+            insertCommand(String.Concat("BALL ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " NAFOUKNOUT"));
 
             explodedBalls.Clear();
             explodedBalls = ballExploder.checkAndExplodeIfNeeded(randomEmptyCell);
@@ -293,7 +293,7 @@ namespace Circles
                         {
                             cellManager.setActiveCellFrom(cellWhichWasActivated);// The active from field is set
                             setGameState(2);// The state of the game has changed and that must be recorded somewhere.
-                            insertCommand(String.Concat("MIC ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
+                            insertCommand(String.Concat("BALL ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
                         }
                        
                         ;
@@ -303,11 +303,11 @@ namespace Circles
                         if (!(cellWhichWasActivated.isEmpty()))// If the field is not empty, then the activated field will change from where to this field, now only the ball in this field will jump.
                         {
                             cellManager.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// Since the active field will change from where, the old active field needs to tell its ball to stop jumping.
-                            insertCommand(String.Concat("MIC ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ "));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
+                            insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ "));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
 
                             cellManager.setActiveCellFrom(cellWhichWasActivated);// The active field from where to new is set. Actually what happened was that I activated some field earlier, the ball started bouncing in that field. However, I have now activated another field, the field with the coordinates we clicked on last time.
                             
-                            insertCommand(String.Concat("MIC ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
+                            insertCommand(String.Concat("BALL ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
 
 
                         }
@@ -319,14 +319,14 @@ namespace Circles
                             if (pathFinder.search())// If the path finder found a path.
                             { 
                                 cellManager.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// A path has been found, the ball will move and therefore a command will be sent to it not to jump anymore.
-                                insertCommand(String.Concat("MIC ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ"));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
+                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ"));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
                                 Ball ballWhichIsBeingMoved=cellManager.getActiveCellFrom().getBallAndRemoveIt();// It is necessary to remove the ball from the field from where we want to move it.
                                 cellManager.addEmptyCell(cellManager.getActiveCellFrom());// Then it is necessary to include this field in the registry of empty fields.
-                                insertCommand(String.Concat("MIC ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
+                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
                                 cellManager.getActiveCellTo().setBall(ballWhichIsBeingMoved);// The ball moves to its new field.
                                 cellManager.addFullCell(cellManager.getActiveCellTo());// The field we moved the ball to is no longer empty and we need to inform the field manager.
 
-                                insertCommand(String.Concat("MIC ", cellManager.getActiveCellTo().getRow(), " ", cellManager.getActiveCellTo().getColumn(), " NOVY ", ballWhichIsBeingMoved.getType().ToUpper()," NAFOUKNUT"));
+                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellTo().getRow(), " ", cellManager.getActiveCellTo().getColumn(), " NOVY ", ballWhichIsBeingMoved.getType().ToUpper()," NAFOUKNUT"));
                                 // We send another change command to the presentation layer.
                                 Stack<Cell> cellsVisitedByTheBall =pathFinder.getCellsFromTo();
 

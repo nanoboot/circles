@@ -31,11 +31,11 @@ namespace Circles
             {
                 currentCell = explodedBalls.Pop();
                 Ball checkedBall = currentCell.getBallAndRemoveIt();
-                if (checkedBall.getType().Contains("Zdvojnasobujici")) { isDouble = true; } else { isDouble = false; }
+                if (checkedBall.getType().Contains("DoubleScore")) { isDouble = true; } else { isDouble = false; }
 
                 cellManager.addEmptyCell(currentCell);// Then it is necessary to include this field in the registry of empty fields.
 
-                game.insertCommand(String.Concat("MIC ", currentCell.getRow(), " ", currentCell.getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
+                game.insertCommand(String.Concat("BALL ", currentCell.getRow(), " ", currentCell.getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
 
                 cellsWhichShouldNotBeActiveAnymore.Push(currentCell);
                 game.insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI CERVENE")));
@@ -108,26 +108,26 @@ namespace Circles
             String sql2 = String.Concat(
                 String.Concat("Vyska = ", gameComposition.getHeight().ToString(), " AND "),
                 String.Concat("Sirka = ", gameComposition.getWidth().ToString(), " AND "),
-                String.Concat("SvetleZelena = ", Convert.ToInt32(gameComposition.getLightGreen()).ToString(), " AND "),
-                String.Concat("Cervena = ", Convert.ToInt32(gameComposition.isRed()).ToString(), " AND "),
-                String.Concat("TmaveModra = ", Convert.ToInt32(gameComposition.isDarkBlue()).ToString(), " AND "),
-                String.Concat("Zluta = ", Convert.ToInt32(gameComposition.isYellow()).ToString(), " AND "),
-                String.Concat("SvetleModra = ", Convert.ToInt32(gameComposition.isLightBlue()).ToString(), " AND "),
-                String.Concat("Fialova = ", Convert.ToInt32(gameComposition.isPurple()).ToString(), " AND "),
-                String.Concat("Hneda = ", Convert.ToInt32(gameComposition.isBrown()).ToString(), " AND "),
-                String.Concat("Ruzova = ", Convert.ToInt32(gameComposition.isPink()).ToString(), " AND "),
-                String.Concat("Zelena = ", Convert.ToInt32(gameComposition.isGreen()).ToString(), " AND "),
-                String.Concat("Zlata = ", Convert.ToInt32(gameComposition.isGold()).ToString(), " AND "),
-                String.Concat("Oranzova = ", Convert.ToInt32(gameComposition.isOrange()).ToString(), " AND "),
-                String.Concat("Bila = ", Convert.ToInt32(gameComposition.isWhite()).ToString(), " AND "),
-                String.Concat("Sediva = ", Convert.ToInt32(gameComposition.isGrey()).ToString(), " AND "),
-                String.Concat("Cerna = ", Convert.ToInt32(gameComposition.isBlack()).ToString(), " AND "),
-                String.Concat("Modra = ", Convert.ToInt32(gameComposition.isBlue()).ToString(), " AND "),
-                String.Concat("VojenskaZelena = ", Convert.ToInt32(gameComposition.isArmyGreen()).ToString(), " AND "),
+                String.Concat("LightGreen = ", Convert.ToInt32(gameComposition.getLightGreen()).ToString(), " AND "),
+                String.Concat("Red = ", Convert.ToInt32(gameComposition.isRed()).ToString(), " AND "),
+                String.Concat("DarkBlue = ", Convert.ToInt32(gameComposition.isDarkBlue()).ToString(), " AND "),
+                String.Concat("Yellow = ", Convert.ToInt32(gameComposition.isYellow()).ToString(), " AND "),
+                String.Concat("LightBlue = ", Convert.ToInt32(gameComposition.isLightBlue()).ToString(), " AND "),
+                String.Concat("Purple = ", Convert.ToInt32(gameComposition.isPurple()).ToString(), " AND "),
+                String.Concat("Brown = ", Convert.ToInt32(gameComposition.isBrown()).ToString(), " AND "),
+                String.Concat("Pink = ", Convert.ToInt32(gameComposition.isPink()).ToString(), " AND "),
+                String.Concat("Green = ", Convert.ToInt32(gameComposition.isGreen()).ToString(), " AND "),
+                String.Concat("Gold = ", Convert.ToInt32(gameComposition.isGold()).ToString(), " AND "),
+                String.Concat("Orange = ", Convert.ToInt32(gameComposition.isOrange()).ToString(), " AND "),
+                String.Concat("White = ", Convert.ToInt32(gameComposition.isWhite()).ToString(), " AND "),
+                String.Concat("Grey = ", Convert.ToInt32(gameComposition.isGrey()).ToString(), " AND "),
+                String.Concat("Black = ", Convert.ToInt32(gameComposition.isBlack()).ToString(), " AND "),
+                String.Concat("Blue = ", Convert.ToInt32(gameComposition.isBlue()).ToString(), " AND "),
+                String.Concat("ArmyGreen = ", Convert.ToInt32(gameComposition.isArmyGreen()).ToString(), " AND "),
                 String.Concat("PocetHazenychMicuNaZacatkuHry = ", gameComposition.getStartBallCount().ToString(), " AND "),
                 String.Concat("PocetHazenychMicuBehemHry = ", gameComposition.getNextBallCount().ToString(), " AND "),
-                String.Concat("DuhoveBalls = ", Convert.ToInt32(gameComposition.isJokerBalls()).ToString(), " AND "),
-                String.Concat("ZdvojnasobujiciBalls = ", Convert.ToInt32(gameComposition.isDoubleScoreBalls()).ToString(), " AND "),
+                String.Concat("RainbowBalls = ", Convert.ToInt32(gameComposition.isJokerBalls()).ToString(), " AND "),
+                String.Concat("DoubleScoreBalls = ", Convert.ToInt32(gameComposition.isDoubleScoreBalls()).ToString(), " AND "),
                 String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", gameComposition.getShape(), "'", " AND "),
                 String.Concat("MinimalniDelkaLinky = ", gameComposition.getMinLineLength().ToString())
         );

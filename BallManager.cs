@@ -64,37 +64,37 @@ namespace Circles
 
             switch (nextBall1.getColour())
             {
-                case "SvetleZelena": { I = "1"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); } break;
-                case "Cervena": { I = "2"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                case "TmaveModra": { I = "3"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                case "Zluta": { I = "4"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                case "SvetleModra": { I = "5"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                case "Fialova": { I = "6"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
-                case "Hneda": { I = "7"; game.insertCommand(String.Concat("MIC X ", I, " DALSI1")); }; break;
+                case "LightGreen": { I = "1"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); } break;
+                case "Red": { I = "2"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                case "DarkBlue": { I = "3"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                case "Yellow": { I = "4"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                case "LightBlue": { I = "5"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                case "Purple": { I = "6"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
+                case "Brown": { I = "7"; game.insertCommand(String.Concat("BALL X ", I, " NEXT1")); }; break;
 
             }
 
             switch (nextBall2.getColour())
             {
-                case "SvetleZelena": { I = "1"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); } break;
-                case "Cervena": { I = "2"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                case "TmaveModra": { I = "3"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                case "Zluta": { I = "4"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                case "SvetleModra": { I = "5"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                case "Fialova": { I = "6"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
-                case "Hneda": { I = "7"; game.insertCommand(String.Concat("MIC X ", I, " DALSI2")); }; break;
+                case "LightGreen": { I = "1"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); } break;
+                case "Red": { I = "2"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                case "DarkBlue": { I = "3"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                case "Yellow": { I = "4"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                case "LightBlue": { I = "5"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                case "Purple": { I = "6"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
+                case "Brown": { I = "7"; game.insertCommand(String.Concat("BALL X ", I, " NEXT2")); }; break;
 
             }
 
             switch (nextBall3.getColour())
             {
-                case "SvetleZelena": { I = "1"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); } break;
-                case "Cervena": { I = "2"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                case "TmaveModra": { I = "3"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                case "Zluta": { I = "4"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                case "SvetleModra": { I = "5"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                case "Fialova": { I = "6"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
-                case "Hneda": { I = "7"; game.insertCommand(String.Concat("MIC X ", I, " DALSI3")); }; break;
+                case "LightGreen": { I = "1"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); } break;
+                case "Red": { I = "2"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                case "DarkBlue": { I = "3"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                case "Yellow": { I = "4"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                case "LightBlue": { I = "5"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                case "Purple": { I = "6"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
+                case "Brown": { I = "7"; game.insertCommand(String.Concat("BALL X ", I, " NEXT3")); }; break;
 
             }
         }
@@ -134,22 +134,22 @@ namespace Circles
        blue,
        armyGreen};
             String[] coloursAsTextValues = {
-       "SvetleZelena",
-       "Cervena",
-       "TmaveModra",
-       "Zluta",
-       "SvetleModra",
-       "Fialova",
-       "Hneda",
-       "Ruzova",
-       "Zelena",
-       "Zlata",
-       "Oranzova",
-       "Bila",
-       "Sediva",
-       "Cerna",
-       "Modra",
-       "VojenskaZelena"};
+       "LightGreen",
+       "Red",
+       "DarkBlue",
+       "Yellow",
+       "LightBlue",
+       "Purple",
+       "Brown",
+       "Pink",
+       "Green",
+       "Gold",
+       "Orange",
+       "White",
+       "Grey",
+       "Black",
+       "Blue",
+       "ArmyGreen"};
 
             for (int i = 0; i <= 15; i++)
             {
@@ -160,12 +160,12 @@ namespace Circles
         { if (colour) { colours[indexForColours] = textOfColour; indexForColours++; } }
         private bool fillBallTypeList(bool jokerBalls, bool doubleScoreBalls)
         {
-            if (jokerBalls) { addXTimeThisTextToUsedBallsList(5, "Duhove"); }
+            if (jokerBalls) { addXTimeThisTextToUsedBallsList(5, "Rainbow"); }
             for (int i = 0; i <= indexForColours - 1; i++)
 
             {
                 addXTimeThisTextToUsedBallsList(10, colours[i]);
-                if (doubleScoreBalls) { addXTimeThisTextToUsedBallsList(1, String.Concat("Zdvojnasobujici", colours[i])); }
+                if (doubleScoreBalls) { addXTimeThisTextToUsedBallsList(1, String.Concat("DoubleScore", colours[i])); }
             }
             return true;
 
@@ -188,12 +188,12 @@ namespace Circles
         private Ball setBallBasedOnTheType(String usedBallTypes)
         {
             Ball newBall;
-            if (usedBallTypes.Contains("Duhove"))
+            if (usedBallTypes.Contains("Rainbow"))
             {
                 newBall = new Ball(true);
             } else
             {
-                if (usedBallTypes.Contains("Zdvojnasobujici"))
+                if (usedBallTypes.Contains("DoubleScore"))
                 {
                     String usedBallTypesWithoutDoubleScore = usedBallTypes.Substring(15);
                     newBall = new Ball(usedBallTypesWithoutDoubleScore, true);

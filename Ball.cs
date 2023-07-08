@@ -19,7 +19,7 @@ namespace Circles
        
         public bool hasColour(String colour)
         {
-            if (!(this.getType() == "Duhove"))
+            if (!(this.getType() == "Rainbow"))
             { if (colour == this.colour) { return true; } else { return false; }; }
             else return true;
             }

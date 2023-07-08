@@ -32,7 +32,7 @@ namespace Circles
         private void createDatabase()
         { 
             executeSqlStatement("CREATE TABLE Vysledky ( ID INT, Hrac TEXT, Vysledek INT, SestavaHry INT, DatumACas TEXT)");
-            executeSqlStatement("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, SvetleZelena INT, Cervena INT, TmaveModra INT, Zluta INT, SvetleModra INT, Fialova INT, Hneda INT, Ruzova INT, Zelena INT, Zlata INT, Oranzova INT, Bila INT, Sediva INT, Cerna INT, Modra INT, VojenskaZelena INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, DuhoveBalls INT, ZdvojnasobujiciBalls INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
+            executeSqlStatement("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, LightGreen INT, Red INT, DarkBlue INT, Yellow INT, LightBlue INT, Purple INT, Brown INT, Pink INT, Green INT, Gold INT, Orange INT, White INT, Grey INT, Black INT, Blue INT, ArmyGreen INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, RainbowBalls INT, DoubleScoreBalls INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
             executeSqlStatement("INSERT INTO SestavyHry VALUES (1, 9, 9, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 'linka',5)");
         }
         private void initConnection()
