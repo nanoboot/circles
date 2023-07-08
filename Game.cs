@@ -270,9 +270,9 @@ namespace Circles
         }
         public string getCommand()//Method that returns the first command added from the queue
         {
-            if (commandQueue.Count > 0)
+            if (commandQueue.Count > 0)//If the queue is not empty, returns the given command
             { return Convert.ToString(commandQueue.Dequeue()); }
-            else return "DNO";
+            else return "DNO";//If the queue is empty, it returns the command "DNO". There are no orders in the queue at this time.
         }
         public void activateCell(int row, int column)//Cell, which was clicked by player, will be activated.
         {
