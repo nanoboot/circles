@@ -148,9 +148,8 @@ namespace Circles
             if (cellManager.hasAtLeastOneEmptyCell()) setGameState(1);//If there is still an empty field to place the ball, then the game state will be set to AwaitingEmptyAvailableFieldActivation.
         }
         
-        private void throwBallDuringGameIntoEmptyCells()// Generates balls into a certain number of empty fields repeatedly during the game.
-        {
-            for (int i = 1; i <= this.nextBallCount  ; i++)
+        private void throwBallDuringGameIntoEmptyCells()
+        {for (int i = 1; i <= this.nextBallCount  ; i++)
             { generateOneBallAndInsertItIntoAnEmptyCell(true);
                 switch (i)
                 {
@@ -266,10 +265,10 @@ namespace Circles
             this.scoreManager.setPlayerName(playerName);
             
         }
-        public void insertCommand(String command)
+        public void insertCommand(String command)//Method that puts the next command in the queue
         { commandQueue.Enqueue(command);
         }
-        public string getCommand()
+        public string getCommand()//Method that returns the first command added from the queue
         {
             if (commandQueue.Count > 0)
             { return Convert.ToString(commandQueue.Dequeue()); }
