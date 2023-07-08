@@ -12,10 +12,10 @@ namespace Circles
     {
         private GameComposition customGameComposition;
         private String shapeOfGroupOfBallsWhichWillExplode = "line";
-        public NewGameWithCustomGameCompositionWindow(GameComposition sestavaHry)
+        public NewGameWithCustomGameCompositionWindow(GameComposition gameComposition)
         {
             InitializeComponent();
-            this.customGameComposition = sestavaHry;
+            this.customGameComposition = gameComposition;
         }
 
         public void setDefaultValues()// This method overrides all values in the form to their default values.
@@ -115,12 +115,12 @@ namespace Circles
 
         private void squareRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.shapeOfGroupOfBallsWhichWillExplode = "ctverec";
+            this.shapeOfGroupOfBallsWhichWillExplode = "square";
         }
 
         private void circleRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.shapeOfGroupOfBallsWhichWillExplode = "krouzek";
+            this.shapeOfGroupOfBallsWhichWillExplode = "ring";
         }
 
         private void lineRadioButton_Checked(object sender, RoutedEventArgs e)

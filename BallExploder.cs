@@ -25,8 +25,8 @@ namespace Circles
             switch (this.shape)
             {
                 case "line": explodeLine(); break;
-                case "ctverec": explodeSquare(); break;
-                case "krouzek": explodeCircle(); break;
+                case "square": explodeSquare(); break;
+                case "ring": explodeCircle(); break;
                 default: { }; break;
             }
             return this.explodedBalls;//

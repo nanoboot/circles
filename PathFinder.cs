@@ -58,7 +58,7 @@ namespace Circles
             currentNodeOfPathFinder = queueBeforeTransformation.Dequeue();// Takes one node from the top queue
                                                                           // I took one node from the top queue and now I will explore all possible paths from this node.
             bool logicValue = false;
-            String[] cellDirection = { "nahore", "vpravo", "dole", "vlevo" };
+            String[] cellDirection = { "top", "right", "bottom", "left" };
             foreach (String direction in cellDirection)
             {
                 logicValue = checkIfNodeFromUpperQueueIsThatOneWhereWeWantTheBallMoveTo(direction); if (logicValue) { return true; }
@@ -74,13 +74,13 @@ namespace Circles
         {
             switch (Smer)
             {
-                case "nahore":
+                case "top":
                     checkedCell = currentNodeOfPathFinder.getCell().getTopCell(); break;
-                case "vpravo":
+                case "right":
                     checkedCell = currentNodeOfPathFinder.getCell().getRightCell(); break;
-                case "dole":
+                case "bottom":
                     checkedCell = currentNodeOfPathFinder.getCell().getBottomCell(); break;
-                case "vlevo":
+                case "left":
                     checkedCell = currentNodeOfPathFinder.getCell().getLeftCell(); break;
 
             }
@@ -108,7 +108,7 @@ namespace Circles
                 visitedCells.Add(checkedCell);
 
                 //cellsWhichShouldNotBeActiveAnymore.Push(checkedCell);
-                //game.insertCommand((String.Concat("POLE ", checkedCell.getRow(), " ", checkedCell.getColumn(), " POZADI CERVENE")));
+                //game.insertCommand((String.Concat("CELL ", checkedCell.getRow(), " ", checkedCell.getColumn(), " BACKGROUND RED")));
                 return true;
             }
             else

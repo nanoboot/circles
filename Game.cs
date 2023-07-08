@@ -52,7 +52,7 @@ namespace Circles
 
 
         public Game(
-            GameComposition sestavaHry,
+            GameComposition gameComposition,
             int height,
             int width,
             bool lightGreen,
@@ -78,7 +78,7 @@ namespace Circles
             string shapeOfGroupOfBallsWhichExplode,
             int minLineLength)
         {
-            this.gameComposition = sestavaHry;
+            this.gameComposition = gameComposition;
             this.height = height;
             this.width = width;
             this.lightGreen = lightGreen;
@@ -131,8 +131,8 @@ namespace Circles
             this.doubleScoreBalls = doubleScoreBalls,
             this);
            
-            insertCommand("HRA NOVA");
-            insertCommand(String.Concat("DESKA ", this.height, " ", this.width));
+            insertCommand("GAME NEW");
+            insertCommand(String.Concat("BOARD ", this.height, " ", this.width));
             startGame();
         }
         public System.Data.DataSet getScoreListForGivenTGameCompositionWithGivenId()//Returns a variable of type DataSet, which will contain the results sorted by points from the largest.
@@ -249,7 +249,7 @@ namespace Circles
             else
             { ballWhichWillBeInsertedIntoRandomEmptyCell = ballManager.generateNewBall(); };
             randomEmptyCell.setBall(ballWhichWillBeInsertedIntoRandomEmptyCell);
-            insertCommand(String.Concat("BALL ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " INFLATE"));
+            insertCommand(String.Concat("BALL ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NEW ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " INFLATE"));
 
             explodedBalls.Clear();
             explodedBalls = ballExploder.checkAndExplodeIfNeeded(randomEmptyCell);
@@ -272,7 +272,7 @@ namespace Circles
         {
             if (commandQueue.Count > 0)//If the queue is not empty, returns the given command
             { return Convert.ToString(commandQueue.Dequeue()); }
-            else return "DNO";//If the queue is empty, it returns the command "DNO". There are no orders in the queue at this time.
+            else return "EMPTY";//If the queue is empty, it returns the command "EMPTY". There are no orders in the queue at this time.
         }
         public void activateCell(int row, int column)//Cell, which was clicked by player, will be activated.
         {
@@ -282,7 +282,7 @@ namespace Circles
             {
                 Cell currentCell;
                 currentCell = cellsWhichAreNoMoreActive.Pop();
-                insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI NEZVYRAZNENE")));
+                insertCommand((String.Concat("CELL ", currentCell.getRow(), " ", currentCell.getColumn(), " BACKGROUND NOTHIGHLIGHTED")));
             }
 
             switch (getGameState())// It will select the correct algorithm according to the state of the game.
@@ -293,7 +293,7 @@ namespace Circles
                         {
                             cellManager.setActiveCellFrom(cellWhichWasActivated);// The active from field is set
                             setGameState(2);// The state of the game has changed and that must be recorded somewhere.
-                            insertCommand(String.Concat("BALL ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
+                            insertCommand(String.Concat("BALL ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " JUMP "));// A command that causes the application layer's representation of the ball in this box to bounce.
                         }
                        
                         ;
@@ -303,11 +303,11 @@ namespace Circles
                         if (!(cellWhichWasActivated.isEmpty()))// If the field is not empty, then the activated field will change from where to this field, now only the ball in this field will jump.
                         {
                             cellManager.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// Since the active field will change from where, the old active field needs to tell its ball to stop jumping.
-                            insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ "));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
+                            insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " DONTJUMP "));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
 
                             cellManager.setActiveCellFrom(cellWhichWasActivated);// The active field from where to new is set. Actually what happened was that I activated some field earlier, the ball started bouncing in that field. However, I have now activated another field, the field with the coordinates we clicked on last time.
                             
-                            insertCommand(String.Concat("BALL ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " SKAKEJ "));// A command that causes the application layer's representation of the ball in this box to bounce.
+                            insertCommand(String.Concat("BALL ", cellWhichWasActivated.getRow(), " ", cellWhichWasActivated.getColumn(), " JUMP "));// A command that causes the application layer's representation of the ball in this box to bounce.
 
 
                         }
@@ -319,14 +319,14 @@ namespace Circles
                             if (pathFinder.search())// If the path finder found a path.
                             { 
                                 cellManager.getActiveCellFrom().getBallAndDoNotRemoveIt().dontJump();// A path has been found, the ball will move and therefore a command will be sent to it not to jump anymore.
-                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " NESKAKEJ"));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
+                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " DONTJUMP"));// A command that causes the application layer's representation of a ball in a field that is no longer active to stop bouncing.
                                 Ball ballWhichIsBeingMoved=cellManager.getActiveCellFrom().getBallAndRemoveIt();// It is necessary to remove the ball from the field from where we want to move it.
                                 cellManager.addEmptyCell(cellManager.getActiveCellFrom());// Then it is necessary to include this field in the registry of empty fields.
-                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
+                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellFrom().getRow(), " ", cellManager.getActiveCellFrom().getColumn(), " REMOVE"));// We send a change command to the presentation layer.
                                 cellManager.getActiveCellTo().setBall(ballWhichIsBeingMoved);// The ball moves to its new field.
                                 cellManager.addFullCell(cellManager.getActiveCellTo());// The field we moved the ball to is no longer empty and we need to inform the field manager.
 
-                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellTo().getRow(), " ", cellManager.getActiveCellTo().getColumn(), " NOVY ", ballWhichIsBeingMoved.getType().ToUpper()," NAFOUKNUT"));
+                                insertCommand(String.Concat("BALL ", cellManager.getActiveCellTo().getRow(), " ", cellManager.getActiveCellTo().getColumn(), " NEW ", ballWhichIsBeingMoved.getType().ToUpper()," NAFOUKNUT"));
                                 // We send another change command to the presentation layer.
                                 Stack<Cell> cellsVisitedByTheBall =pathFinder.getCellsFromTo();
 
@@ -335,7 +335,7 @@ namespace Circles
                                 {
                                     currentCell=cellsVisitedByTheBall.Pop();
                                     cellsWhichAreNoMoreActive.Push(currentCell);
-                                    insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI ZVYRAZNENE"))); }
+                                    insertCommand((String.Concat("CELL ", currentCell.getRow(), " ", currentCell.getColumn(), " BACKGROUND HIGHLIGHTED"))); }
                                 // This command causes the fields the ball passed through to temporarily darken.
                                 explodedBalls.Clear();
                                 explodedBalls = ballExploder.checkAndExplodeIfNeeded(cellManager.getActiveCellTo());
@@ -359,7 +359,7 @@ namespace Circles
                                 {
 
                                     setGameState(10);
-                                    insertCommand("HRA KONEC");
+                                    insertCommand("GAME END");
                                 }
 
                             }

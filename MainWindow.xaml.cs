@@ -215,14 +215,14 @@ namespace Circles
             string[] commandParts = command.Split(' ');// Here, the command is divided by spaces into individual parameters
             switch (commandParts[0])// The 0th parameter is examined here
             {
-                case "HRA":
+                case "GAME":
                     switch (commandParts[1])// The 1st parameter is examined here
                     {
-                        case "NOVA":
+                        case "NEW":
                             { resetEnvironment(); }
                             break;
 
-                        case "KONEC":
+                        case "END":
                             EnterYourNameWindow enterYourNameWindow = new EnterYourNameWindow(this.game);
                             enterYourNameWindow.ShowDialog();// Displays a dialog for entering the player's name.
 
@@ -234,13 +234,13 @@ namespace Circles
                     }
                     break;
 
-                case "DESKA":
+                case "BOARD":
                     {
                         buildBoard(Int32.Parse(commandParts[1]), Int32.Parse(commandParts[2]));
 
                     };
                     break;
-                case "DNO":
+                case "EMPTY":
                     {
 
                     };
@@ -249,17 +249,17 @@ namespace Circles
                     {
                         switch (commandParts[3])// The 3rd parameter is examined here
                         {
-                            case "NOVY":
+                            case "NEW":
                                 {
                                     createNewBall(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2]), commandParts[4], commandParts[5]);
                                 }
                                 break;
-                            case "SKAKEJ":
+                            case "JUMP":
                                 ballStartJumping(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2]));
                                 break;
-                            case "NESKAKEJ":
+                            case "DONTJUMP":
                                 ballStopJumping(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); break;
-                            case "ODSTRANIT":
+                            case "REMOVE":
                                 clearCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); break;
                             case "NEXT1":
                                 {
@@ -303,23 +303,23 @@ namespace Circles
                         }
                     };
                     break;
-                case "POLE":
+                case "CELL":
                     {
                         switch (commandParts[3])// The 3rd parameter is examined here
                         {
-                            case "POZADI":
+                            case "BACKGROUND":
                                 {
                                     switch (commandParts[4])
                                     {
-                                        case "ZVYRAZNENE": { highlightCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
-                                        case "NEZVYRAZNENE": { stopHighlightingCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
-                                        case "CERVENE": { highlightCellWithRedBackground(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
+                                        case "HIGHLIGHTED": { highlightCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
+                                        case "NOTHIGHLIGHTED": { stopHighlightingCell(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
+                                        case "RED": { highlightCellWithRedBackground(Convert.ToInt32(commandParts[1]), Convert.ToInt32(commandParts[2])); }; break;
                                         default: { }; break;
                                     }
                                 }; break;
                         }
                     }; break;
-                case "VYSLEDEK":
+                case "SCORE":
                     { changeScore(Convert.ToInt32(commandParts[1])); }
                     break;
                 default:
@@ -338,46 +338,46 @@ namespace Circles
         What is in the angle brackets must be replaced with a specific number or text string.
         Strings are written without double or single quotes.
         Example: The following command displays a new black ball in the 4th row and 6th column field by applying the inflate effect.
-        BALL 4 6 NOVY CERNY INFLATE
+        BALL 4 6 NEW CERNY INFLATE
         ------------------------------------------------------------------------------
 
-        Command:   HRA NOVA
+        Command:   GAME NEW
         Description:    The presentation layer must, at the behest of this command, prepare the presentation layer for the new game and delete everything left over from the last game.
 
-        Command:   HRA KONEC
+        Command:   GAME END
         Description:    The presentation layer must, at the behest of this command, prepare the presentation layer for operations performed after the game is finished.
 
-        Command:   DESKA <výška> <šířka> 
-        Description:    This command must immediately follow the GAME NOVA command. According to this command, the presentation layer builds a board with the given dimensions.
+        Command:   BOARD <výška> <šířka>
+        Description:    This command must immediately follow the GAME NEW command. According to this command, the presentation layer builds a board with the given dimensions.
 
-        Command:   DNO
+        Command:   EMPTY
         Description:    This command is not generated by the logic layer, this command is generated by the presentation layer automatically if all the commands in the command queue have already been executed and this queue is now empty. The application layer is informed by this command that the current form of the presentation layer is the same as how the elements of the game are represented in the logic layer.
 
-        Command:   BALL <řádek> <column> NOVY <typ> INFLATE
+        Command:   BALL <řádek> <column> NEW <typ> INFLATE
         Description:    A new ball of the given type will appear in the board at the given position and will be inflated, meaning that it will be small at first and gradually increase to its final size.
 
-        Command:   BALL <řádek> <column> NOVY <typ>
+        Command:   BALL <řádek> <column> NEW <typ>
         Description:    A new ball of the given type will appear in the board at the given position and will not be inflated, meaning it will appear already inflated to its final form.
 
-        Command:   BALL <řádek> <column> SKAKEJ
+        Command:   BALL <řádek> <column> JUMP
         Description:    The given ball starts to bounce.
 
-        Command:   BALL <řádek> <column> NESKAKEJ
+        Command:   BALL <řádek> <column> DONTJUMP
         Description:    The given ball stops bouncing.
 
-        Command:   BALL <řádek> <column> ODSTRANIT
+        Command:   BALL <řádek> <column> REMOVE
         Description:    The given ball will be removed.
             
-        Command:   POLE <řádek> <column> POZADI ZVYRAZNENE
+        Command:   CELL <řádek> <column> BACKGROUND HIGHLIGHTED
         Description:    The given field will be highlighted.
 
-        Command:   POLE <řádek> <column> POZADI NEZVYRAZNENE
+        Command:   CELL <řádek> <column> BACKGROUND NOTHIGHLIGHTED
         Description:    The given field will be unhighlighted.
 
-        Command:   POLE <řádek> <column> POZADI CERVENE
+        Command:   CELL <řádek> <column> BACKGROUND RED
         Description:    The given field will be highlighted in red after the explosion.
 
-        Command:   VYSLEDEK <počet bodů>
+        Command:   SCORE <počet bodů>
         Description:    It informs that the number of points of the current result has changed.
 
         ------------------------------------------------------------------------------
@@ -391,8 +391,8 @@ namespace Circles
             bool shouldIContinue = true;
             do
             {// Do.
-                if (executeCommand() == "DNO") { shouldIContinue = false; };
-            }// If the command in the command queue is not DNO, do not change the value of the continue variable, otherwise set it to true.
+                if (executeCommand() == "EMPTY") { shouldIContinue = false; };
+            }// If the command in the command queue is not EMPTY, do not change the value of the continue variable, otherwise set it to true.
             while (shouldIContinue);// As long as the value of the variable continues to be true.
 
         }

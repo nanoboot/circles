@@ -35,10 +35,10 @@ namespace Circles
 
                 cellManager.addEmptyCell(currentCell);// Then it is necessary to include this field in the registry of empty fields.
 
-                game.insertCommand(String.Concat("BALL ", currentCell.getRow(), " ", currentCell.getColumn(), " ODSTRANIT"));// We send a change command to the presentation layer.
+                game.insertCommand(String.Concat("BALL ", currentCell.getRow(), " ", currentCell.getColumn(), " REMOVE"));// We send a change command to the presentation layer.
 
                 cellsWhichShouldNotBeActiveAnymore.Push(currentCell);
-                game.insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI CERVENE")));
+                game.insertCommand((String.Concat("CELL ", currentCell.getRow(), " ", currentCell.getColumn(), " BACKGROUND RED")));
 
                 if (isDouble) { ++coutnOfDoubleBalls; } else { }; ;
 
@@ -71,7 +71,7 @@ namespace Circles
         private void addPointsToTheScore(int pointCount,Game game)// Adds points to the current score.
         {
             this.score = this.score + pointCount;
-            game.insertCommand(String.Concat("VYSLEDEK ", score));
+            game.insertCommand(String.Concat("SCORE ", score));
         }
         public void setPlayerName(String playerName)
         {
@@ -138,7 +138,7 @@ namespace Circles
         private String createStatementToAddNewScoreToDatabase(String playerName, int score, int klicIDGameComposition)
         {
             DateTime datumACas = DateTime.Now;
-            String otiskVCase = datumACas.ToString("yyyy MM dd HH:mm:ss");
+            String timestamp = datumACas.ToString("yyyy MM dd HH:mm:ss");
             int klicIDScore = 0;
             if (databaseManager.returnsAtLeastOneRow("SELECT * FROM Score;"))
             { klicIDScore = (databaseManager.getMaxIdForTable("Score"));++klicIDScore; }
@@ -150,7 +150,7 @@ namespace Circles
                 String.Concat("'", playerName, "',"),
                 String.Concat(score.ToString(), ","),
                 String.Concat(klicIDGameComposition.ToString(), ","),
-                String.Concat("'", otiskVCase, "'"),
+                String.Concat("'", timestamp, "'"),
                 ")");
             String sqlPrikazTretiCast = ";";
             this.sqlStatementInsertScore = String.Concat(sqlPrikazPrvniCast, sqlPrikazDruhaCast, sqlPrikazTretiCast);
