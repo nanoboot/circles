@@ -249,7 +249,7 @@ namespace Circles
             else
             { ballWhichWillBeInsertedIntoRandomEmptyCell = ballManager.generateNewBall(); };
             randomEmptyCell.setBall(ballWhichWillBeInsertedIntoRandomEmptyCell);
-            insertCommand(String.Concat("BALL ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " NAFOUKNOUT"));
+            insertCommand(String.Concat("BALL ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " INFLATE"));
 
             explodedBalls.Clear();
             explodedBalls = ballExploder.checkAndExplodeIfNeeded(randomEmptyCell);
