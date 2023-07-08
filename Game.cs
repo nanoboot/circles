@@ -6,6 +6,7 @@ namespace Circles
 {
     public class Game
     {
+        // the properties of the given game start here - its composition
         private int width;
         private int height;
         private bool lightGreen;
@@ -32,15 +33,15 @@ namespace Circles
         private int minLineLength;
 
         GameComposition gameComposition;
-        private Queue commandQueue = new Queue();
+        private Queue commandQueue = new Queue();// A command queue will be created in which the logical layer will store all changes in the form of messages, the application layer will take information from this queue to know what to show the player.
         private CellManager cellManager;
         private BallManager ballManager;
         private DatabaseManager databaseManager;
         private ScoreManager scoreManager;
         private BallExploder ballExploder;
-        private Stack<Cell> explodedBalls = new Stack<Cell>();
-        private Stack<Cell> cellsWhichAreNoMoreActive=new Stack<Cell>();
-        private enum GameState
+        private Stack<Cell> explodedBalls = new Stack<Cell>();//Fields are temporarily stored here.
+        private Stack<Cell> cellsWhichAreNoMoreActive=new Stack<Cell>();//Fields are temporarily stored here, which will have their background set to normal in the next step.
+        private enum GameState// Game state is saved here.
         {
             Start = 0,
             WaitingForActivationOfFullCell = 1,
@@ -103,11 +104,12 @@ namespace Circles
             this.shapeOfGroupOfBallsWhichExplode = shapeOfGroupOfBallsWhichExplode;
             this.minLineLength = minLineLength;
             ballExploder = new BallExploder(shapeOfGroupOfBallsWhichExplode, minLineLength);
-            gameState = GameState.Start;
-            this.databaseManager = new DatabaseManager();
+            gameState = GameState.Start;// In the constructor, the state of the game is set to Start.
+            this.databaseManager = new DatabaseManager();//When the Balls program is turned on, an instance of the Database Manager class is created, with which objects will communicate, which will have the task of permanently storing data or reading them
             this.scoreManager = new ScoreManager(this.databaseManager, this.gameComposition);
-            cellManager = new CellManager(this.height, this.width);
+            cellManager = new CellManager(this.height, this.width);//Builds the table of fields according to the number of rows and columns.
 
+            // This is followed by creating an instance of the ball manager, which will only generate the types of balls the player selected before starting the game.
             ballManager = new BallManager(
             this.lightGreen,
             this.red,
@@ -133,21 +135,22 @@ namespace Circles
             insertCommand(String.Concat("DESKA ", this.height, " ", this.width));
             startGame();
         }
-        public System.Data.DataSet getScoreListForGivenTGameCompositionWithGivenId()
+        public System.Data.DataSet getScoreListForGivenTGameCompositionWithGivenId()//Returns a variable of type DataSet, which will contain the results sorted by points from the largest.
         {
             return scoreManager.getScoreListForGivenTGameCompositionWithGivenId();
         }
-        private void startGame()
+        private void startGame()// Generates balls into a specified number of empty fields. This method is only called at the beginning of the game.
         {
             for (int i = 1; i <= this.startBallCount; i++)
             { generateOneBallAndInsertItIntoAnEmptyCell(false);
-                if (!cellManager.hasAtLeastOneEmptyCell()) { setGameState(10); break; }
+                if (!cellManager.hasAtLeastOneEmptyCell()) { setGameState(10); break; }// If there is no longer an empty field, there is nowhere to place the ball, then this for loop will terminate early and the game state will be set to End.
             };
-            if (cellManager.hasAtLeastOneEmptyCell()) setGameState(1);
+            if (cellManager.hasAtLeastOneEmptyCell()) setGameState(1);//If there is still an empty field to place the ball, then the game state will be set to AwaitingEmptyAvailableFieldActivation.
         }
         
-        private void throwBallDuringGameIntoEmptyCells()
-        {for (int i = 1; i <= this.nextBallCount  ; i++)
+        private void throwBallDuringGameIntoEmptyCells()// Generates balls into a certain number of empty fields repeatedly during the game.
+        {
+            for (int i = 1; i <= this.nextBallCount  ; i++)
             { generateOneBallAndInsertItIntoAnEmptyCell(true);
                 switch (i)
                 {
@@ -250,7 +253,7 @@ namespace Circles
             insertCommand(String.Concat("MIC ", randomEmptyCell.getRow(), " ", randomEmptyCell.getColumn(), " NOVY ", ballWhichWillBeInsertedIntoRandomEmptyCell.getType().ToUpper(), " NAFOUKNOUT"));
 
             explodedBalls.Clear();
-            explodedBalls = ballExploder.checkAndExplodedIfNeeded(randomEmptyCell);
+            explodedBalls = ballExploder.checkAndExplodeIfNeeded(randomEmptyCell);
             if (explodedBalls.Count > 0)
             {
                 scoreManager.countPoints(explodedBalls, this, this.cellManager, this.cellsWhichAreNoMoreActive);
@@ -336,7 +339,7 @@ namespace Circles
                                     insertCommand((String.Concat("POLE ", currentCell.getRow(), " ", currentCell.getColumn(), " POZADI ZVYRAZNENE"))); }
                                 // This command causes the fields the ball passed through to temporarily darken.
                                 explodedBalls.Clear();
-                                explodedBalls = ballExploder.checkAndExplodedIfNeeded(cellManager.getActiveCellTo());
+                                explodedBalls = ballExploder.checkAndExplodeIfNeeded(cellManager.getActiveCellTo());
                                 
                                 if (explodedBalls.Count > 1)
                                 {

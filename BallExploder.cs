@@ -16,7 +16,7 @@ namespace Circles
         { this.shape = shape;
             this.minLineLength = minLineLength;
         }
-        public Stack<Cell> checkAndExplodedIfNeeded(Cell cellToBeChecked)
+        public Stack<Cell> checkAndExplodeIfNeeded(Cell cellToBeChecked)
         {
             this.cellToBeChecked = cellToBeChecked;
             currentCell=cellToBeChecked;

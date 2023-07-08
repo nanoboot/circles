@@ -9,17 +9,17 @@ namespace Circles
         private NodeForEmptyCellRegistry tmpNode = null;
         private NodeForEmptyCellRegistry previousTmpNode = null;
         private int nodeCount = 0;
-        private void nodeCountPlusOne()
+        private void nodeCountPlusOne()// The number of register fields is incremented by one.
         { nodeCount = ++nodeCount;
-            
+            //Record.Record("The number of nodes has been increased to ", this.ReturnNodeNumber().ToString());
         }
-        private void nodeCountMinusOne()
+        private void nodeCountMinusOne()// The number of register fields is reduced by one.
         { nodeCount = --nodeCount; }
         public int getCountOfNodes()
         {
             return this.nodeCount; }
 
-        public void addCell(Cell newCell)
+        public void addCell(Cell newCell)//Puts the field into the register.
         {
 
             if (firstNode == null) { firstNode = new NodeForEmptyCellRegistry(newCell); }
@@ -29,7 +29,7 @@ namespace Circles
             }
             nodeCountPlusOne();
         }
-        public Cell getCell(int order)
+        public Cell getCell(int order)//Returns the given empty field from the registry and at the same time deletes this field from the registry.
         {
             if (order <= getCountOfNodes())
             {
@@ -54,13 +54,14 @@ namespace Circles
                     return tmpNode.getCell();
                 }
                 else return new Cell();//throw new ArgumentOutOfRangeException()
+                // Fix here somehow.
 
 
             }
             else
             { throw new ArgumentOutOfRangeException(); }
         }
-        public void removeCell(Cell newFullCell)
+        public void removeCell(Cell newFullCell)//Returns the given empty field from the registry and at the same time deletes this field from the registry.
         {
            tmpNode = firstNode;
             while((tmpNode.getNextNode()!=null)&&(tmpNode.getCell()!= newFullCell))
