@@ -33,7 +33,7 @@ namespace Circles
         }
         private void explodeLine()
         {
-            String[] cellPosition = { "svisla", "vodorovna", "sikmazleva", "sikmazprava" };
+            String[] cellPosition = { "vertical", "horizontal", "slantfromleft", "slantfromright" };
             foreach (String position in cellPosition)
             { if (shapeIsFound) { break; } else { checkLine(position); } }
 
@@ -47,13 +47,13 @@ namespace Circles
                     explodedBalls.Push(currentCell);
                     switch (position)
                     {
-                        case "svisla":
+                        case "vertical":
                             currentCell = currentCell.getTopCell(); break;
-                        case "vodorovna":
+                        case "horizontal":
                             currentCell = currentCell.getLeftCell(); break;
-                        case "sikmazleva":
+                        case "slantfromleft":
                             currentCell = currentCell.getTopLeftCell(); break;
-                        case "sikmazprava":
+                        case "slantfromright":
                             currentCell = currentCell.getTopRightCell(); break;
                             
                             } 
@@ -61,13 +61,13 @@ namespace Circles
                 currentCell = cellToBeChecked;
                 switch (position)
                 {
-                    case "svisla":
+                    case "vertical":
                         currentCell = currentCell.getBottomCell(); break;
-                    case "vodorovna":
+                    case "horizontal":
                         currentCell = currentCell.getRightCell(); break;
-                    case "sikmazleva":
+                    case "slantfromleft":
                         currentCell = currentCell.getBottomRightCell(); break;
-                    case "sikmazprava":
+                    case "slantfromright":
                         currentCell = currentCell.getBottomLeftCell(); break;
 
                 }
@@ -77,13 +77,13 @@ namespace Circles
                     explodedBalls.Push(currentCell);
                     switch (position)
                     {
-                        case "svisla":
+                        case "vertical":
                             currentCell = currentCell.getBottomCell(); break;
-                        case "vodorovna":
+                        case "horizontal":
                             currentCell = currentCell.getRightCell(); break;
-                        case "sikmazleva":
+                        case "slantfromleft":
                             currentCell = currentCell.getBottomRightCell(); break;
-                        case "sikmazprava":
+                        case "slantfromright":
                             currentCell = currentCell.getBottomLeftCell(); break;
                 }
                 };
@@ -94,7 +94,7 @@ namespace Circles
         
         private void explodeSquare()
         {
-            String[] pozicePole = { "radek1sloupec1", "radek1sloupec2", "radek2sloupec1", "radek2sloupec2" };
+            String[] pozicePole = { "row1column1", "row1column2", "row2column1", "row2column2" };
             foreach (String pozice in pozicePole)
             { if (shapeIsFound) { break; } else { checkSquare(pozice); } }
         }
@@ -106,25 +106,25 @@ namespace Circles
             Cell cell3 = null;
             switch (position)
             {
-                case "radek1sloupec1":
+                case "row1column1":
                     {
                         cell1 = currentCell.getRightCell();
                         cell2 = currentCell.getBottomRightCell();
                         cell3 = currentCell.getBottomCell();
                     }; break;
-                case "radek1sloupec2":
+                case "row1column2":
                     {
                         cell1 = currentCell.getLeftCell();
                         cell2 = currentCell.getBottomLeftCell();
                         cell3 = currentCell.getBottomCell();
                     }; break;
-                case "radek2sloupec1":
+                case "row2column1":
                     {
                         cell1 = currentCell.getTopCell();
                         cell2 = currentCell.getTopRightCell();
                         cell3 = currentCell.getRightCell();
                     }; break;
-                case "radek2sloupec2":
+                case "row2column2":
                     {
                         cell1 = currentCell.getTopLeftCell();
                         cell2 = currentCell.getTopCell();
@@ -154,7 +154,7 @@ namespace Circles
         }
         private void explodeCircle()
         {
-            String[] cellPosition = { "radek1sloupec2", "radek2sloupec1", "radek2sloupec3", "radek3sloupec2" };
+            String[] cellPosition = { "row1column2", "row2column1", "row2column3", "row3column2" };
             foreach (String position in cellPosition)
             { if (shapeIsFound) { break; } else { checkCircle(position); } }
         }
@@ -168,28 +168,28 @@ namespace Circles
 
             switch (position)
             {
-                case "radek1sloupec2":
+                case "row1column2":
                     {
                         cell1 = currentCell.getBottomLeftCell();
                         cell2 = currentCell.getBottomRightCell();
                         cellNextToCell3 = currentCell.getBottomCell();
                         if (cellNextToCell3!=null) cell3 = cellNextToCell3.getBottomCell();
                     }; break;
-                case "radek2sloupec1":
+                case "row2column1":
                     {
                         cell1 = currentCell.getTopRightCell();
                         cell2 = currentCell.getBottomRightCell();
                         cellNextToCell3 = currentCell.getRightCell();
                         if (cellNextToCell3 != null) cell3 = cellNextToCell3.getRightCell();
                     }; break;
-                case "radek2sloupec3":
+                case "row2column3":
                     {
                         cell1 = currentCell.getTopLeftCell();
                         cell2 = currentCell.getBottomLeftCell();
                         cellNextToCell3 = currentCell.getLeftCell();
                         if (cellNextToCell3 != null) cell3 = cellNextToCell3.getLeftCell();
                     }; break;
-                case "radek3sloupec2":
+                case "row3column2":
                     {
                         cell1 = currentCell.getTopLeftCell();
                         cell2 = currentCell.getTopRightCell();
