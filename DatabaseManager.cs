@@ -31,9 +31,9 @@ namespace Circles
         }
         private void createDatabase()
         { 
-            executeSqlStatement("CREATE TABLE Vysledky ( ID INT, Hrac TEXT, Vysledek INT, SestavaHry INT, DatumACas TEXT)");
-            executeSqlStatement("CREATE TABLE SestavyHry (ID INT, Vyska INT, Sirka INT, LightGreen INT, Red INT, DarkBlue INT, Yellow INT, LightBlue INT, Purple INT, Brown INT, Pink INT, Green INT, Gold INT, Orange INT, White INT, Grey INT, Black INT, Blue INT, ArmyGreen INT, PocetHazenychMicuNaZacatkuHry INT, PocetHazenychMicuBehemHry INT, RainbowBalls INT, DoubleScoreBalls INT, TvarSkupinyMicuKteraExploduje TEXT, MinimalniDelkaLinky INT)");
-            executeSqlStatement("INSERT INTO SestavyHry VALUES (1, 9, 9, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 'linka',5)");
+            executeSqlStatement("CREATE TABLE Score ( ID INT, Player TEXT, PointCount INT, GameComposition INT, DateAndTime TEXT)");
+            executeSqlStatement("CREATE TABLE GameComposition (ID INT, Height INT, Width INT, LightGreen INT, Red INT, DarkBlue INT, Yellow INT, LightBlue INT, Purple INT, Brown INT, Pink INT, Green INT, Gold INT, Orange INT, White INT, Grey INT, Black INT, Blue INT, ArmyGreen INT, StartBallCount INT, NextBallCount INT, RainbowBalls INT, DoubleScoreBalls INT, ShapeOfBallGroupWhichWillExplode TEXT, MinLineLength INT)");
+            executeSqlStatement("INSERT INTO GameComposition VALUES (1, 9, 9, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 'line',5)");
         }
         private void initConnection()
         {
@@ -121,9 +121,9 @@ namespace Circles
             {
                 sqlConnection.Open();
                 String statement = String.Concat(
-                    "SELECT Hrac AS \"Hráč\", Vysledek  AS \"Výsledek\", DatumACas AS \"Datum a čas\" FROM Vysledky WHERE SestavaHry= ",
+                    "SELECT Player AS \"Player\", PointCount  AS \"Point count\", DateAndTime AS \"Date and Time\" FROM Score WHERE GameComposition= ",
                     idKey.ToString()," ",
-                    "ORDER BY Vysledek DESC;"
+                    "ORDER BY PointCount DESC;"
                     
                     );
                 using (SQLiteDataAdapter myAdapter = new SQLiteDataAdapter(statement, sqlConnection))

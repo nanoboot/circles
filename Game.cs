@@ -72,7 +72,7 @@ namespace Circles
             bool blue,
             bool armyGreen,
             int startBallCount,
-            int PocetHazenychMicuBehemHry,
+            int NextBallCount,
             bool nextBallCount,
             bool doubleScoreBalls,
             string shapeOfGroupOfBallsWhichExplode,
@@ -98,7 +98,7 @@ namespace Circles
             this.blue = blue;
             this.armyGreen = armyGreen;
             this.startBallCount = startBallCount;
-            this.nextBallCount = PocetHazenychMicuBehemHry;
+            this.nextBallCount = NextBallCount;
             this.jokerBalls = nextBallCount;
             this.doubleScoreBalls = doubleScoreBalls;
             this.shapeOfGroupOfBallsWhichExplode = shapeOfGroupOfBallsWhichExplode;

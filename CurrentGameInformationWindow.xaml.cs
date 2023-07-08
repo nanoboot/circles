@@ -35,7 +35,7 @@ namespace Circles
             jokerBallsLabel.Content = convertBooleanToString(gameCompositioin.isJokerBalls());
             doubleScoreBallsLabel.Content = convertBooleanToString(gameCompositioin.isDoubleScoreBalls());
 
-            if (gameCompositioin.getShape() == "linka")
+            if (gameCompositioin.getShape() == "line")
             {
                 shapeLabel.Content = String.Concat(gameCompositioin.getShape(), " with minimal length ", gameCompositioin.getMinLineLength(), " ","balls");
             }

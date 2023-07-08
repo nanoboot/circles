@@ -24,7 +24,7 @@ namespace Circles
             shapeIsFound = false;
             switch (this.shape)
             {
-                case "linka": explodeLine(); break;
+                case "line": explodeLine(); break;
                 case "ctverec": explodeSquare(); break;
                 case "krouzek": explodeCircle(); break;
                 default: { }; break;

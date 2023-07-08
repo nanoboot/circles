@@ -11,7 +11,7 @@ namespace Circles
     public partial class NewGameWithCustomGameCompositionWindow : Window
     {
         private GameComposition customGameComposition;
-        private String shapeOfGroupOfBallsWhichWillExplode = "linka";
+        private String shapeOfGroupOfBallsWhichWillExplode = "line";
         public NewGameWithCustomGameCompositionWindow(GameComposition sestavaHry)
         {
             InitializeComponent();
@@ -125,7 +125,7 @@ namespace Circles
 
         private void lineRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.shapeOfGroupOfBallsWhichWillExplode = "linka";
+            this.shapeOfGroupOfBallsWhichWillExplode = "line";
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)

@@ -137,7 +137,7 @@ namespace Circles
             this.setNextBallCount(3);
             this.setJokerBalls(false);
             this.setDoubleScoreBalls(false);
-            this.setShape("linka");
+            this.setShape("line");
             this.setMinLineLength(5);
             
         }

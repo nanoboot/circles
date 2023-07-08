@@ -45,7 +45,7 @@ namespace Circles
 
             }
             int countPoints = 0;
-            if (gameComposition.getShape()== "linka")
+            if (gameComposition.getShape()== "line")
             {
                 switch (ballCount - gameComposition.getMinLineLength())
                 {
@@ -88,9 +88,9 @@ namespace Circles
             }
             else
             {
-                keyIdOfGameComposition = databaseManager.getMaxIdForTable("SestavyHry");
+                keyIdOfGameComposition = databaseManager.getMaxIdForTable("GameComposition");
                 ++keyIdOfGameComposition;
-                SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(keyIdOfGameComposition);
+                SestavPrikazNaVlozeniNoveGameCompositionDoDatabaze(keyIdOfGameComposition);
                 databaseManager.executeSqlStatement(sqlStatementInsertGameComposition);
 
             };
@@ -104,10 +104,10 @@ namespace Circles
                 }
         private String createStatementToSaveGameCompositionIntoDatabase()
         {
-            String sql1 = "SELECT ID FROM SestavyHry WHERE ";
+            String sql1 = "SELECT ID FROM GameComposition WHERE ";
             String sql2 = String.Concat(
-                String.Concat("Vyska = ", gameComposition.getHeight().ToString(), " AND "),
-                String.Concat("Sirka = ", gameComposition.getWidth().ToString(), " AND "),
+                String.Concat("Height = ", gameComposition.getHeight().ToString(), " AND "),
+                String.Concat("Width = ", gameComposition.getWidth().ToString(), " AND "),
                 String.Concat("LightGreen = ", Convert.ToInt32(gameComposition.getLightGreen()).ToString(), " AND "),
                 String.Concat("Red = ", Convert.ToInt32(gameComposition.isRed()).ToString(), " AND "),
                 String.Concat("DarkBlue = ", Convert.ToInt32(gameComposition.isDarkBlue()).ToString(), " AND "),
@@ -124,32 +124,32 @@ namespace Circles
                 String.Concat("Black = ", Convert.ToInt32(gameComposition.isBlack()).ToString(), " AND "),
                 String.Concat("Blue = ", Convert.ToInt32(gameComposition.isBlue()).ToString(), " AND "),
                 String.Concat("ArmyGreen = ", Convert.ToInt32(gameComposition.isArmyGreen()).ToString(), " AND "),
-                String.Concat("PocetHazenychMicuNaZacatkuHry = ", gameComposition.getStartBallCount().ToString(), " AND "),
-                String.Concat("PocetHazenychMicuBehemHry = ", gameComposition.getNextBallCount().ToString(), " AND "),
+                String.Concat("StartBallCount = ", gameComposition.getStartBallCount().ToString(), " AND "),
+                String.Concat("NextBallCount = ", gameComposition.getNextBallCount().ToString(), " AND "),
                 String.Concat("RainbowBalls = ", Convert.ToInt32(gameComposition.isJokerBalls()).ToString(), " AND "),
                 String.Concat("DoubleScoreBalls = ", Convert.ToInt32(gameComposition.isDoubleScoreBalls()).ToString(), " AND "),
-                String.Concat("TvarSkupinyMicuKteraExploduje = ", "'", gameComposition.getShape(), "'", " AND "),
-                String.Concat("MinimalniDelkaLinky = ", gameComposition.getMinLineLength().ToString())
+                String.Concat("ShapeOfBallGroupWhichWillExplode = ", "'", gameComposition.getShape(), "'", " AND "),
+                String.Concat("MinLineLength = ", gameComposition.getMinLineLength().ToString())
         );
             String sql3 = ";";
             this.sqlStatementSelectGameComposition = String.Concat(sql1, sql2, sql3);
             return this.sqlStatementSelectGameComposition;
         }
-        private String createStatementToAddNewScoreToDatabase(String playerName, int score, int klicIDSestavyHry)
+        private String createStatementToAddNewScoreToDatabase(String playerName, int score, int klicIDGameComposition)
         {
             DateTime datumACas = DateTime.Now;
             String otiskVCase = datumACas.ToString("yyyy MM dd HH:mm:ss");
-            int klicIDVysledky = 0;
-            if (databaseManager.returnsAtLeastOneRow("SELECT * FROM Vysledky;"))
-            { klicIDVysledky = (databaseManager.getMaxIdForTable("Vysledky"));++klicIDVysledky; }
-            else { klicIDVysledky = 1; };
-            String sqlPrikazPrvniCast = "INSERT INTO Vysledky VALUES ";
+            int klicIDScore = 0;
+            if (databaseManager.returnsAtLeastOneRow("SELECT * FROM Score;"))
+            { klicIDScore = (databaseManager.getMaxIdForTable("Score"));++klicIDScore; }
+            else { klicIDScore = 1; };
+            String sqlPrikazPrvniCast = "INSERT INTO Score VALUES ";
             String sqlPrikazDruhaCast = String.Concat(
                 "(",
-                String.Concat(klicIDVysledky.ToString(),","),
+                String.Concat(klicIDScore.ToString(),","),
                 String.Concat("'", playerName, "',"),
                 String.Concat(score.ToString(), ","),
-                String.Concat(klicIDSestavyHry.ToString(), ","),
+                String.Concat(klicIDGameComposition.ToString(), ","),
                 String.Concat("'", otiskVCase, "'"),
                 ")");
             String sqlPrikazTretiCast = ";";
@@ -157,11 +157,11 @@ namespace Circles
             return this.sqlStatementInsertScore;
 
         }
-        private void SestavPrikazNaVlozeniNoveSestavyHryDoDatabaze(int keyIdOfGameCompositionArg)
+        private void SestavPrikazNaVlozeniNoveGameCompositionDoDatabaze(int keyIdOfGameCompositionArg)
         {
             
             
-            String sql1 = "INSERT INTO SestavyHry VALUES ";
+            String sql1 = "INSERT INTO GameComposition VALUES ";
             String sql2 = String.Concat(
                 "(",
                 String.Concat(keyIdOfGameCompositionArg.ToString(), " , "),
